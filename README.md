@@ -1,6 +1,7 @@
 # Control_Humanity
 
 # INSTALLATION
+
   npm install
   
   npm install $(cat packages.txt)
