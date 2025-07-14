@@ -1,5 +1,3 @@
-#===========================================================>>>>
-
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -20,7 +18,6 @@ BOT_TOKEN = '[REDACTED]'
 BIND_URL = 'http://localhost:8000/api/auth/bind-telegram/'
 TASKS_URL = 'http://localhost:8000/api/telegram-tasks/'
 
-# /start — telefon raqamini so'raydi
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_btn = KeyboardButton(text="📱 Отправить номер телефона", request_contact=True)
     kb = [[contact_btn]]
@@ -30,12 +27,10 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=reply_markup
     )
 
-# Kontakt qabul qilganda backendga bog'laydi
 async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     contact = update.message.contact
 
-    # Faqat o'z kontaktingiz bo'lsa
     if contact.user_id != user.id:
         await update.message.reply_text("❌ Пожалуйста, отправьте свой номер.")
         return
@@ -62,7 +57,6 @@ async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"❌ Serverga ulanib bo‘lmadi: {e}")
 
-# /mytasks — tasklarni olib beradi
 async def task_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     try:
