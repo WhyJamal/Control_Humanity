@@ -26,6 +26,13 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
         cd frontend
         npm install
         npm install $(cat packages.txt)
+    
+    📁 Telegram bot setup 
+        
+        cd telegram_bot
+        python -m venv venv
+        venv\Scripts\activate
+        python -m pip install -r requirements.txt
 
 ## 📄 License
 
