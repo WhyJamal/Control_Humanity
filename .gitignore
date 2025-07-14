@@ -17,7 +17,7 @@ local_settings.py
 
 # Environment
 .env
-.env.*  # masalan: .env.dev, .env.production
+.env.*  # example: .env.dev, .env.production
 
 # Virtualenv
 venv/
@@ -25,7 +25,7 @@ ENV/
 env/
 .venv/
 
-# IDE va OS fayllari
+# IDE va OS files
 .idea/
 .vscode/
 *.swp
@@ -41,7 +41,7 @@ coverage.xml
 *.cover
 *.py,cover
 
-# MyPy, Pylint, Bandit va boshqalar
+# MyPy, Pylint, Bandit ...
 .mypy_cache/
 .pytest_cache/
 .dmypy.json
@@ -51,12 +51,11 @@ coverage.xml
 # Jupyter va IPython
 .ipynb_checkpoints/
 
-# Celery beat fayllari
+# Celery beat files
 celerybeat-schedule
 
-# Docker fayllari (agar ishlatilsa)
+# Docker files
 *.pid
-
 
 #==================================================
 
