@@ -30,6 +30,6 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
 ## 📄 License
 
 This project is licensed under the **MIT License**.  
-See the [LICENSE](LICENSE) file for full license text.
+See the [License](License) file for full license text.
 
 © 2025 [Thanos-in](https://github.com/Thanos-in)        
