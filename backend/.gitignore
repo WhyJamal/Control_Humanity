@@ -16,7 +16,7 @@ local_settings.py
 
 # Environment
 .env
-.env.*  # masalan: .env.dev, .env.production
+#.env.*  # masalan: .env.dev, .env.production
 
 # Virtualenv
 venv/

@@ -452,11 +452,12 @@ import api from "@/utils/axios";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
 import Modal from "@/components/ui/Modal.vue";
 import ProjectForm from "@/components/projects/ProjectForm.vue";
+import Dashboard from '@/components/ui/Dashboard.vue';
 import defaultAvatar from '@/assets/Default.png'
 
 export default {
   name: "Layout",
-  components: { ProjectProgressChart, ProjectForm, Modal },
+  components: { ProjectProgressChart, ProjectForm, Modal, Dashboard },
   setup() {
     const { locale } = useI18n();
     const languages = [

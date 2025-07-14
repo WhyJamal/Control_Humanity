@@ -3,7 +3,6 @@
     <draggable
       :list="statuses"
       group="statuses"
-      ghost-class="ghost"
       class="flex gap-6"
       @end="onStatusReorder"
       item-key="id"
@@ -22,7 +21,7 @@
               {{ status.name }}
             </h2>
 
-            <!-- "..." menyu -->
+            <!-- "..." menu -->
             <div class="relative">
               <button
                 @click="toggleDropdown(status.id)"
@@ -66,7 +65,6 @@
           <draggable
             :list="tasksByStatus(status.id)"
             group="tasks"
-            ghost-class="ghost"
             item-key="id"
             @start="onDragStart"
             @end="(evt) => onDragEnd(evt, status.id)"
@@ -284,9 +282,10 @@ import api from "@/utils/axios";
 export default {
   name: "KanbanBoard",
   components: { TaskCard, draggable },
-  props: { projectId: { type: Number, required: true } },
+  //props: { projectId: { type: Number, required: true } }, //changed!!!
   data() {
     return {
+      projectId: null,
       showTaskForm: false,
       selectedTask: null,
       activeDropdownId: null,
@@ -479,6 +478,7 @@ export default {
     },
   },
   created() {
+    this.projectId = Number(this.$route.query.project_id);
     this.loadData();
     this.fetchUsers();
   },
@@ -493,17 +493,4 @@ export default {
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
-
-.ghost {
-  transform: rotate(5deg);
-  transition: transform 0.2s ease;
-  opacity: 1;
-  z-index: 100;
-}
-
-.drag-hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
 </style>

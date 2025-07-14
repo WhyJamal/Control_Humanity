@@ -10,6 +10,9 @@ module.exports = {
         'scroll-track': '#000',
         'scroll-thumb': '#333',
       },
+      backgroundImage: {
+        'night-sky': 'linear-gradient(to bottom right, #2e3a4e, #121e32)',
+      },
       rotate: {
         '5': '5deg',
       },

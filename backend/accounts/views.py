@@ -17,6 +17,14 @@ class UserViewSet(viewsets.ModelViewSet):
             return [permissions.AllowAny()]
         return super().get_permissions()
 
+    def get_queryset(self):
+        qs = User.objects.all()
+        user = self.request.user
+
+        if not user.is_superuser:
+            qs = qs.filter(organization=user.organization)
+        return qs
+    
     def get_serializer_class(self):
         if self.action == 'create':
             return RegisterSerializer
@@ -59,14 +67,9 @@ class UserViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data)
 
-    # @action(detail=False, methods=['get', 'patch'])
-    # def me(self, request):
-    #     serializer = self.get_serializer(request.user)
-    #     return Response(serializer.data)
-
     @action(detail=False, methods=['get'])
     def managers(self, request):
-        qs = User.objects.filter(role='manager')
+        qs = self.get_queryset().filter(role='manager')
 
         page = self.paginate_queryset(qs)
         if page is not None:
@@ -79,13 +82,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def employees(self, request):
-        qs = User.objects.filter(role='employee')
+        qs = self.get_queryset().filter(role='employee')
 
         page = self.paginate_queryset(qs)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
-
+       
+        print("Logged in as:", request.user.username)
+        print("User organization:", request.user.organization)
+        print("Filtered employees:", qs.count())
         serializer = self.get_serializer(qs, many=True)
         return Response(serializer.data)
 

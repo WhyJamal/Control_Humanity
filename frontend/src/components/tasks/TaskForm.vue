@@ -131,7 +131,8 @@
             <!-- METKI -->
             <div class="relative">
               <button
-                @click.stop="toggleLabel"
+                @mouseenter="showLabels = true; showDueDate = false; showParticipants = false"
+                @mouseleave="showLabels = false"
                 class="px-3 py-1.5 rounded text-sm text-gray-200 bg-[#2a2c2e] border border-gray-600 hover:bg-[#3a3b3e]"
               >
                 Метка
@@ -145,7 +146,7 @@
                   <li>
                     <a
                       href="#"
-                      class="block px-4 py-2 hover:bg-[#2a2c2e] hover:text-white"
+                      class="block px-4 py-2"
                     ></a>
                   </li>
                 </ul>
@@ -198,6 +199,12 @@
                   </li>
                 </ul>
               </div>
+            </div>
+            <div class="w-full mt-4 flex items-center text-sm text-gray-400">
+              <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <span class="font-medium text-lg ml-1">Прикреплен к: <span class="text-white font-medium text-lg ml-1">{{ localTask.assigned_to.username }}</span></span>
             </div>
           </div>
 
@@ -671,18 +678,18 @@ function closeModal() {
   emit("close");
 }
 
-function toggleLabel() {
-  showLabels.value = !showLabels.value
-  if (showLabels.value) {
-    showParticipants.value = false
-    showDueDate.value = false
-  }
-}
+//function toggleLabel() {
+//  showLabels.value = !showLabels.value
+//  if (showLabels.value) {
+//    showParticipants.value = false
+//    showDueDate.value = false
+//  }
+//}
 
 function toggleMarkedted() {
   showParticipants.value = !showParticipants.value
   if (showParticipants.value) {
-    showLabels.value = false
+    //showLabels.value = false
     showDueDate.value = false
   }
 }
@@ -690,13 +697,13 @@ function toggleMarkedted() {
 function toggleDueDate() {
   showDueDate.value = !showDueDate.value
   if (showDueDate.value) {
-    showLabels.value = false
+    //showLabels.value = false
     showParticipants.value = false
   }
 }
 
 const closeAllDropdowns = () => {
-  showLabels.value = false
+  //showLabels.value = false
   showDueDate.value = false
   showParticipants.value = false
 }

@@ -16,13 +16,15 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        request = self.context.get('request')
         validated_data.pop('password2')
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
-            role=validated_data['role']
+            role=validated_data['role'],
+            organization=request.user.organization
         )
         user.set_password(validated_data['password'])
         user.save()

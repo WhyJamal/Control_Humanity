@@ -26,6 +26,9 @@
           Создать доску
         </button>
         <router-link
+          :to="{path: '/tasks',
+              query: { project_id: projectId }
+              }"
           class="text-white bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 shadow-md"
         >
           Kanban Board
@@ -147,19 +150,19 @@
       </div>
     </section>
   </div>
-  <div class="top-10">
+  <!-- <div class="top-10">
     <KanbanBoard :projectId="projectId" />
-  </div>
+  </div> -->
 </template>
 
 <script>
 import { mapActions } from "vuex";
-import KanbanBoard from "../tasks/KanbanBoard.vue";
-import api from "@/utils/axios"; // axios instance
+//import KanbanBoard from "@/tasks/KanbanBoard.vue";
+import api from "@/utils/axios";
 
 export default {
   name: "ProjectDetail",
-  components: { KanbanBoard },
+  //components: { KanbanBoard },
   data() {
     return {
       project: {},

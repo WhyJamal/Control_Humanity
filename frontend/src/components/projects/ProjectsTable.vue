@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto scrollbar-black shadow-md sm:rounded-lg">
+  <div class="relative h-[340px] overflow-y-auto scrollbar-black sm:rounded-lg">
     <!-- Add Task Modals -->
     <AddTaskModal
       :visible="showAddTaskModal"
@@ -12,7 +12,7 @@
     />
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead
-        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0 z-20"
       >
         <tr>
           <th class="px-6 py-3"></th>
@@ -29,7 +29,7 @@
         <template v-for="proj in projects" :key="proj.id">
           <!-- Project Row -->
           <tr
-            class="bg-white border-b dark:bg-gray-800 overflow-scroll dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+            class="bg-white border-b dark:bg-gray-800 overflow-y-scroll dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
           >
             <td class="px-6 py-4">
               <button @click="toggleExpand(proj.id)" class="focus:outline-none">
@@ -222,7 +222,7 @@
               <!-- Tasks -->
               <template v-if="expandedModules.includes(mod.id)">
                 <tr
-                  v-for="task in mod.tasks"
+                  v-for="task in filterTasks(mod.tasks)"
                   :key="task.id"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
@@ -379,13 +379,13 @@
       </div>
     </div>
 
-    <div class="fixed bottom-0 w-full z-50">
-      <!-- <ProjectProgressChart
-        class="mr-4"
-        :project="selectedProjectForChart"
+    <!-- <div class="fixed bottom-0 w-[1270px] z-50">
+      <ProjectProgressChart
+        class=""
+        
         :all-projects="projects"
-      /> -->
-    </div>
+      />
+    </div> -->
   </div>
 </template>
 
@@ -448,7 +448,10 @@ export default {
       const unlinked = this.getUnlinkedTasks(project);
       return [...fromModules, ...unlinked];
     },
-
+    filterTasks(taskList) {
+      if (!taskList || !Array.isArray(taskList)) return []; // Xatolikdan saqlanish
+      return taskList.filter(task => !task.is_archived);
+    },
     getProjectStatus(project) {
       const tasks = this.getProjectTasks(project);
       if (!tasks.length) return "—";
@@ -481,6 +484,9 @@ export default {
       if (name === "Finish") {
         return 100;
       }
+      if (name === "Overdue") {
+        return 0;
+      }
       return 50;
     },
 
@@ -507,7 +513,6 @@ export default {
       this.inlineDeleteInfo = { type: null, id: null, projectId: null };
     },
 
-    // Siz oldin yozgan umumiy o'chirish funksiyasi
     async deleteInline(type, id, projectId) {
       try {
         let url;
