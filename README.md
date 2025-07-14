@@ -32,7 +32,7 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
         cd telegram_bot
         python -m venv venv
         venv\Scripts\activate
-        python -m pip install -r requirements.txt
+        python -m pip install -r instalations.txt
 
 ## 📄 License
 
