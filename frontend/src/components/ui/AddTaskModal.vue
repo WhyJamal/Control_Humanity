@@ -9,7 +9,7 @@
       <!-- Form Panel -->
       <div class="w-2/3 p-6 space-y-6">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between mb-4 gap-4">
           <h2 class="text-4xl font-bold text-gray-200">Создать новую задачу</h2>
           <button @click="close" class="text-gray-400 hover:text-gray-200">
             <svg
@@ -25,6 +25,11 @@
                 stroke-width="2"
                 d="M6 18L18 6M6 6l12 12"
               />
+            </svg>
+          </button>
+          <button class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 flex items-center justify-center shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
@@ -300,6 +305,7 @@
 
       <!-- Side Panel (1/3) -->
       <div
+        v-if="showSidebar"
         class="w-1/3 bg-[#242629] border-l border-gray-700 p-6 hidden md:flex flex-col"
       ></div>
     </div>
@@ -329,6 +335,7 @@ export default {
   data() {
     return {
       newTask: {
+        showSidebar: false,
         title: "",
         description: "",
         marked_to_id: [],
