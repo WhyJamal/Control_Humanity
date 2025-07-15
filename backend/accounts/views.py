@@ -4,14 +4,26 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from django.contrib.auth import get_user_model
 from .models import Organization
-from .serializers import RegisterSerializer, UserSerializer, OrganizationSerializer
+from .serializers import RegisterSerializer, UserSerializer, OrganizationRegisterSerializer, OrganizationSerializer
 
 User = get_user_model()
 
-class OrganizationViewSet(viewsets.ModelViewSet):
-    queryset = Organization.objects.all()
-    serializer_class = OrganizationSerializer
-    permission_classes = [permissions.AllowAny]
+class OrganizationRegisterView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        serializer = OrganizationRegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            result = serializer.save()
+            return Response({
+                "user": UserSerializer(result["user"]).data,
+                "organization": OrganizationSerializer(result["organization"]).data,
+            }, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     class OrganizationViewSet(viewsets.ModelViewSet):
+#     queryset = Organization.objects.all()
+#     serializer_class = OrganizationSerializer
+#     permission_classes = [permissions.AllowAny]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

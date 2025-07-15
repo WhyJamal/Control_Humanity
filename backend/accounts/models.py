@@ -1,10 +1,13 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
+from django.conf import settings
 
 class Organization(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField("Полное название", max_length=100)
+    short_name = models.CharField("Краткое название", max_length=50, blank=True, null=True)
     inn = models.CharField(
+        "ИНН",
         max_length=12,
         unique=True,
         validators=[
@@ -14,11 +17,50 @@ class Organization(models.Model):
             )
         ]
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    
+    pnfl = models.CharField(
+        "ПНФЛ",
+        max_length=14, blank=True, null=True,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{14}$',
+                message='PNFL must be exactly 14 digits'
+            )
+        ]
+    )
+    address = models.CharField("Адрес", max_length=255, blank=True, null=True)
+    email = models.EmailField("Email", unique=True, blank=True, null=True)
+    phone = models.CharField(
+        "Телефон",
+        max_length=20, blank=True, null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+?\d{7,20}$',
+                message='Введите корректный номер телефона'
+            )
+        ]
+    )
+    bank_name = models.CharField("Наименование банка", max_length=100, blank=True, null=True)
+    bank_account = models.CharField(
+        "Расчётный счёт",
+        max_length=34,
+        blank=True,
+        null=True,
+        help_text="Номер расчетного счёта (до 34 символов, IBAN поддерживается)"
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="owned_organizations",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Создатель организации"
+    )
+    created_at = models.DateTimeField("Дата создания", auto_now_add=True)
+
     def __str__(self):
-        return self.name
-    
+        return self.short_name or self.name 
+       
 class User(AbstractUser):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True, blank=True)
     ROLE_CHOICES = (

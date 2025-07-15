@@ -35,9 +35,46 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+class OrganizationRegisterSerializer(serializers.Serializer):
+    organization = OrganizationSerializer()
+    user = RegisterSerializer()
+
+    def validate(self, data):
+        org_serializer = OrganizationSerializer(data=data['organization'])
+        user_serializer = RegisterSerializer(data=data['user'], context=self.context)
+
+        if not org_serializer.is_valid():
+            raise serializers.ValidationError({'organization': org_serializer.errors})
+        if not user_serializer.is_valid():
+            raise serializers.ValidationError({'user': user_serializer.errors})
+
+        return data
+
+    def create(self, validated_data):
+        org_data = validated_data.get('organization')
+        user_data = validated_data.get('user')
+
+        password = user_data.pop('password')
+        user_data.pop('password2', None)
+
+        user = User(**user_data)
+        user.set_password(password)
+        user.save()
+
+        organization = Organization.objects.create(**org_data, created_by=user)
+
+        user.organization = organization
+        user.save()
+
+        return {
+            "user": user,
+            "organization": organization
+        }
+
 class UserSerializer(serializers.ModelSerializer):
     profile_picture = serializers.ImageField(use_url=True)
+    organization_name = serializers.CharField(source='organization.name', read_only=True)
     
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'profile_picture', 'phone', 'telegram_id', 'language')
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'organization_name', 'role', 'profile_picture', 'phone', 'telegram_id', 'language')
