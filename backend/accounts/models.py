@@ -85,6 +85,10 @@ class User(AbstractUser):
         default='ru',
     )
 
+    class Meta:
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
+        
     def is_employee(self):
         return self.role == 'employee'
 

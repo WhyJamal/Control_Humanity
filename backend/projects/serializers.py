@@ -9,13 +9,15 @@ User = get_user_model()
 
 class ModuleSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
+    organization = serializers.IntegerField(source='organization.id', read_only=True)
     
     class Meta:
         model = Module
-        fields = ['id', 'name', 'project', 'tasks']
+        fields = ['id', 'name', 'project', 'tasks', 'organization']
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    organization = serializers.IntegerField(source='organization.id', read_only=True)
     director    = UserSerializer(read_only=True)
     manager     = UserSerializer(read_only=True)
     manager_id  = serializers.PrimaryKeyRelatedField(
@@ -36,7 +38,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             'director', 'manager', 'manager_id',
             'start_date', 'end_date', 'period',
             'is_archived', 'modules', 'tasks',
-            'image',
+            'image', 'organization'
         )
 
     def create(self, validated_data):

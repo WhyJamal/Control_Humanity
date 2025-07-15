@@ -2,10 +2,25 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 from .models import User, Organization
+from projects.models import Project
+from tasks.models import Task
 
 class UserInline(admin.TabularInline):
     model = User
     fields = ('username', 'email', 'role', 'is_active')
+    extra = 0
+    show_change_link = True
+
+class ProjectInline(admin.TabularInline):
+    model = Project
+    fields = ('name', 'director', 'manager', 'is_archived')
+    extra = 0
+    show_change_link = True
+
+
+class TaskInline(admin.TabularInline):
+    model = Task
+    fields = ('title', 'assigned_to', 'status', 'is_archived')
     extra = 0
     show_change_link = True
 
@@ -14,7 +29,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     list_display    = ('id', 'name', 'inn', 'created_by', 'created_at')
     search_fields   = ('name',)
     ordering        = ('-created_at',)
-    inlines         = (UserInline,)
+    inlines         = (UserInline, ProjectInline, TaskInline)
 
 
 @admin.register(User)

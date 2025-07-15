@@ -21,16 +21,22 @@ class StatusViewSet(viewsets.ModelViewSet):
         return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
+        user = self.request.user
+        organization = getattr(user, 'organization', None)
+
+        base_qs = Status.objects.filter(organization=organization)
+
         if self.action == 'list':
             project_id = self.request.query_params.get('project_id')
             if project_id:
-                return Status.objects.filter(
-                Q(project__isnull=True) | Q(project_id=project_id)
-            ).filter(
-                user__isnull=True
-            ).order_by('order')
-            return Status.objects.filter(project__isnull=True).order_by('order')
-        return Status.objects.all()
+                return base_qs.filter(
+                    Q(project__isnull=True) | Q(project_id=project_id),
+                    user__isnull=True
+                ).order_by('order')
+            return base_qs.filter(project__isnull=True).order_by('order')
+        
+        return base_qs
+
 
     def destroy(self, request, *args, **kwargs):
         status_obj = self.get_object()
@@ -61,7 +67,17 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        qs = Task.objects.select_related('project', 'status', 'assigned_to')
+        organization = getattr(user, 'organization', None)
+
+        if not organization:
+            return Task.objects.none()
+        
+        qs = Task.objects.select_related('project', 'status', 'assigned_to').filter(organization=organization)
+
+        if organization:
+            qs = qs.filter(organization=organization)
+        else:
+            return Task.objects.none()
 
         if getattr(user, 'role', None) in ('admin', 'director') or user.is_superuser:
             base_qs = qs
@@ -115,14 +131,13 @@ class TaskViewSet(viewsets.ModelViewSet):
 
         return super().partial_update(request, *args, **kwargs)
 
-
-
     def perform_create(self, serializer):
         default_status = get_object_or_404(Status, name='Start')
         due_date = self.request.data.get('due_date')
         save_kwargs = {
             'created_by': self.request.user,
-            'status': default_status    
+            'status': default_status,
+            'organization': self.request.user.organization    
         }
         if due_date is not None:
             save_kwargs['due_date'] = due_date

@@ -27,6 +27,10 @@ class Project(models.Model):
     image = models.ImageField(upload_to='projects/images/', null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
 
+    class Meta:
+        verbose_name = "Проект"
+        verbose_name_plural = "Проекты"
+        
     def __str__(self):
         return self.name
 

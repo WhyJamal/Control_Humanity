@@ -8,12 +8,14 @@ from django.db import transaction
 User = get_user_model()
 
 class StatusSerializer(serializers.ModelSerializer):
+    organization = serializers.IntegerField(source='organization.id', read_only=True)
+    
     class Meta:
         model = Status
-        fields = ('id', 'name', 'order', 'project', 'color', 'is_default')
+        fields = ('id', 'name', 'order', 'project', 'color', 'is_default', 'organization')
 
 class TaskSerializer(serializers.ModelSerializer):
-    # Read-only nested serializers
+    organization = serializers.IntegerField(source='organization.id', read_only=True)    
     assigned_to = UserSerializer(read_only=True)
     status = StatusSerializer(read_only=True)
     project = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -65,7 +67,7 @@ class TaskSerializer(serializers.ModelSerializer):
             'created_by',   'created_at',
             'updated_at',   'due_date',
             'color',        'data_input',
-            'module',       'module_id',
+            'module', 'module_id', 'organization',
             'is_archived',  'done'
         )
         read_only_fields = ('created_by',)
@@ -80,13 +82,10 @@ class TaskSerializer(serializers.ModelSerializer):
         return user
 
     def create(self, validated_data):
-        # 1) Бошди Task яратиш учун 'marked_to' дан ажратиб оламиз
         marked_users = validated_data.pop('marked_to', [])
-        # бошқа validated_data ичида assigned_to, project, status керакли мавжуд
         with transaction.atomic():
             task = super().create(validated_data)
 
-            # 2) TaskMarkedUser жадвалига ёзиш
             for idx, user in enumerate(marked_users):
                 TaskMarkedUser.objects.create(
                     task=task,
@@ -97,16 +96,12 @@ class TaskSerializer(serializers.ModelSerializer):
         return task
 
     def update(self, instance, validated_data):
-        # 1) Агар marked_to келган бўлса, уни олдик
         marked_users = validated_data.pop('marked_to', None)
 
         with transaction.atomic():
-            # 2) Асосий fieldларни сақлаймиз (assigned_to ва бошқа write_only'лар)
             instance = super().update(instance, validated_data)
 
-            # 3) marked_to янгилаш керакми?
             if marked_users is not None:
-                # стартерликни ўчириб, янги тартибда киритамиз
                 TaskMarkedUser.objects.filter(task=instance).delete()
                 for idx, user in enumerate(marked_users):
                     TaskMarkedUser.objects.create(

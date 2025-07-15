@@ -68,6 +68,10 @@ class Task(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE,
                                 related_name='tasks', null=True, blank=True)
 
+    class Meta:
+        verbose_name = "Задача"
+        verbose_name_plural = "Задачи"
+        
     def __str__(self):
         return f"{self.title} ({self.project.name})"
 
