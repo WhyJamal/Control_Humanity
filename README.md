@@ -17,16 +17,19 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
 
         cd backend
         python -m venv venv
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
         venv\Scripts\activate
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+        python manage.py migrate
         python manage.py createsuperuser
         python manage.py runserver
 
     📁 Frontend setup 
         
         cd frontend
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
         npm install
         Get-Content packages.txt | ForEach-Object { npm install $_ }
 
@@ -35,9 +38,12 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
     📁 Telegram bot setup 
         
         cd telegram_bot
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
         python -m venv venv
         venv\Scripts\activate
         python -m pip install -r instalations.txt
+
+        pythin bot.py
 
 ## 📄 License
 
