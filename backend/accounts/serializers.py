@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import User, Organization
 from django.contrib.auth.password_validation import validate_password
+from tasks.models import Status
 
 class OrganizationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,6 +68,19 @@ class OrganizationRegisterSerializer(serializers.Serializer):
         user.organization = organization
         user.save()
 
+        default_statuses = [
+            ("Start",   0, True),
+            ("Overdue", 1, False),
+            ("Finish",  2, False),
+        ]
+        for name, order, is_default in default_statuses:
+            Status.objects.create(
+                name=name,
+                order=order,
+                is_default=is_default,
+                organization=organization 
+            )
+        
         return {
             "user": user,
             "organization": organization
