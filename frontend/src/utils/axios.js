@@ -32,6 +32,7 @@ const processQueue = (error, token = null) => {
       const token = tokenFromState || localStorage.getItem('token')
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
+        console.log("Token:", token);
       }
       return config
     },

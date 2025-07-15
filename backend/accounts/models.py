@@ -1,8 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import RegexValidator
 
 class Organization(models.Model):
     name = models.CharField(max_length=100)
+    inn = models.CharField(
+        max_length=12,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\d{12}$',
+                message='INN must be exactly 12 digits'
+            )
+        ]
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

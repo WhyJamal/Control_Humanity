@@ -1,6 +1,11 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Organization
 from django.contrib.auth.password_validation import validate_password
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])

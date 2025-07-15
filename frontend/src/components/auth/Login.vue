@@ -53,7 +53,7 @@
           class="w-full bg-transparent border border-pink-400 text-pink-400 font-semibold py-3 rounded-xl hover:bg-pink-500 hover:text-white transition mt-3"
           @click="handleSignup"
         >
-          Зарегистрироваться
+          Создать организацию
         </button>
       </form>
     </div>
@@ -111,7 +111,7 @@ export default {
       }
     },
     handleSignup() {
-      this.$router.push('/register')
+      this.$router.push('/organization')
     }
   }
 }

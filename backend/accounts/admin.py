@@ -11,7 +11,7 @@ class UserInline(admin.TabularInline):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display    = ('id', 'name', 'created_at')
+    list_display    = ('id', 'name', 'inn', 'created_at')
     search_fields   = ('name',)
     ordering        = ('-created_at',)
     inlines         = (UserInline,)

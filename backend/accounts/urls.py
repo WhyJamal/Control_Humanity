@@ -1,10 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import UserViewSet, BindTelegramView
+from .views import UserViewSet, OrganizationViewSet, BindTelegramView
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
+router.register(r'organizations', OrganizationViewSet, basename='organization')
 
 urlpatterns = [
     path('', include(router.urls)), 
@@ -14,7 +15,6 @@ urlpatterns = [
 ]
 
 #====================================================================>>>>
-
 
 # from django.urls import path
 # from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView

@@ -1,12 +1,17 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from django.contrib.auth import get_user_model
-from .serializers import RegisterSerializer, UserSerializer
+from .models import Organization
+from .serializers import RegisterSerializer, UserSerializer, OrganizationSerializer
 
 User = get_user_model()
+
+class OrganizationViewSet(viewsets.ModelViewSet):
+    queryset = Organization.objects.all()
+    serializer_class = OrganizationSerializer
+    permission_classes = [permissions.AllowAny]
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -93,7 +98,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class BindTelegramView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [permissions.AllowAny()]
 
     def post(self, request):
         phone = request.data.get("phone")
