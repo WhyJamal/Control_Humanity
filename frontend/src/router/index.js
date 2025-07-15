@@ -5,6 +5,7 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: () => import('../components/auth/Login.vue') },
   { path: '/organization', component: () => import('../components/auth/Organization.vue') },
+  { path: '/register', component: () => import('../components/auth/Register.vue') },
   { 
     path: '/profile/:userId?', component: () => import('../components/auth/Profile.vue'),
     meta: { requiresAuth: true }

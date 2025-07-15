@@ -1,11 +1,19 @@
 <template>
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-500 to-indigo-700 p-4">
-    <div class="w-full max-w-xl bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20">
-      <h2 class="text-3xl font-bold text-white text-center mb-8 tracking-wide">Создать аккаунт</h2>
+  <div
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-400 via-purple-500 to-indigo-700 p-4"
+  >
+    <div
+      class="w-full max-w-xl bg-white/10 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-white/20"
+    >
+      <h2 class="text-3xl font-bold text-white text-center mb-8 tracking-wide">
+        Создать аккаунт
+      </h2>
 
       <form @submit.prevent="handleRegister" class="space-y-5">
         <div>
-          <label for="username" class="block text-white font-medium mb-1">Имя пользователя</label>
+          <label for="username" class="block text-white font-medium mb-1"
+            >Имя пользователя</label
+          >
           <input
             v-model="form.username"
             id="username"
@@ -16,7 +24,9 @@
         </div>
 
         <div>
-          <label for="email" class="block text-white font-medium mb-1">Электронная почта</label>
+          <label for="email" class="block text-white font-medium mb-1"
+            >Электронная почта</label
+          >
           <input
             v-model="form.email"
             id="email"
@@ -26,9 +36,23 @@
           />
         </div>
 
+        <div>
+          <label for="phone" class="block text-white font-medium mb-1">Телефон</label>
+          <input
+            v-model="form.phone"
+            id="phone"
+            type="text"
+            placeholder="Введите номер телефона"
+            class="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
+          />
+        </div>
+
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label for="first_name" class="block text-white font-medium mb-1">Имя</label>
+            <label for="first_name" class="block text-white font-medium mb-1"
+              >Имя</label
+            >
             <input
               v-model="form.first_name"
               id="first_name"
@@ -38,7 +62,9 @@
             />
           </div>
           <div>
-            <label for="last_name" class="block text-white font-medium mb-1">Фамилия</label>
+            <label for="last_name" class="block text-white font-medium mb-1"
+              >Фамилия</label
+            >
             <input
               v-model="form.last_name"
               id="last_name"
@@ -49,21 +75,62 @@
           </div>
         </div>
 
-        <div>
-          <label for="role" class="block text-white font-medium mb-1">Роль</label>
-          <select
-            v-model="form.role"
-            id="role"
-            disabled
-            class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/30 cursor-not-allowed"
+        <div class="mb-5">
+          <label for="role" class="block text-sm font-semibold text-white mb-2"
+            >Роль</label
           >
-            <option value="employee" selected>Сотрудник</option>
-          </select>
+          <div class="relative">
+            <select
+              v-model="form.role"
+              id="role"
+              class="appearance-none w-full h-12 px-4 pr-10 bg-gradient-to-br rounded-lg from-indigo-600 via-purple-600 to-indigo-700 text-white rounded-2xl border-2 border-indigo-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition duration-200"
+            >
+              <option
+                disabled
+                value=""
+                class="text-gray-400 rounded-lg bg-gray-800"
+              >
+                Выберите роль
+              </option>
+              <option value="admin" class="text-white bg-gray-800 rounded-2xl">
+                Админ
+              </option>
+              <option
+                value="director"
+                class="text-white bg-gray-800 rounded-2xl"
+              >
+                Директор
+              </option>
+              <option value="manager" class="text-white bg-gray-800">
+                Менеджер
+              </option>
+              <option value="employee" class="text-white bg-gray-800">
+                Сотрудник
+              </option>
+            </select>
+            <!-- Custom arrow -->
+            <svg
+              class="pointer-events-none absolute inset-y-3 right-4 w-5 h-5 text-white opacity-80"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M7 7l3-3 3 3m0 6l-3 3-3-3"
+              />
+            </svg>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label for="password" class="block text-white font-medium mb-1">Пароль</label>
+            <label for="password" class="block text-white font-medium mb-1"
+              >Пароль</label
+            >
             <input
               v-model="form.password"
               id="password"
@@ -73,7 +140,9 @@
             />
           </div>
           <div>
-            <label for="password2" class="block text-white font-medium mb-1">Подтверждение пароля</label>
+            <label for="password2" class="block text-white font-medium mb-1"
+              >Подтверждение пароля</label
+            >
             <input
               v-model="form.password2"
               id="password2"
@@ -98,85 +167,84 @@
         </button>
       </form>
     </div>
-  </div> 
-  </template>
-
-
+  </div>
+</template>
 
 <script>
+import api from "@/utils/axios";
+
 export default {
-  name: 'Register',
+  name: "Register",
   data() {
     return {
       form: {
-        username: '',
-        email: '',
-        first_name: '',
-        last_name: '',
-        role: 'employee',
-        password: '',
-        password2: ''
+        username: "",
+        email: "",
+        phone: "",
+        first_name: "",
+        last_name: "",
+        role: "",
+        password: "",
+        password2: "",
       },
       loading: false,
-      errorMessage: ''
-    }
+      errorMessage: "",
+    };
   },
   methods: {
     async handleRegister() {
-      this.errorMessage = ''
+      this.errorMessage = "";
 
-      // Basic validation
       if (
         !this.form.username ||
         !this.form.email ||
+        !this.form.phone ||
         !this.form.first_name ||
         !this.form.last_name ||
         !this.form.role ||
         !this.form.password ||
         !this.form.password2
       ) {
-        this.errorMessage = 'Пожалуйста, заполните все поля.'
-        return
+        this.errorMessage = "Пожалуйста, заполните все поля.";
+        return;
       }
       if (this.form.password !== this.form.password2) {
-        this.errorMessage = 'Пароли не совпадают.'
-        return
+        this.errorMessage = "Пароли не совпадают.";
+        return;
       }
 
       try {
-        this.loading = true
-        // Dispatch namespaced auth/register action
-        await this.$store.dispatch('auth/register', {
-          username: this.form.username,
-          email: this.form.email,
-          first_name: this.form.first_name,
-          last_name: this.form.last_name,
-          role: this.form.role,
-          password: this.form.password,
-          password2: this.form.password2
-        })
-        // After successful registration (and login), redirect to /projects
-        this.$router.push('/projects')
+        this.loading = true;
+        await api.post("/auth/register/", {
+          user: {
+            username: this.form.username,
+            email: this.form.email,
+            phone: this.form.phone,
+            first_name: this.form.first_name,
+            last_name: this.form.last_name,
+            role: this.form.role,
+            password: this.form.password,
+            password2: this.form.password2,
+          },
+        });
+
+        this.$router.push("/users");
       } catch (err) {
-        // Display server-side validation errors if available
         if (err.response && err.response.data) {
-          // Might receive a dictionary of field errors, or a "detail" key
-          const data = err.response.data
-          if (typeof data === 'object') {
-            // Concatenate all error messages
-            this.errorMessage = Object.values(data)
-              .flat()
-              .join(' ')
+          const data = err.response.data;
+          if (typeof data === "object") {
+            this.errorMessage = Object.values(data).flat().join(" ");
           } else {
-            this.errorMessage = data || 'Не удалось зарегистрироваться.'
+            this.errorMessage = data || "Не удалось зарегистрироваться.";
           }
         } else {
-          this.errorMessage = 'Ошибка при регистрации. Пожалуйста, проверьте введённые данные.'
+          this.errorMessage =
+            "Ошибка при регистрации. Пожалуйста, проверьте введённые данные.";
         }
       } finally {
-        this.loading = false
+        this.loading = false;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
