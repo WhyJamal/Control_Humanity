@@ -28,7 +28,7 @@
             </svg>
           </button>
           <h1 class="text-xl font-semibold text-gray-900 dark:text-white">
-            {{ $t("appTitle") }}
+            {{ profile.organization_name }}
           </h1>
         </div>
 

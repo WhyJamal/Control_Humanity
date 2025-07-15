@@ -15,7 +15,7 @@ const routes = [
     meta: { requiresAuth: true },
     children: [
       { path: 'dashboard', component: () => import('@/components/ui/Dashboard.vue'), meta: { requiresAuth: true },},
-      { path: 'projects', component: () => import('@/components/projects/ProjectsTable.vue'), meta: { requiresAuth: true }, },
+      { path: 'projects', name: 'Projects', component: () => import('@/components/projects/ProjectsTable.vue'), meta: { requiresAuth: true }, },
       { path: 'archivedprojects', component: () => import('@/components/projects/ArchivedProjects.vue'), meta: { requiresAuth: true }, },
       { path: 'taskstable', component: () => import('@/components/tasks/TasksTable.vue'), meta: { requiresAuth: true }, },
       { path: 'archivedtasks', component: () => import('@/components/tasks/ArchivedTasks.vue'), meta: { requiresAuth: true }, },
