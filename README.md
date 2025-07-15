@@ -21,11 +21,16 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+        python manage.py createsuperuser
+        python manage.py runserver
+
     📁 Frontend setup 
         
         cd frontend
         npm install
         Get-Content packages.txt | ForEach-Object { npm install $_ }
+
+        npm run dev
     
     📁 Telegram bot setup 
         
