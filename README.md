@@ -4,7 +4,7 @@
 
 With this system, you can:
 
-- 👨‍💼 Monitor your employees' performance,
+- 👨‍💼 Monitor your employees performance,
 - ✅ Plan and assign tasks effectively,
 - 📈 Track productivity and progress,
 - 📅 Manage projects in an organized, role-based manner.
@@ -35,7 +35,7 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
 
         npm run dev
     
-    📁 Telegram bot setup 
+    📁 Telegram bot setup  
         
         cd telegram_bot
         Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
