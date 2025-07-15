@@ -25,7 +25,7 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
         
         cd frontend
         npm install
-        npm install $(cat packages.txt)
+        Get-Content packages.txt | ForEach-Object { npm install $_ }
     
     📁 Telegram bot setup 
         
