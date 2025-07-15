@@ -13,7 +13,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'role', 'password', 'password2')
+        fields = ('username', 'email', 'phone', 'first_name', 'last_name', 'role', 'password', 'password2')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -26,6 +26,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
+            phone=validated_data['phone'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name'],
             role=validated_data['role'],
@@ -73,7 +74,7 @@ class OrganizationRegisterSerializer(serializers.Serializer):
 
 class UserSerializer(serializers.ModelSerializer):
     profile_picture = serializers.ImageField(use_url=True)
-    organization_name = serializers.CharField(source='organization.name', read_only=True)
+    organization_name = serializers.CharField(source='organization.short_name', read_only=True)
     
     class Meta:
         model = User
