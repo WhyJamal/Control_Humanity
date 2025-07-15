@@ -9,8 +9,8 @@ from django.utils.html import format_html
 from .models import Status
 
 class StatusAdmin(admin.ModelAdmin):
-    list_display   = ('name', 'project', 'user', 'order', 'color_display')
-    list_filter    = ('project',)
+    list_display   = ('name', 'project', 'user', 'order', 'organization', 'color_display')
+    list_filter    = ('project', 'organization',)
     search_fields  = ('name', 'project__name')
     ordering       = ('project', 'order')
     list_per_page  = 20
@@ -62,7 +62,7 @@ class StatusAdmin(admin.ModelAdmin):
     
 class TaskMarkedUserInline(admin.TabularInline):
     model = TaskMarkedUser
-    extra = 1  # Qo‘shimcha 1 ta bo‘sh qator ko‘rsatadi
+    extra = 1
     autocomplete_fields = ['user']
 
 class TaskAdmin(admin.ModelAdmin):

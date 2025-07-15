@@ -5,8 +5,8 @@ from import_export.admin import ImportExportModelAdmin
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'director', 'manager', 'start_date', 'end_date')  
-    list_filter = ('start_date', 'director', 'manager')  
+    list_display = ('name', 'organization', 'director', 'manager', 'start_date', 'end_date')  
+    list_filter = ('start_date', 'organization', 'director', 'manager')  
     search_fields = ('name', 'description', 'director__username', 'manager__username')
     autocomplete_fields = ('director', 'manager')  
 

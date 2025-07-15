@@ -2,9 +2,11 @@ from django.db import models
 from django.conf import settings
 from projects.models import Project, Module
 from django.utils import timezone
+from accounts.models import Organization
 
 class Status(models.Model):
     name = models.CharField(max_length=50)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True, blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=True, related_name='statuses')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True, related_name='statuses')
     order = models.PositiveIntegerField(default=0)
@@ -25,6 +27,7 @@ class Status(models.Model):
 class Task(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, null=True, blank=True)    
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
