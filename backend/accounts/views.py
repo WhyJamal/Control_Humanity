@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from django.contrib.auth import get_user_model
 from .models import Organization
 from .serializers import RegisterSerializer, UserSerializer, OrganizationRegisterSerializer, OrganizationSerializer
-from .permissions import IsDirector, IsManager, IsAdmin
+from .permissions import IsAdminOrDirector, IsDirector, IsManager, IsAdmin
 
 User = get_user_model()
 
@@ -178,7 +178,7 @@ class UserViewSet(viewsets.ModelViewSet):
 class UserRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [permissions.IsAuthenticated, IsDirector, IsManager, IsAdmin]
+    permission_classes = [IsAdminOrDirector] # permissions.IsAuthenticated, IsDirector, IsManager, IsAdmin
 
 class BindTelegramView(APIView):
     permission_classes = [permissions.AllowAny()]

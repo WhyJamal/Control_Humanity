@@ -12,7 +12,7 @@
             id="username"
             type="text"
             placeholder="Введите имя пользователя"
-            class="w-full p-3 rounded-lg bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
           />
         </div>
 
@@ -23,7 +23,7 @@
             id="password"
             type="password"
             placeholder="Введите свой пароль"
-            class="w-full p-3 rounded-lg bg-gray-800 text-gray-100 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            class="w-full p-3 rounded-lg bg-white/10 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"
           />
         </div>
 
@@ -53,7 +53,7 @@
           class="w-full bg-transparent border border-pink-400 text-pink-400 font-semibold py-3 rounded-xl hover:bg-pink-500 hover:text-white transition mt-3"
           @click="handleSignup"
         >
-          Создать организацию
+          Регистрация организации
         </button>
       </form>
     </div>

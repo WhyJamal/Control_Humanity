@@ -10,49 +10,49 @@
         <!-- Organization Fields -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label for="orgName" class="block text-gray-200 font-medium mb-1">Полное название</label>
+            <label for="orgName" class="block text-white font-medium mb-1">Полное название</label>
             <input v-model="form.organization.name" id="orgName" type="text" placeholder="ООО Пример"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="shortName" class="block text-gray-200 font-medium mb-1">Краткое название</label>
+            <label for="shortName" class="block text-white font-medium mb-1">Краткое название</label>
             <input v-model="form.organization.short_name" id="shortName" type="text" placeholder="Пример"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="inn" class="block text-gray-200 font-medium mb-1">ИНН</label>
+            <label for="inn" class="block text-white font-medium mb-1">ИНН</label>
             <input v-model="form.organization.inn" id="inn" type="text" maxlength="12" placeholder="123456789012"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="pnfl" class="block text-gray-200 font-medium mb-1">ПНФЛ</label>
+            <label for="pnfl" class="block text-white font-medium mb-1">ПНФЛ</label>
             <input v-model="form.organization.pnfl" id="pnfl" type="text" maxlength="14" placeholder="12345678901234"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="address" class="block text-gray-200 font-medium mb-1">Адрес</label>
+            <label for="address" class="block text-white font-medium mb-1">Адрес</label>
             <input v-model="form.organization.address" id="address" type="text" placeholder="Tashkent city"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="orgEmail" class="block text-gray-200 font-medium mb-1">Email организации</label>
+            <label for="orgEmail" class="block text-white font-medium mb-1">Email организации</label>
             <input v-model="form.organization.email" id="orgEmail" type="email" placeholder="info@example.com"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="orgPhone" class="block text-gray-200 font-medium mb-1">Телефон организации</label>
+            <label for="orgPhone" class="block text-white font-medium mb-1">Телефон организации</label>
             <input v-model="form.organization.phone" id="orgPhone" type="text" placeholder="+998901234567"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="bankName" class="block text-gray-200 font-medium mb-1">Наименование банка</label>
+            <label for="bankName" class="block text-white font-medium mb-1">Наименование банка</label>
             <input v-model="form.organization.bank_name" id="bankName" type="text" placeholder="НБУ"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div class="block text-gray-200 font-medium mb-1">
-            <label for="bankAccount" class="block text-gray-200 font-medium mb-1">Расчётный счёт</label>
+            <label for="bankAccount" class="block text-white font-medium mb-1">Банковский счет</label>
             <input v-model="form.organization.bank_account" id="bankAccount" type="text" placeholder="UZ123..."
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
         </div>
 
@@ -60,9 +60,9 @@
 
         <!-- User Fields -->
         <div @click="toggleUserFields" class="flex items-center cursor-pointer gap-2">
-          <h2 class="text-xl font-bold tracking-wide">Юридическое лицо</h2>
+          <h2 class="text-xl text-white font-bold tracking-wide">Юридическое лицо</h2>
           <svg
-            class="mt-1 w-3 h-3 text-gray-600 transition-transform duration-200 dark:text-gray-400"
+            class="mt-1 w-3 h-3 text-white transition-transform duration-200 dark:text-gray-400"
             :class="{ 'rotate-180': showUserFields }"
             fill="none"
             viewBox="0 0 10 6"
@@ -76,39 +76,39 @@
         </div>
         <div v-if="showUserFields" class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label for="firstName" class="block text-gray-200 font-medium mb-1">Имя</label>
+            <label for="firstName" class="block text-white font-medium mb-1">Имя</label>
             <input v-model="form.user.first_name" id="firstName" type="text" placeholder="Имя"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="userEmail" class="block text-gray-200 font-medium mb-1">Email пользователя</label>
+            <label for="userEmail" class="block text-white font-medium mb-1">Email пользователя</label>
             <input v-model="form.user.email" id="userEmail" type="email" placeholder="admin@example.com"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="username" class="block text-gray-200 font-medium mb-1">Имя для входа</label>
+            <label for="username" class="block text-white font-medium mb-1">Имя для входа</label>
             <input v-model="form.user.username" id="username" type="text" placeholder="user123"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="lastName" class="block text-gray-200 font-medium mb-1">Фамилия</label>
+            <label for="lastName" class="block text-white font-medium mb-1">Фамилия</label>
             <input v-model="form.user.last_name" id="lastName" type="text" placeholder="Фамилия"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="userPhone" class="block text-gray-200 font-medium mb-1">Телефон пользователя</label>
+            <label for="userPhone" class="block text-white font-medium mb-1">Телефон пользователя</label>
             <input v-model="form.user.phone" id="userPhone" type="text" placeholder="+998901234567"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="password" class="block text-gray-200 font-medium mb-1">Пароль</label>
+            <label for="password" class="block text-white font-medium mb-1">Пароль</label>
             <input v-model="form.user.password" id="password" type="password" placeholder="••••••••"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
           <div>
-            <label for="password2" class="block text-gray-200 font-medium mb-1">Подтвердите пароль</label>
+            <label for="password2" class="block text-white font-medium mb-1">Подтвердите пароль</label>
             <input v-model="form.user.password2" id="password2" type="password" placeholder="••••••••"
-                   class="w-full p-3 rounded-lg bg-gray-800 text-gray-100" />
+                   class="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white"/>
           </div>
         </div>
 
