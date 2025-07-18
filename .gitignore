@@ -3,6 +3,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+backend/projects/images/
 
 # Django stuff:
 *.log
