@@ -1,0 +1,7 @@
+# Type: feat, fix, docs, style, refactor, test, chore
+# Scope: (optional - e.g., auth, tasks, ui)
+# Short summary (imperative, lower case):
+# 
+# Body (optional): explain what and why
+# 
+# Footer (optional): issue number, breaking change

@@ -3,7 +3,7 @@ from .models import Project, Module
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny 
 from .serializers import ProjectSerializer, ModuleSerializer
-from .permissions import IsDirector  
+from .permissions import IsDirector, IsAdmin, IsAdminOrDirector  
 from rest_framework.response import Response
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -35,7 +35,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-            return [permissions.IsAuthenticated(), IsDirector()]
+            return [IsAdminOrDirector(),]
         else:
             return [permissions.IsAuthenticated()]
 

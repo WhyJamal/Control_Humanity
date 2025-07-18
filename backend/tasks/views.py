@@ -132,7 +132,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
 
     def perform_create(self, serializer):
-        default_status = get_object_or_404(Status, name='Start')
+        default_status = get_object_or_404(Status, name='Start', organization=self.request.user.organization)
         due_date = self.request.data.get('due_date')
         save_kwargs = {
             'created_by': self.request.user,
@@ -172,7 +172,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                 {'detail': 'is_archived field is required.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        # String yoki boolean bo‘lishini to‘g‘ri pars qilish
+
         if isinstance(is_archived, str):
             low = is_archived.lower()
             if low in ['true', '1', 'yes']:
