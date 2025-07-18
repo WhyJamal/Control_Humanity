@@ -1,3 +1,5 @@
+const forms = require('@tailwindcss/forms');
+
 module.exports = {
   darkMode: 'class',
   content: [
@@ -40,6 +42,7 @@ module.exports = {
     }
   },
   plugins: [
+    forms,
     function({ addUtilities }) {
       addUtilities({
         '.scrollbar-black': {
