@@ -32,47 +32,47 @@
           <!-- Role select -->
           <div class="w-full max-w-sm">
             <label for="role" class="block text-white font-medium mb-1">Роль</label>
-            <Listbox v-model="form.role">
-              <div class="relative">
-                <ListboxButton
-                  class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white flex justify-between items-center"
-                >
-                  <span>{{ roleLabels[form.role] || 'Выберите роль' }}</span>
-                  <ChevronUpDownIcon class="w-5 h-5 text-white/70" />
-                </ListboxButton>
-                
-                <Transition
-                  enter="transition ease-out duration-100"
-                  enter-from="opacity-0 scale-95"
-                  enter-to="opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leave-from="opacity-100 scale-100"
-                  leave-to="opacity-0 scale-95"
-                >
-                  <ListboxOptions
-                    class="absolute mt-2 w-full bg-black/60 backdrop-blur-lg rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
+              <Listbox v-model="form.role">
+                <div class="relative">
+                  <ListboxButton
+                    class="w-full p-3 rounded-lg bg-white/10 text-white border border-white/30 focus:outline-none focus:ring-2 focus:ring-white flex justify-between items-center"
                   >
-                    <ListboxOption
-                      v-for="role in roles"
-                      :key="role"
-                      :value="role"
-                      class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-white/20"
-                      v-slot="{ selected }"
+                    <span>{{ roleLabels[form.role] || 'Выберите роль' }}</span>
+                    <ChevronUpDownIcon class="w-5 h-5 text-white/70" />
+                  </ListboxButton>
+
+                  <Transition
+                    enter="transition ease-out duration-100"
+                    enter-from="opacity-0 scale-95"
+                    enter-to="opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leave-from="opacity-100 scale-100"
+                    leave-to="opacity-0 scale-95"
+                  >
+                    <ListboxOptions
+                      class="absolute mt-2 w-full bg-black/60 backdrop-blur-lg rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
                     >
-                      <span :class="[selected ? 'font-semibold text-black' : 'text-white']">
-                        {{ roleLabels[role] }}
-                      </span>
-                      <span
-                        v-if="selected"
-                        class="absolute inset-y-0 left-0 flex items-center pl-3 text-white"
+                      <ListboxOption
+                        v-for="role in roles"
+                        :key="role"
+                        :value="role"
+                        class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-white/20"
+                        v-slot="{ selected }"
                       >
-                        <CheckIcon class="w-5 h-5" />
-                      </span>
-                    </ListboxOption>
-                  </ListboxOptions>
-                </Transition>
-              </div>
-            </Listbox>
+                        <span :class="[selected ? 'font-semibold text-black' : 'text-white']">
+                          {{ roleLabels[role] }}
+                        </span>
+                        <span
+                          v-if="selected"
+                          class="absolute inset-y-0 left-0 flex items-center pl-3 text-white"
+                        >
+                          <CheckIcon class="w-5 h-5" />
+                        </span>
+                      </ListboxOption>
+                    </ListboxOptions>
+                  </Transition>
+                </div>
+              </Listbox>
           </div>
         </div>
 
@@ -123,23 +123,12 @@
 <script>
 import api from "@/utils/axios";
 import photoLogin from '@/assets/photo_login_page.png';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from '@headlessui/vue';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/24/solid';
 import { Transition } from 'vue';
 
 export default {
   name: "Register",
   components: {
-    Listbox,
-    ListboxButton,
-    ListboxOption,
-    ListboxOptions,
-    Transition,
     ChevronUpDownIcon,
     CheckIcon,
   },

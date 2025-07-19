@@ -10,9 +10,10 @@ const routes = [
     path: '/profile/:userId?', component: () => import('../components/auth/Profile.vue'),
     meta: { requiresAuth: true }
   },
+  { path: '/payments', component: () => import('@/components/ui/Payments.vue') },
   { 
     path: '/', 
-    component: () => import('../components/Layout.vue'),
+    component: () => import('@/components/Layout.vue'),
     meta: { requiresAuth: true },
     children: [
       { path: 'dashboard', component: () => import('@/components/ui/Dashboard.vue'), meta: { requiresAuth: true },},

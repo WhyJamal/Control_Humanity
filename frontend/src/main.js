@@ -5,11 +5,24 @@ import store from './store'
 import api, { setupInterceptors } from '@/utils/axios'
 import './assets/tailwind.css'
 import i18n from './i18n'
+import 'flatpickr/dist/flatpickr.css';
+import HeadlessUI from './plugins/headlessui'
+
+import FlatPickr from 'vue-flatpickr-component';
 
 const app = createApp(App)
 app.use(store)
 app.use(router)
 app.use(i18n)
+app.use(HeadlessUI)
+
+app.component('FlatPickr', FlatPickr)
+
+app.mount('#app')
+
+setupInterceptors(store)
+
+store.dispatch('auth/checkAuth')
 
 // // v-click-outside direktiva
 // app.directive('click-outside', {
@@ -27,70 +40,3 @@ app.use(i18n)
 //       el.__clickOutsideHandler__ = null
 //     }
 //   })
-
-app.mount('#app')
-
-setupInterceptors(store)
-
-store.dispatch('auth/checkAuth')
-
-
-//================================================================>>>>
-
-
-// import { createApp } from 'vue'
-// import App from './App.vue'
-// import router from './router'
-// import store from './store'
-// import './assets/tailwind.css'
-// import axios from 'axios'
-// // import axios from '../utils/axios'
-
-// const token = localStorage.getItem('token')
-// if (token) {
-//   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-// }
-
-// axios.interceptors.response.use(
-//   response => response,
-//   async error => {
-//     const originalRequest = error.config
-
-//     if (
-//       error.response &&
-//       error.response.status === 401 &&
-//       !originalRequest._retry
-//     ) {
-//       originalRequest._retry = true
-//       const refresh = localStorage.getItem('refresh_token')
-
-//       if (refresh) {
-//         try {
-//           const res = await axios.post('/api/token/refresh/', {
-//             refresh: refresh
-//           })
-
-//           const newAccessToken = res.data.access
-//           localStorage.setItem('token', newAccessToken)
-//           axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`
-//           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-
-//           return axios(originalRequest) // 🔁 So‘rovni qayta yuborish
-//         } catch (refreshErr) {
-//           // Refresh token ham eskirgan bo‘lsa — logout
-//           localStorage.removeItem('token')
-//           localStorage.removeItem('refresh_token')
-//           store.dispatch('auth/logout')
-//           router.push('/login')
-//         }
-//       }
-//     }
-
-//     return Promise.reject(error)
-//   }
-// )
-
-// const app = createApp(App)
-// app.use(store)
-// app.use(router)
-// app.mount('#app')

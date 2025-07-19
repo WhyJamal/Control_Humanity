@@ -84,9 +84,26 @@
             </div>
           </div> -->
 
+          <router-link v-if="$store.state.auth.user?.role === 'director'" to="/payments" class="mr-3">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 text-gray-800 hover:text-blue-600 dark:text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.35 2.7a1 1 0 00.9 1.5h9.9m-8.45 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zm8 0a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+              />
+            </svg>
+          </router-link>
+
           <div
             class="w-8 h-8 rounded-full overflow-hidden bg-gray-400 flex items-center dark:bg-gray-700"
-          >
+          >       
             <img
               @click.stop="userDropdown = !userDropdown"
               :src="profile.profile_picture || defaultAvatar"
