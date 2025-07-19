@@ -141,5 +141,4 @@ export default {
 </script>
 
 <style scoped>
-/* Dizayn o'zgarishlari uchun qo'shimcha uslublar */
 </style>

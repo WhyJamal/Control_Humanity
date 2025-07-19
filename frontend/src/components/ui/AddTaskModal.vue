@@ -302,12 +302,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Side Panel (1/3) -->
-      <div
-        v-if="showSidebar"
-        class="w-1/3 bg-[#242629] border-l border-gray-700 p-6 hidden md:flex flex-col"
-      ></div>
     </div>
   </div>
 </template>
