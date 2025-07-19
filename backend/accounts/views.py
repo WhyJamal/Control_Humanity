@@ -181,7 +181,7 @@ class UserRegisterView(generics.CreateAPIView):
     permission_classes = [IsAdminOrDirector] # permissions.IsAuthenticated, IsDirector, IsManager, IsAdmin
 
 class BindTelegramView(APIView):
-    permission_classes = [permissions.AllowAny()]
+    permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         phone = request.data.get("phone")
