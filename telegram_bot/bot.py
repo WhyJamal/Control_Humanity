@@ -1,3 +1,4 @@
+import os
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -13,8 +14,11 @@ from telegram.ext import (
 )
 import requests
 from datetime import datetime
+from dotenv import load_dotenv
 
-BOT_TOKEN = '[REDACTED]'
+load_dotenv()
+
+BOT_TOKEN = os.getenv('BOT_TOKEN')
 BIND_URL = 'http://localhost:8000/api/auth/bind-telegram/'
 TASKS_URL = 'http://localhost:8000/api/telegram-tasks/'
 
