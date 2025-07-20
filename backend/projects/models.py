@@ -1,3 +1,6 @@
+import uuid
+import os
+import re
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -24,7 +27,14 @@ class Project(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_archived = models.BooleanField(default=False)
-    image = models.ImageField(upload_to='projects/images/', null=True, blank=True)
+    
+    def project_image_upload_path(instance, filename):
+        name, ext = os.path.splitext(filename)
+        safe_name = re.sub(r'[^\w\d_-]+', '', name)
+        return f'projects/project_{instance.id}/{safe_name}_{uuid.uuid4()}{ext}'
+    
+    image = models.ImageField(upload_to=project_image_upload_path, blank=True, null=True)
+    #image = models.ImageField(upload_to='media/projects/', null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
 
     class Meta:
