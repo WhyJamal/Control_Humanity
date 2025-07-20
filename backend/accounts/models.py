@@ -1,3 +1,6 @@
+import uuid
+import os
+import re
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
@@ -71,9 +74,17 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     bio = models.TextField(blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True, unique=True) # unique=True
+    phone = models.CharField(max_length=20, blank=True, null=True, unique=True)
     telegram_id = models.CharField(max_length=32, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
+   
+    def profile_upload_path(instance, filename):
+        ext = os.path.splitext(filename)[1]
+        username = re.sub(r'\W+', '_', instance.username) 
+        user_id = instance.id if instance.id else 'new'
+        return f'profiles/{username}_{user_id}_{uuid.uuid4()}{ext}'
+    
+    profile_picture = models.ImageField(upload_to=profile_upload_path, blank=True, null=True)
+    # profile_picture = models.ImageField(upload_to='media/profiles/', blank=True, null=True) 
     LANG_CHOICES = [
         ('uz', 'O‘zbekcha'),
         ('ru', 'Русский'),
