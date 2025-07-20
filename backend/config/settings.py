@@ -70,6 +70,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / env('DB_NAME', default='db.sqlite3'),
+        'OPTIONS': {
+            'timeout': 20,
+        },
     }
 }
 
@@ -108,6 +111,9 @@ CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
 
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
+user_rate = env.int('DEFAULT_THROTTLE_RATES_USER', 100)
+anon_rate = env.int('DEFAULT_THROTTLE_RATES_ANON', 10)
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -115,6 +121,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': f'{user_rate}/minute',
+        'anon': f'{anon_rate}/minute',
+    },
 }
 
 SIMPLE_JWT = {
