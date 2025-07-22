@@ -5,10 +5,9 @@ import store from './store'
 import api, { setupInterceptors } from '@/utils/axios'
 import './assets/tailwind.css'
 import i18n from './i18n'
-import 'flatpickr/dist/flatpickr.css';
 import HeadlessUI from './plugins/headlessui'
-
 import FlatPickr from 'vue-flatpickr-component';
+import 'flatpickr/dist/flatpickr.css';
 
 const app = createApp(App)
 app.use(store)
