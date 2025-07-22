@@ -1,5 +1,5 @@
 <template>
-  <div class="button-[200px] relative h-[340px] overflow-y-auto scrollbar-black sm:rounded-lg">
+  <div class="button-[200px] relative h-full overflow-y-auto scrollbar-black sm:rounded-lg"> <!-- h-[340px] -->
     <!-- Add Task Modals -->
     <AddTaskModal
       :visible="showAddTaskModal"
@@ -134,7 +134,7 @@
                 <svg class="flex-1 h-1"></svg>
                 <button
                   @click="saveModuleInline(proj.id)"
-                  class="px-3 py-1 bg-green-500 hover:bg-green-600 text-white rounded"
+                  class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded"
                 >
                   Сохранить
                 </button>
