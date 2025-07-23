@@ -45,7 +45,7 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
         venv\Scripts\activate
         python -m pip install -r instalations.txt
 
-        pythin bot.py
+        python bot.py
 
 ## 📄 License
 
