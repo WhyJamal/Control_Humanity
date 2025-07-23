@@ -47,9 +47,16 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
 
         python bot.py
 
-## 📄 License
+## 📜 Code of Conduct
+We are committed to fostering a welcoming and respectful environment for all contributors.  
+Please read our [Code of Conduct](CODE_OF_CONDUCT.md) before participating.
 
+## 🔐 Security
+If you discover a security vulnerability within this project,  
+please review our [Security Policy](SECURITY.md) and report the issue responsibly.
+
+## 📄 License
 This project is licensed under the **MIT License**.  
 See the [License](License) file for full license text.
 
-Copyright © 2025 [WhyJamal](https://github.com/WhyJamal)        
+Copyright © 2025 [WhyJamal](https://github.com/WhyJamal)
