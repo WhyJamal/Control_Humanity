@@ -1,8 +1,8 @@
 # 🧠 CONTROL HUMANITY 
 
-![Homepage preview](./HomePage.png)
-
 **Control_Humanity** is a web-based platform designed to manage employees, assign tasks, and organize overall workflows efficiently.
+
+![Homepage preview](./HomePage.png)
 
 With this system, you can:
 
