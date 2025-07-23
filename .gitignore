@@ -94,7 +94,7 @@ logs/
 *.ntvs*
 *.njsproj
 *.sln
-*.png
+#*.png
 *.jpg
 
 # Windows
