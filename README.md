@@ -52,4 +52,4 @@ The project is built using **Django (backend)** and **Vue.js (frontend)** techno
 This project is licensed under the **MIT License**.  
 See the [License](License) file for full license text.
 
-Copyright © 2025 [Thanos-in](https://github.com/Thanos-in)        
+Copyright © 2025 [WhyJamal](https://github.com/WhyJamal)        
