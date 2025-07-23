@@ -7,7 +7,7 @@ const routes = [
   { path: '/organization', component: () => import('../components/auth/Organization.vue') },
   { path: '/register', component: () => import('../components/auth/Register.vue') },
   { 
-    path: '/profile/:userId?', component: () => import('../components/auth/Profile.vue'),
+    path: '/ProfileView/:userId?', component: () => import('../components/auth/ProfileView.vue'),
     meta: { requiresAuth: true }
   },
   { path: '/payments', component: () => import('@/components/ui/Payments.vue') },
