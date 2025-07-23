@@ -84,7 +84,11 @@
             </div>
           </div> -->
 
-          <router-link v-if="$store.state.auth.user?.role === 'director'" to="/payments" class="mr-3">
+          <router-link
+            v-if="$store.state.auth.user?.role === 'director'"
+            to="/payments"
+            class="mr-3"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="w-6 h-6 text-gray-800 hover:text-blue-600 dark:text-white"
@@ -103,7 +107,7 @@
 
           <div
             class="w-8 h-8 rounded-full overflow-hidden bg-gray-400 flex items-center dark:bg-gray-700"
-          >       
+          >
             <img
               @click.stop="userDropdown = !userDropdown"
               :src="profile.profile_picture || defaultAvatar"
@@ -173,7 +177,13 @@
                     class="py-2 space-y-2"
                   >
                     <li>
-                      <router-link
+                      <button
+                        @click="showProfileView = true"
+                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg dark:hover:text-white"
+                      >
+                        Profile
+                      </button>
+                      <!-- <router-link
                         v-if="$store.state.auth.token"
                         :to="`/profile/${$store.state.auth.user.id}`"
                       >
@@ -182,7 +192,7 @@
                         >
                           Profile
                         </span>
-                      </router-link>
+                      </router-link> -->
                     </li>
                     <li class="relative overflow-visible">
                       <button
@@ -366,49 +376,49 @@
             </ul>
           </div>
 
-        <!-- Задачи -->
+          <!-- Задачи -->
 
-            <div class="relative">
-              <button
-                @click="toggleTasks"
-                class="flex items-center w-full px-2 py-1 text-sm font-medium text-gray-900 hover:text-gray-800 rounded transition dark:text-gray-300 dark:hover:text-white"
+          <div class="relative">
+            <button
+              @click="toggleTasks"
+              class="flex items-center w-full px-2 py-1 text-sm font-medium text-gray-900 hover:text-gray-800 rounded transition dark:text-gray-300 dark:hover:text-white"
+            >
+              Задачи
+              <svg
+                class="w-3 h-3 ml-auto text-gray-600 transition-transform duration-200 dark:text-gray-400"
+                :class="{ 'rotate-180': showTasksDropdown }"
+                fill="none"
+                viewBox="0 0 10 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
               >
-                Задачи
-                <svg
-                  class="w-3 h-3 ml-auto text-gray-600 transition-transform duration-200 dark:text-gray-400"
-                  :class="{ 'rotate-180': showTasksDropdown }"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                <path d="m1 1 4 4 4-4" />
+              </svg>
+            </button>
+            <ul
+              v-show="showTasksDropdown"
+              class="mt-1 space-y-1 bg-gray-200 rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
+            >
+              <li>
+                <router-link
+                  to="/taskstable"
+                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
                 >
-                  <path d="m1 1 4 4 4-4" />
-                </svg>
-              </button>
-              <ul
-                v-show="showTasksDropdown"
-                class="mt-1 space-y-1 bg-gray-200 rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
-              >
-                <li>
-                  <router-link
-                    to="/taskstable"
-                    class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
-                  >
-                    Все задачи
-                  </router-link>
-                </li>
-                <li>
-                  <router-link
-                    to="/archivedtasks"
-                    class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
-                  >
-                    Архивированные задачи
-                  </router-link>
-                </li>
-              </ul>
-            </div>
+                  Все задачи
+                </router-link>
+              </li>
+              <li>
+                <router-link
+                  to="/archivedtasks"
+                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
+                >
+                  Архивированные задачи
+                </router-link>
+              </li>
+            </ul>
+          </div>
 
           <router-link
             v-for="(path, key) in otherLinks"
@@ -460,6 +470,11 @@
         </router-link>
       </div>
     </div>
+    <ProfileView
+      v-if="showProfileView"
+      :profile="user"
+      @close="showProfileView = false"
+    />
   </div>
 </template>
 
@@ -467,14 +482,22 @@
 import { useI18n } from "vue-i18n";
 import api from "@/utils/axios";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
+import ProfileView from "@/components/auth/ProfileView.vue";
 import Modal from "@/components/ui/Modal.vue";
 import ProjectForm from "@/components/projects/ProjectForm.vue";
-import Dashboard from '@/components/ui/Dashboard.vue';
-import defaultAvatar from '@/assets/Default.png'
+import Dashboard from "@/components/ui/Dashboard.vue";
+import { mapState } from "vuex";
+import defaultAvatar from "@/assets/Default.png";
 
 export default {
   name: "Layout",
-  components: { ProjectProgressChart, ProjectForm, Modal, Dashboard },
+  components: {
+    ProjectProgressChart,
+    ProfileView,
+    ProjectForm,
+    Modal,
+    Dashboard,
+  },
   setup() {
     const { locale } = useI18n();
     const languages = [
@@ -499,6 +522,7 @@ export default {
       showProjectsDropdown: true,
       showTasksDropdown: false,
       profileSettings: false,
+      showProfileView: true,
       defaultAvatar,
       otherLinks: {
         chat: "/chat",
@@ -507,6 +531,9 @@ export default {
       },
       error: null,
     };
+  },
+  computed: {
+    ...mapState("auth", ["user"]),
   },
   methods: {
     setTheme(mode) {
