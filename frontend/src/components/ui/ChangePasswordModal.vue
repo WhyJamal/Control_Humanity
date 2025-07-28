@@ -19,8 +19,8 @@
       </div>
 
       <div class="flex justify-end space-x-3 pt-2">
-        <button @click="$emit('close')" class="bg-gray-600 px-4 py-2 rounded-md text-white">Cancel</button>
-        <button @click="submit" class="bg-blue-600 px-4 py-2 rounded-md text-white" :disabled="loading">
+        <button @click="$emit('close')" class="bg-gray-700 px-4 py-2 rounded-md text-white hover:bg-gray-600">Cancel</button>
+        <button @click="submit" class="bg-[#420275] px-4 py-2 rounded-md text-white hover:bg-[#6a04b8]" :disabled="loading">
           <span v-if="loading">Updating...</span>
           <span v-else>Update</span>
         </button>

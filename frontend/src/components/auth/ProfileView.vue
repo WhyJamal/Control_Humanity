@@ -55,12 +55,12 @@
             <input
               type="date"
               v-model="profile.date_of_birth"
-              class="w-full bg-[#334155] border rounded-md p-2 text-white"
+              class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white"
             />
           </div>
           <div>
             <strong class="text-gray-300 block text-sm mb-1">Gender</strong>
-            <div class="w-full bg-[#334155] border rounded-md p-2 text-white">
+            <div class="w-full bg-[#334155] border border-gray-100 rounded-md p-2 text-white">
               {{ profile.gender }}
             </div>
           </div>
@@ -133,14 +133,14 @@
       <hr class="my-4 border-gray-700" />
       <div class="flex space-x-4">
         <router-link
-          class="bg-blue-600 px-4 py-2 rounded-md"
+          class="bg-blue-700 px-4 py-2 rounded-md hover:bg-[#6874fc]"
           :to="{ name: 'ProfileSettings', params: { userId: user.id } }"
         >
           Edit
         </router-link>        
         <button
           @click="showChangePassword = true"
-          class="bg-[#420275] px-4 py-2 rounded-md text-white"
+          class="bg-[#420275] px-4 py-2 rounded-md text-white hover:bg-[#6a04b8]"
         >
           Change Password
         </button>
