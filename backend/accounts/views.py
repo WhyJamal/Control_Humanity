@@ -53,37 +53,61 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get', 'patch'])
     def me(self, request):
+        # GET /users/me/  va PATCH /users/me/
         if request.method == 'GET':
-            serializer = self.get_serializer(request.user)
-            return Response(serializer.data)
-
-        if request.method == 'PATCH':
-            serializer = self.get_serializer(
-                request.user, data=request.data, partial=True
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
+            return Response(self.get_serializer(request.user).data)
+        serializer = self.get_serializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def managers(self, request):
         qs = self.get_queryset().filter(role='manager')
         page = self.paginate_queryset(qs)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(page or qs, many=True)
+        return page and self.get_paginated_response(serializer.data) or Response(serializer.data)
 
     @action(detail=False, methods=['get'])
     def employees(self, request):
         qs = self.get_queryset().filter(role='employee')
         page = self.paginate_queryset(qs)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+        serializer = self.get_serializer(page or qs, many=True)
+        return page and self.get_paginated_response(serializer.data) or Response(serializer.data)
+    
+    # @action(detail=False, methods=['get', 'patch'])
+    # def me(self, request):
+    #     if request.method == 'GET':
+    #         serializer = self.get_serializer(request.user)
+    #         return Response(serializer.data)
+
+    #     if request.method == 'PATCH':
+    #         serializer = self.get_serializer(
+    #             request.user, data=request.data, partial=True
+    #         )
+    #         serializer.is_valid(raise_exception=True)
+    #         serializer.save()
+    #         return Response(serializer.data)
+
+    # @action(detail=False, methods=['get'])
+    # def managers(self, request):
+    #     qs = self.get_queryset().filter(role='manager')
+    #     page = self.paginate_queryset(qs)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #     serializer = self.get_serializer(qs, many=True)
+    #     return Response(serializer.data)
+
+    # @action(detail=False, methods=['get'])
+    # def employees(self, request):
+    #     qs = self.get_queryset().filter(role='employee')
+    #     page = self.paginate_queryset(qs)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #     serializer = self.get_serializer(qs, many=True)
+    #     return Response(serializer.data)
 
 
 #=======================================================>>>>
@@ -136,44 +160,44 @@ class UserViewSet(viewsets.ModelViewSet):
 
 #         return super().destroy(request, *args, **kwargs)
 
-    @action(detail=False, methods=['get', 'patch'])
-    def me(self, request):
-        if request.method == 'GET':
-            serializer = self.get_serializer(request.user)
-            return Response(serializer.data)
+    # @action(detail=False, methods=['get', 'patch'])
+    # def me(self, request):
+    #     if request.method == 'GET':
+    #         serializer = self.get_serializer(request.user)
+    #         return Response(serializer.data)
 
-        if request.method == 'PATCH':
-            serializer = self.get_serializer(
-                request.user, data=request.data, partial=True
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data)
+    #     if request.method == 'PATCH':
+    #         serializer = self.get_serializer(
+    #             request.user, data=request.data, partial=True
+    #         )
+    #         serializer.is_valid(raise_exception=True)
+    #         serializer.save()
+    #         return Response(serializer.data)
 
-    @action(detail=False, methods=['get'])
-    def managers(self, request):
-        qs = self.get_queryset().filter(role='manager')
+    # @action(detail=False, methods=['get'])
+    # def managers(self, request):
+    #     qs = self.get_queryset().filter(role='manager')
 
-        page = self.paginate_queryset(qs)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+    #     page = self.paginate_queryset(qs)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
 
-        serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+    #     serializer = self.get_serializer(qs, many=True)
+    #     return Response(serializer.data)
 
 
-    @action(detail=False, methods=['get'])
-    def employees(self, request):
-        qs = self.get_queryset().filter(role='employee')
+    # @action(detail=False, methods=['get'])
+    # def employees(self, request):
+    #     qs = self.get_queryset().filter(role='employee')
 
-        page = self.paginate_queryset(qs)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
+    #     page = self.paginate_queryset(qs)
+    #     if page is not None:
+    #         serializer = self.get_serializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
        
-        serializer = self.get_serializer(qs, many=True)
-        return Response(serializer.data)
+    #     serializer = self.get_serializer(qs, many=True)
+    #     return Response(serializer.data)
 
 class UserRegisterView(generics.CreateAPIView):
     queryset = User.objects.all()

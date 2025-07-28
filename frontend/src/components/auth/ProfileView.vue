@@ -1,168 +1,187 @@
 <template>
-<!-- Bosh konteyner: butun sahifa bo‘ylab padding va fon -->
-<div class="bg-[#1e293b] rounded-lg shadow-md p-6 space-y-6 border border-gray-700">
-<button
-  @click="closeModal"
-  class="absolute top-4 right-4 text-white hover:text-gray-400 text-xl"
->
-  &times;
-</button>
-  <!-- 1. Yuqori qator (2 ustun: Chap – profil, O‘ng – sozlamalar) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    
-    <!-- 1.1 Chap ustun: Profil rasim va ism -->
-    <div class="bg-[#1e293b] rounded-lg shadow-md p-6">
-      <!-- Sarlavha -->
-      <h2 class="text-lg font-semibold mb-4">
-        Profile picture <span class="text-gray-400 text-sm">❓</span>
-      </h2>
-      <!-- Rasm + ism qatori -->
-      <div class="flex items-center space-x-4">
-        <img :src="profile.avatar || defaultAvatar" class="w-20 h-20 rounded-xl" />
-        <div>
-          <span class="text-xs bg-blue-600 px-2 py-0.5 rounded-lg text-white">PRO</span>
-          <h3 class="text-xl font-bold mt-1">Joseph McFall</h3>
-          <p class="text-gray-400">Web Developer</p>
-        </div>
-      </div>
-      <hr class="my-6 border-gray-700" />
-      <!-- Edit tugma -->
-      <button @click="editProfilePicture = true" class="bg-blue-600 px-4 py-2 rounded-md">Edit</button>
-    </div>
-
-    <!-- 1.2 O‘ng ustun: Form sozlamalari -->
-    <div class="bg-[#1e293b] rounded-lg shadow-md p-6 space-y-4">
-      <!-- Ichkarida yana 2 ustunli grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Timezone -->
-        <div>
-          <label class="block text-sm mb-1">Timezone ❓</label>
-          <select class="w-full bg-[#334155] border rounded-md p-2 text-white">
-            <option>UTC-08:00 (PST)</option>
-          </select>
-        </div>
-        <!-- Language -->
-        <div>
-          <label class="block text-sm mb-1">Language</label>
-          <select class="w-full bg-[#334155] border rounded-md p-2 text-white">
-            <option>Choose your account type</option>
-          </select>
-        </div>
-        <!-- Date of birth -->
-        <div>
-          <label class="block text-sm mb-1">Date of birth</label>
-          <input type="date" class="w-full bg-[#334155] border rounded-md p-2 text-white" />
-        </div>
-        <!-- Gender -->
-        <div>
-          <label class="block text-sm mb-1">Gender</label>
-          <select class="w-full bg-[#334155] border rounded-md p-2 text-white">
-            <option>Choose your gender</option>
-          </select>
-        </div>
-      </div>
-      <hr class="border-gray-700" />
-      <!-- Save tugma -->
-      <button class="bg-blue-600 px-4 py-2 rounded-md">Save</button>
-    </div>
-
-  </div>
-
-  <!-- 2. Pastki bo‘lim: Personal information -->
-  <div class="bg-[#1e2900] rounded-lg shadow-md p-6">
-    <!-- Sarlavha -->
-    <h2 class="text-lg font-semibold mb-4">Personal information ❓</h2>
-    <!-- Pastki bo‘lim ichida 2 ustun -->
+  <div
+    class="bg-gradient-to-br from-[#4e1f66] to-[#290e3c] rounded-lg shadow-md p-6 space-y-6 border border-gray-700 relative"
+  >
+    <!-- <button
+      @click="closeModal"
+      class="absolute top-4 right-4 text-white hover:text-gray-400 text-xl"
+    >
+      &times;
+    </button> -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      
-      <!-- 2.1 Chap ustun: Biography va social -->
-      <div class="space-y-4">
-        <div>
-          <strong>Full name</strong>
-          <p>Joseph McFall</p>
-        </div>
-        <div>
-          <strong>Biography</strong>
-          <p>I am Joseph McFall, a fervent explorer…</p>
-        </div>
-        <div>
-          <strong>Social</strong>
-          <div class="flex space-x-3 text-gray-400 text-xl">
-            <!-- ikonalar -->
+      <div class="bg-[#1e293b] rounded-lg shadow-md p-6">
+        <div class="flex items-center space-x-4">
+          <img
+            :src="profile.profile_picture || defaultAvatar"
+            class="w-20 h-20 rounded-xl"
+          />
+          <div>
+            <span class="text-xs bg-blue-600 px-2 py-0.5 rounded-lg text-white"
+              >PRO</span
+            >
+            <h3 class="text-xl font-bold mt-1">
+              {{ profile.first_name }} {{ profile.last_name }}
+            </h3>
+            <p class="text-gray-400">{{ profile.role }}</p>
           </div>
         </div>
-        <div>
-          <strong>Location</strong>
-          <p>📍 California, USA</p>
-        </div>
-        <div>
-          <strong>Job Title</strong>
-          <p>💼 Frontend Developer</p>
-        </div>
+        <hr class="my-6 border-gray-700" />
+        <button
+          @click="editProfilePicture = true"
+          class="bg-blue-600 px-4 py-2 rounded-md"
+        >
+          Edit
+        </button>
       </div>
 
-      <!-- 2.2 O‘ng ustun: Contact va skills -->
-      <div class="space-y-4">
-        <div>
-          <strong>Email Address</strong>
-          <p>helene@company.com</p>
-        </div>
-        <div>
-          <strong>Home Address</strong>
-          <p>92 Miles Drive, Newark, NJ 07103</p>
-        </div>
-        <div>
-          <strong>Phone Number</strong>
-          <p>+1234 567 890 / +12 345 678</p>
-        </div>
-        <div>
-          <strong>Software Skills</strong>
-          <div class="flex space-x-2 text-lg">
-            <!-- skill ikonalar -->
+      <div class="bg-[#1e293b] rounded-lg shadow-md p-6 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <strong class="text-gray-300 block text-sm mb-1">Timezone</strong>
+            <select
+              class="w-full bg-[#334155] border rounded-md p-2 text-white"
+            >
+              <option>UTC-08:00 (PST)</option>
+            </select>
+          </div>
+          <div>
+            <strong class="text-gray-300 block text-sm mb-1">Language</strong>
+            <div class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white">
+              {{ profile.language }}
+            </div>
+          </div>
+          <div>
+            <strong class="text-gray-300 block text-sm mb-1">Date of birth</strong>
+            <input
+              type="date"
+              v-model="profile.date_of_birth"
+              class="w-full bg-[#334155] border rounded-md p-2 text-white"
+            />
+          </div>
+          <div>
+            <strong class="text-gray-300 block text-sm mb-1">Gender</strong>
+            <div class="w-full bg-[#334155] border rounded-md p-2 text-white">
+              {{ profile.gender }}
+            </div>
           </div>
         </div>
-        <div>
-          <strong>Languages</strong>
-          <p>English, French, Spanish</p>
-        </div>
+        <hr class="border-gray-700" />
+        <button class="bg-blue-600 px-4 py-2 rounded-md" @click="saveProfile">
+          Save
+        </button>
       </div>
-
     </div>
-    <hr class="my-4 border-gray-700" />
-    <!-- Oxirgi Edit tugma -->
-    <button class="bg-blue-600 px-4 py-2 rounded-md">Edit</button>
-  </div>
-<update-profile-picture-modal
-    :edit-profile-picture.sync="editProfilePicture"
-    :profile="profile"
-    @saved="handleSaved"
-    @deleted="handleDeleted"
-  />
-</div>
 
+    <div class="bg-[#1e293b] rounded-lg shadow-md p-6">
+      <h2 class="text-gray-200 text-lg font-semibold mb-4">
+        Personal information
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-4">
+          <div>
+            <strong class="text-gray-300">Full name</strong>
+            <p class="text-gray-400">
+              {{ profile.first_name }} {{ profile.last_name }}
+            </p>
+          </div>
+          <div>
+            <strong class="text-gray-300">Biography</strong>
+            <p class="text-gray-400">
+              I am {{ profile.first_name }}, {{ profile.bio }}
+            </p>
+          </div>
+          <div>
+            <strong class="text-gray-300">Social</strong>
+            <div class="flex space-x-3 text-gray-400 text-xl">
+              <!-- Social icons -->
+            </div>
+          </div>
+          <div>
+            <strong class="text-gray-300">Location</strong>
+            <p class="text-gray-400">{{ profile.location }}</p>
+          </div>
+          <!-- <div>
+            <strong>Job Title</strong>
+            <p>💼 Frontend Developer</p>
+          </div> -->
+        </div>
+        <div class="space-y-4">
+          <div>
+            <strong class="text-gray-300">Email Address</strong>
+            <p class="text-gray-400">{{ profile.email }}</p>
+          </div>
+          <div>
+            <strong class="text-gray-300">Home Address</strong>
+            <p class="text-gray-400">{{ profile.address }}</p>
+          </div>
+          <div>
+            <strong class="text-gray-300">Phone Number</strong>
+            <p class="text-gray-400">{{ profile.phone }}</p>
+          </div>
+          <div>
+            <strong class="text-gray-300">Software Skills</strong>
+            <div class="flex space-x-2 text-lg">
+              <!-- Skills -->
+            </div>
+          </div>
+          <!-- <div>
+            <strong>Languages</strong>
+            <p>English, French, Spanish</p>
+          </div> -->
+        </div>
+      </div>
+      <hr class="my-4 border-gray-700" />
+      <div class="flex space-x-4">
+        <router-link
+          class="bg-blue-600 px-4 py-2 rounded-md"
+          :to="{ name: 'ProfileSettings', params: { userId: user.id } }"
+        >
+          Edit
+        </router-link>        
+        <button
+          @click="showChangePassword = true"
+          class="bg-[#420275] px-4 py-2 rounded-md text-white"
+        >
+          Change Password
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <ChangePasswordModal
+        v-if="showChangePassword"
+        @close="showChangePassword = false"
+      />
+    </div>
+
+    <!-- Edit rasm modal -->
+    <UpdateProfilePictureModal
+      :edit-profile-picture.sync="editProfilePicture"
+      :profile="profile"
+      @saved="handleSaved"
+      @deleted="handleDeleted"
+      @close="editProfilePicture = false"
+    />
+  </div>
 </template>
 
 <script>
 import api from "@/utils/axios";
 import { mapState } from "vuex";
 import defaultAvatar from "../../assets/Default.png";
-import UpdateProfilePictureModal from '@/components/ui/UpdateProfilePictureModal.vue';
+import UpdateProfilePictureModal from "@/components/ui/UpdateProfilePictureModal.vue";
+import ChangePasswordModal from "@/components/ui/ChangePasswordModal.vue";
 
 export default {
   name: "ProfileView",
-  components: { UpdateProfilePictureModal }, 
-  props: {
-    profile: {
-      type: Object,
-      required: true,
-    },
-  },
+  components: { UpdateProfilePictureModal, ChangePasswordModal },
   data() {
     return {
+      profile: {},
       error: "",
       success: "",
       defaultAvatar,
       editProfilePicture: false,
+      showChangePassword: false,
     };
   },
   computed: {
@@ -179,6 +198,15 @@ export default {
     canEditRole() {
       return this.isDirector && !this.isSelf;
     },
+  },
+  async created() {
+    try {
+      const id = this.$route.params.userId;
+      const response = await api.get(`/auth/users/${id}/`);
+      this.profile = response.data;
+    } catch (e) {
+      this.error = "Failed to load profile.";
+    }
   },
   methods: {
     async saveProfile() {
@@ -208,10 +236,21 @@ export default {
         this.error = "Failed to update role.";
       }
     },
-
     closeModal() {
-      this.$emit("close");
+      this.$router.back();
+    },
+    handleSaved(updatedProfile) {
+      this.profile = updatedProfile;
+      this.editProfilePicture = false;
+    },
+    handleDeleted() {
+      this.profile.avatar = null;
+      this.editProfilePicture = false;
     },
   },
 };
 </script>
+
+<style scoped>
+/* Optional: stil o‘zgartirishlar */
+</style>

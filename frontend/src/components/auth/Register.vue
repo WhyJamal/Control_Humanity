@@ -73,8 +73,8 @@
                   </Transition>
                 </div>
               </Listbox>
+            </div>
           </div>
-        </div>
 
         <!-- Right column -->
         <div class="space-y-5">

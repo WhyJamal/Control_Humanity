@@ -73,10 +73,21 @@ class User(AbstractUser):
         ('director', 'Director'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-    bio = models.TextField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True, unique=True)
     telegram_id = models.CharField(max_length=32, blank=True, null=True)
-   
+    location = models.CharField(max_length=100, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)   
+    bio = models.TextField(blank=True, null=True)
+    GENDER_CHOICES = [
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other'),
+    ]
+
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    social_links = models.JSONField(blank=True, null=True)
+
     def profile_upload_path(instance, filename):
         ext = os.path.splitext(filename)[1]
         username = re.sub(r'\W+', '_', instance.username) 
@@ -90,6 +101,7 @@ class User(AbstractUser):
         ('ru', 'Русский'),
         ('en', 'English'),
     ]
+    
     language = models.CharField(
         max_length=2,
         choices=LANG_CHOICES,

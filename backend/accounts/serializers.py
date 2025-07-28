@@ -89,7 +89,13 @@ class OrganizationRegisterSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     profile_picture = serializers.ImageField(use_url=True)
     organization_name = serializers.CharField(source='organization.short_name', read_only=True)
-    
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'organization_name', 'role', 'profile_picture', 'phone', 'telegram_id', 'language', 'is_active',)
+        fields = (
+            'id', 'username', 'email', 'first_name', 'last_name',
+            'organization_name', 'role', 'profile_picture',
+            'phone', 'telegram_id', 'location', 'address',          
+            'bio', 'gender', 'date_of_birth', 'social_links',                  
+            'language', 'is_active',
+        )

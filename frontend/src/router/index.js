@@ -6,10 +6,6 @@ const routes = [
   { path: '/login', name: 'Login', component: () => import('../components/auth/Login.vue') },
   { path: '/organization', component: () => import('../components/auth/Organization.vue') },
   { path: '/register', component: () => import('../components/auth/Register.vue') },
-  { 
-    path: '/ProfileView/:userId?', component: () => import('../components/auth/ProfileView.vue'),
-    meta: { requiresAuth: true }
-  },
   { path: '/payments', component: () => import('@/components/ui/Payments.vue') },
   { 
     path: '/', 
@@ -29,6 +25,13 @@ const routes = [
       { path: 'mytasks', component: () => import('@/components/tasks/MyTasks.vue') }, 
       { path: 'taskform/:taskId', component: () => import('@/components/tasks/TaskForm.vue') }, 
       { path: 'users', name: 'UserList', component: () => import('@/components/auth/UsersList.vue')},
+      { 
+        path: '/profileview/:userId?', name: 'ProfileView', component: () => import('@/components/auth/ProfileView.vue'),
+        meta: { requiresAuth: true }
+      },    
+      {
+        path: '/settings/:userId?', name: 'ProfileSettings', component: () => import('@/components/auth/ProfileSettings.vue'),
+      },
     ]
   }
 ]

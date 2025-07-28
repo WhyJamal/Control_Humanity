@@ -6,7 +6,8 @@ from tasks.views import TelegramTaskView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/auth/', include('accounts.urls')),
+    path('api/v1/auth/', include('djoser.urls')),
+    path('api/auth/', include('accounts.urls')),    
     path('api/projects/', include('projects.urls')),
     path('api/tasks/', include('tasks.urls')),
     path('api/chat/', include('chat.urls')),

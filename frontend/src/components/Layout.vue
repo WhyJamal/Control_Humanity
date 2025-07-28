@@ -177,22 +177,16 @@
                     class="py-2 space-y-2"
                   >
                     <li>
-                      <button
-                        @click="showProfileView = true"
-                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg dark:hover:text-white"
-                      >
-                        Profile
-                      </button>
-                      <!-- <router-link
+                      <router-link
                         v-if="$store.state.auth.token"
-                        :to="`/profile/${$store.state.auth.user.id}`"
+                        :to="`/profileview/${$store.state.auth.user.id}`"
                       >
                         <span
                           class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg dark:hover:text-white"
                         >
                           Profile
                         </span>
-                      </router-link> -->
+                      </router-link>
                     </li>
                     <li class="relative overflow-visible">
                       <button
@@ -430,15 +424,21 @@
           </router-link>
         </nav>
       </aside>
-
       <main
         :class="[
-          'flex-1 overflow-auto p-4 transition-all',
-          showSidebar ? 'ml-56' : 'ml-0',
+          'flex-1 overflow-auto transition-all duration-300 ease-in-out scrollbar-black',
+          showSidebar ? 'lg:ml-56' : 'ml-0',
+          !isProfileView ? 'p-4' : ''
         ]"
       >
         <router-view />
       </main>
+
+      <ProfileView
+        v-if="showProfileView"
+        :profile="user"
+        @close="showProfileView = false"
+      />
     </div>
 
     <Modal v-if="showForm" @close="showForm = false">
@@ -470,11 +470,6 @@
         </router-link>
       </div>
     </div>
-    <ProfileView
-      v-if="showProfileView"
-      :profile="user"
-      @close="showProfileView = false"
-    />
   </div>
 </template>
 
@@ -494,17 +489,19 @@ export default {
   components: {
     ProjectProgressChart,
     ProfileView,
-    ProjectForm,
     Modal,
+    ProjectForm,
     Dashboard,
   },
   setup() {
     const { locale } = useI18n();
+
     const languages = [
       { code: "uz", label: "UZ" },
       { code: "ru", label: "RU" },
       { code: "en", label: "EN" },
     ];
+
     return { locale, languages };
   },
   data() {
@@ -521,8 +518,7 @@ export default {
       profileSettings: false,
       showProjectsDropdown: true,
       showTasksDropdown: false,
-      profileSettings: false,
-      showProfileView: true,
+      showProfileView: false,
       defaultAvatar,
       otherLinks: {
         chat: "/chat",
@@ -534,39 +530,31 @@ export default {
   },
   computed: {
     ...mapState("auth", ["user"]),
+
+    isProfileView() {
+      return this.$route.name === 'ProfileView' || this.$route.name === 'ProfileSettings';
+    }
   },
   methods: {
     setTheme(mode) {
       this.theme = mode;
       localStorage.setItem("theme", mode);
-      if (mode === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      document.documentElement.classList.toggle('dark', mode === 'dark');
     },
     toggleUserDropdown() {
       this.userDropdown = !this.userDropdown;
     },
     toggleLanguage() {
       this.isLanguageOpen = !this.isLanguageOpen;
-
-      if (this.isLanguageOpen) {
-        this.isViewOpen = false;
-      }
+      if (this.isLanguageOpen) this.isViewOpen = false;
     },
     toggleView() {
       this.isViewOpen = !this.isViewOpen;
-
-      if (this.isViewOpen) {
-        this.isLanguageOpen = false;
-      }
+      if (this.isViewOpen) this.isLanguageOpen = false;
     },
     toggleTheme() {
       const newTheme = this.theme === "dark" ? "light" : "dark";
-      this.theme = newTheme;
-      localStorage.setItem("theme", newTheme);
-      document.documentElement.classList.toggle("dark", newTheme === "dark");
+      this.setTheme(newTheme);
     },
     toggleSidebar() {
       this.showSidebar = !this.showSidebar;
@@ -576,7 +564,6 @@ export default {
     },
     toggleProfileSettings() {
       this.profileSettings = !this.profileSettings;
-
       if (!this.profileSettings) {
         this.isLanguageOpen = false;
         this.isViewOpen = false;
@@ -586,19 +573,15 @@ export default {
       this.locale = lang;
       localStorage.setItem("lang", lang);
       this.isDropdownOpen = false;
-      console.error("Ощибка!:", this.locale);
       try {
-        await api.patch("/auth/users/me/", {
-          language: lang,
-        });
+        await api.patch("/auth/users/me/", { language: lang });
       } catch (err) {
-        console.error("Ощибка!:", err);
+        console.error(err);
       }
     },
     onProjectSaved() {
       this.showForm = false;
     },
-    // projects aside
     toggleProjects() {
       this.showProjectsDropdown = !this.showProjectsDropdown;
     },
@@ -606,11 +589,7 @@ export default {
       this.showTasksDropdown = !this.showTasksDropdown;
     },
     getInitials(name) {
-      if (!name) return "";
-      return name
-        .split(" ")
-        .map((n) => n.charAt(0).toUpperCase())
-        .join("");
+      return name ? name.split(' ').map(n => n.charAt(0).toUpperCase()).join('') : '';
     },
     cancelLogout() {
       this.showConfirmModal = false;
@@ -619,12 +598,8 @@ export default {
       if (!this.$el.contains(e.target)) {
         this.isDropdownOpen = false;
         this.userDropdown = false;
-
-        if (!this.userDropdown) {
-          this.profileSettings = false;
-        }
-        this.isLanguageOpen = false;
         this.profileSettings = false;
+        this.isLanguageOpen = false;
       }
     },
   },
@@ -633,7 +608,6 @@ export default {
       const id = this.$store.state.auth.user.id;
       const response = await api.get(`/auth/users/${id}/`);
       this.profile = response.data;
-
       if (this.profile.language) {
         this.locale = this.profile.language;
         localStorage.setItem("lang", this.profile.language);
@@ -654,5 +628,4 @@ export default {
 </script>
 
 <style>
-/* Customize additional styles here */
 </style>

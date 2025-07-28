@@ -36,42 +36,57 @@ class OrganizationAdmin(admin.ModelAdmin):
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
+        
         (_('Personal info'), {
-            'fields': ('first_name', 'last_name', 'email', 'phone')
+            'fields': (
+                'first_name', 'last_name', 'email', 'phone',
+                'gender', 'date_of_birth',
+                'location', 'address'
+            )
         }),
+
         (_('Custom Fields'), {
             'fields': (
                 'role', 'organization',
                 'profile_picture', 'bio',
-                'telegram_id', 'language'
+                'telegram_id', 'language',
+                'social_links',
             )
         }),
+
         (_('Permissions'), {
             'fields': (
                 'is_active', 'is_staff', 'is_superuser',
                 'groups', 'user_permissions'
             )
         }),
+
         (_('Important dates'), {
             'fields': ('last_login', 'date_joined')
         }),
     )
 
-    list_display    = (
+    list_display = (
         'username', 'email', 'full_name',
         'organization', 'role', 'is_staff', 'is_active'
     )
-    list_filter     = (
+
+    list_filter = (
         'organization', 'role',
+        'gender', 'language',
         'is_staff', 'is_superuser', 'is_active'
     )
-    search_fields   = (
+
+    search_fields = (
         'username', 'email',
         'first_name', 'last_name',
-        'organization__name'
+        'organization__name', 'phone'
     )
-    list_per_page   = 30
+
+    list_per_page = 30
     filter_horizontal = ('groups', 'user_permissions',)
+    readonly_fields = ('last_login', 'date_joined', 'password')
+    ordering = ('-date_joined',)
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -82,49 +97,3 @@ class UserAdmin(BaseUserAdmin):
     def full_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
     full_name.short_description = _('Full name')
-
-
-
-# from django.contrib import admin
-# from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-# from .models import User, Organization
-# from django.utils.translation import gettext_lazy as _
-
-# @admin.register(User)
-# class UserAdmin(BaseUserAdmin):
-#     fieldsets = (
-#         (None, {'fields': ('username', 'password')}),
-#         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'phone')}),
-#         (_('Permissions'), {
-#             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
-#         }),
-#         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-#         (_('Custom Fields'), {'fields': ('role','organization', 'profile_picture', 'bio', 'telegram_id', 'language')}),
-#     )
-    
-#     list_display = ('username', 'email', 'full_name', 'role', 'is_staff', 'is_active')
-#     list_filter = ('role', 'is_staff', 'is_superuser', 'is_active')
-#     search_fields = ('username', 'email', 'first_name', 'last_name')
-#     list_per_page = 30
-#     filter_horizontal = ('groups', 'user_permissions',)
-    
-#     def full_name(self, obj):
-#         return f"{obj.first_name} {obj.last_name}"
-#     full_name.short_description = 'Полное имя'
-
-# @admin.register(Organization)
-# class OrganizationAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'name', 'created_at')
-#     search_fields = ('name',)                         
-#     ordering = ('-created_at',)
-    
-# @admin.register(User)
-# class UserAdmin(BaseUserAdmin):
-#     fieldsets = BaseUserAdmin.fieldsets + (
-#         ('Role and Permissions', {
-#             'fields': ('role',),
-#         }),
-#     )
-#     list_display = ('username', 'email', 'first_name', 'last_name', 'role', 'is_staff', 'is_superuser')
-#     list_filter = ('role', 'is_staff', 'is_superuser')
-#     search_fields = ('username', 'email', 'first_name', 'last_name')

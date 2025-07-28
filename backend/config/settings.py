@@ -12,6 +12,8 @@ DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
+SITE_ID = 1
+
 INSTALLED_APPS = [
     'jazzmin',
     'import_export',
@@ -23,8 +25,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
+    'djoser',
+    'django.contrib.sites',
     'corsheaders',
     'django_celery_beat',
+    'django_extensions',
     
     'tasks.apps.TasksConfig',
     'accounts',
@@ -77,19 +83,21 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    #     'OPTIONS': {'min_length': int(os.getenv('DJANGO_PASSWORD_MIN_LENGTH', 8))}
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    # },
 ]
+
 
 LANGUAGE_CODE = 'ru'
 TIME_ZONE = 'Asia/Tashkent'
@@ -132,6 +140,12 @@ REST_FRAMEWORK = {
         'user': f'{user_rate}/minute',
         'anon': f'{anon_rate}/minute',
     },
+}
+
+DJOSER = {
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': False,
+    'SET_PASSWORD_RETYPE': False,
+    'LOGOUT_ON_PASSWORD_CHANGE': False,
 }
 
 SIMPLE_JWT = {
