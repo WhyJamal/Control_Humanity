@@ -11,3 +11,5 @@ requests
 celery
 django-celery-beat
 django-environ
+djoser djangorestframework
+django-extensions
