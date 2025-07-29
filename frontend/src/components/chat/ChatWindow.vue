@@ -106,7 +106,6 @@
 import { computed, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import defaultAvatar from '../../assets/Default.png'
 
 const store = useStore()
 const route = useRoute()
@@ -119,6 +118,7 @@ const dropdownOpen = ref(null)
 const showDeleteModal = ref(false)
 const messageToDelete = ref(null)
 
+const defaultAvatar = '/avatar.png';
 
 const formatTime = (timestamp) => {
   return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })

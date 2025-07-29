@@ -92,7 +92,6 @@
 import api from '@/utils/axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import defaultAvatar from '../../assets/Default.png'
 import { TrashIcon } from '@heroicons/vue/24/outline'
 
 export default {
@@ -123,7 +122,7 @@ export default {
 
     const viewProfile = (id) => {
       // push to /profile/:userId as configured in your router
-      router.push({ path: `/profile/${id}` });
+      router.push({ path: `/profileview/${id}` });
     };
 
     const goToRegister = () => {
@@ -154,7 +153,7 @@ export default {
       dropdownOpen,
       toggleDropdown,
       viewProfile,
-      defaultAvatar,
+      defaultAvatar: '/avatar.png',
       editUser,
       exportUser,
       goToRegister,

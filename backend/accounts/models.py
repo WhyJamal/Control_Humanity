@@ -86,7 +86,7 @@ class User(AbstractUser):
 
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
-    social_links = models.JSONField(blank=True, null=True)
+    social_links = models.JSONField(default=dict, blank=True)
 
     def profile_upload_path(instance, filename):
         ext = os.path.splitext(filename)[1]

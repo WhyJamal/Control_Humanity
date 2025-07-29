@@ -129,14 +129,13 @@
 </template>
 
 <script>
-import photoLogin from '@/assets/photo_login_page.png';
 import api from '@/utils/axios';
 
 export default {
   name: 'RegisterOrganization',
   data() {
     return {
-      photoLogin,
+      photoLogin: '/background.png',
       showUserFields: false,
       form: {
         organization: {

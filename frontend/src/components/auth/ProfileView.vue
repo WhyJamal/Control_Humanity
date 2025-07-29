@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-br from-[#4e1f66] to-[#290e3c] rounded-lg shadow-md p-6 space-y-6 border border-gray-700 relative"
+    class="w-full min-h-screen bg-[#1e293b] rounded-lg shadow-md p-6 space-y-6 border border-gray-700 relative"
   >
     <!-- <button
       @click="closeModal"
@@ -9,7 +9,9 @@
       &times;
     </button> -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-[#1e293b] rounded-lg shadow-md p-6">
+      <div
+        class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg shadow-md p-6"
+      >
         <div class="flex items-center space-x-4">
           <img
             :src="profile.profile_picture || defaultAvatar"
@@ -27,14 +29,17 @@
         </div>
         <hr class="my-6 border-gray-700" />
         <button
+          v-if="user && user.id === profile.id"
           @click="editProfilePicture = true"
-          class="bg-blue-600 px-4 py-2 rounded-md"
+          class="text-base font-semibold bg-blue-600 px-4 py-2 rounded-md"
         >
           Edit
         </button>
       </div>
 
-      <div class="bg-[#1e293b] rounded-lg shadow-md p-6 space-y-4">
+      <div
+        class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg shadow-md p-6 space-y-4"
+      >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <strong class="text-gray-300 block text-sm mb-1">Timezone</strong>
@@ -46,12 +51,16 @@
           </div>
           <div>
             <strong class="text-gray-300 block text-sm mb-1">Language</strong>
-            <div class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white">
+            <div
+              class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white"
+            >
               {{ profile.language }}
             </div>
           </div>
           <div>
-            <strong class="text-gray-300 block text-sm mb-1">Date of birth</strong>
+            <strong class="text-gray-300 block text-sm mb-1"
+              >Date of birth</strong
+            >
             <input
               type="date"
               v-model="profile.date_of_birth"
@@ -60,19 +69,27 @@
           </div>
           <div>
             <strong class="text-gray-300 block text-sm mb-1">Gender</strong>
-            <div class="w-full bg-[#334155] border border-gray-100 rounded-md p-2 text-white">
+            <div
+              class="w-full bg-[#334155] border border-gray-100 rounded-md p-2 text-white"
+            >
               {{ profile.gender }}
             </div>
           </div>
         </div>
         <hr class="border-gray-700" />
-        <button class="bg-blue-600 px-4 py-2 rounded-md" @click="saveProfile">
+        <button
+          v-if="user && user.id === profile.id"
+          class="text-base font-semibold bg-blue-600 px-4 py-2 rounded-md"
+          @click="saveProfile"
+        >
           Save
         </button>
       </div>
     </div>
 
-    <div class="bg-[#1e293b] rounded-lg shadow-md p-6">
+    <div
+      class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg shadow-md p-6"
+    >
       <h2 class="text-gray-200 text-lg font-semibold mb-4">
         Personal information
       </h2>
@@ -92,8 +109,26 @@
           </div>
           <div>
             <strong class="text-gray-300">Social</strong>
-            <div class="flex space-x-3 text-gray-400 text-xl">
-              <!-- Social icons -->
+            <div class="flex mt-2 space-x-3 text-gray-400 text-xl">
+              <a
+                v-for="(handle, key) in profile.social_links"
+                :key="key"
+                :href="
+                  handle.startsWith('http')
+                    ? handle
+                    : (platformMap[key.replace(/_\d+$/, '')]?.prefix || '') +
+                      handle.replace(/^@/, '')
+                "
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-white transition"
+              >
+              <img
+                :src="`/icons/${key.replace(/_\d+$/, '')}.png`"
+                :alt="key"
+                class="w-6 h-6"
+              />
+              </a>
             </div>
           </div>
           <div>
@@ -131,16 +166,16 @@
         </div>
       </div>
       <hr class="my-4 border-gray-700" />
-      <div class="flex space-x-4">
+      <div class="flex space-x-4" v-if="user && user.id === profile.id">
         <router-link
-          class="bg-blue-700 px-4 py-2 rounded-md hover:bg-[#6874fc]"
+          class="text-base font-semibold bg-blue-700 px-4 py-2 rounded-md hover:bg-[#6874fc]"
           :to="{ name: 'ProfileSettings', params: { userId: user.id } }"
         >
           Edit
-        </router-link>        
+        </router-link>
         <button
           @click="showChangePassword = true"
-          class="bg-[#420275] px-4 py-2 rounded-md text-white hover:bg-[#6a04b8]"
+          class="text-base font-semibold bg-[#420275] px-4 py-2 rounded-md text-white hover:bg-[#6a04b8]"
         >
           Change Password
         </button>
@@ -167,7 +202,6 @@
 <script>
 import api from "@/utils/axios";
 import { mapState } from "vuex";
-import defaultAvatar from "../../assets/Default.png";
 import UpdateProfilePictureModal from "@/components/ui/UpdateProfilePictureModal.vue";
 import ChangePasswordModal from "@/components/ui/ChangePasswordModal.vue";
 
@@ -179,7 +213,7 @@ export default {
       profile: {},
       error: "",
       success: "",
-      defaultAvatar,
+      defaultAvatar: '/avatar.png',
       editProfilePicture: false,
       showChangePassword: false,
     };
@@ -197,6 +231,16 @@ export default {
     },
     canEditRole() {
       return this.isDirector && !this.isSelf;
+    },
+    platformMap() {
+      return {
+        telegram: { prefix: "https://t.me/" },
+        twitter: { prefix: "https://twitter.com/" },
+        github: { prefix: "https://github.com/" },
+        linkedin: { prefix: "https://linkedin.com/in/" },
+        facebook: { prefix: "https://facebook.com/" },
+        instagram: { prefix: "https://instagram.com/" },
+      };
     },
   },
   async created() {

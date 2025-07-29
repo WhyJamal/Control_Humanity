@@ -81,8 +81,6 @@
 </template>
 
 <script>
-import defaultAvatar from "@/assets/defaultAvatar.png";
-
 export default {
   name: "UpdateProfilePictureModal",
   props: {
@@ -97,7 +95,7 @@ export default {
   },
   data() {
     return {
-      defaultAvatar,
+      defaultAvatar: '/avatar.png',
       file: null,
       fileName: "No file selected",
       previewUrl: "",

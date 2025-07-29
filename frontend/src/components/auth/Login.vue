@@ -61,8 +61,6 @@
 </template>
 
 <script>
-import photoLogin from '@/assets/photo_login_page.png'
-
 export default {
   name: 'Login',
   data() {
@@ -73,7 +71,7 @@ export default {
       },
       loading: false,
       errorMessage: '',
-      photoLogin
+      photoLogin: '/background.png',
     }
   },
   methods: {

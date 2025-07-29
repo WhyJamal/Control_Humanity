@@ -122,7 +122,6 @@
 
 <script>
 import api from "@/utils/axios";
-import photoLogin from '@/assets/photo_login_page.png';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/vue/24/solid';
 import { Transition } from 'vue';
 
@@ -134,7 +133,7 @@ export default {
   },
   data() {
     return {
-      photoLogin,
+      photoLogin: '/background.png',
       form: {
         username: "",
         email: "",

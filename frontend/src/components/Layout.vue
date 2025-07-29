@@ -482,7 +482,6 @@ import Modal from "@/components/ui/Modal.vue";
 import ProjectForm from "@/components/projects/ProjectForm.vue";
 import Dashboard from "@/components/ui/Dashboard.vue";
 import { mapState } from "vuex";
-import defaultAvatar from "@/assets/Default.png";
 
 export default {
   name: "Layout",
@@ -519,7 +518,7 @@ export default {
       showProjectsDropdown: true,
       showTasksDropdown: false,
       showProfileView: false,
-      defaultAvatar,
+      defaultAvatar: '/avatar.png',
       otherLinks: {
         chat: "/chat",
         users: "/users",
