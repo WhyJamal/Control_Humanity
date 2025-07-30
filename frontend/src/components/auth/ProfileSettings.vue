@@ -50,7 +50,7 @@
                 >
                 <textarea
                   v-model="profile.bio"
-                  rows="3"
+                  rows="2"
                   class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   placeholder="Tell us about yourself..."
                 ></textarea>
@@ -58,63 +58,58 @@
             </section>
           </div>
 
-          <div
-            class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg p-4"
-          >
+          <div class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg p-4">
             <!-- Contact Information -->
             <section class="space-y-4">
-              <h2 class="text-white text-xl font-semibold">
-                Contact Information
-              </h2>
-              <div
-                class="flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0"
-              >
-                <div class="flex-1">
-                  <label class="block text-gray-200 text-sm font-medium mb-1"
-                    >Email</label
-                  >
+              <h2 class="text-white text-xl font-semibold">Contact Information</h2>
+              
+              <!-- Grid layout -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Email -->
+                <div>
+                  <label class="block text-gray-200 text-sm font-medium mb-1">Email</label>
                   <input
                     v-model="profile.email"
                     type="email"
                     class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   />
                 </div>
-                <div class="flex-1">
-                  <label class="block text-gray-200 text-sm font-medium mb-1"
-                    >Phone</label
-                  >
+
+                <!-- Phone -->
+                <div>
+                  <label class="block text-gray-200 text-sm font-medium mb-1">Phone</label>
                   <input
                     v-model="profile.phone"
                     type="text"
                     class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   />
                 </div>
-                <div class="flex-1">
-                  <label class="block text-gray-200 text-sm font-medium mb-1"
-                    >Telegram ID</label
-                  >
+
+                <!-- Telegram ID -->
+                <div>
+                  <label class="block text-gray-200 text-sm font-medium mb-1">Telegram ID</label>
                   <input
                     v-model="profile.telegram_id"
                     type="text"
-                    class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 cursor-not-allowed text-gray-300"
+                    class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   />
                 </div>
-                <div class="flex-1">
-                  <label class="block text-gray-200 text-sm font-medium mb-1"
-                    >Location</label
-                  >
+
+                <!-- Location -->
+                <div>
+                  <label class="block text-gray-200 text-sm font-medium mb-1">Location</label>
                   <input
                     v-model="profile.location"
                     type="text"
                     class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   />
                 </div>
-                <div class="flex-1">
-                  <label class="block text-gray-200 text-sm font-medium mb-1"
-                    >Location</label
-                  >
+
+                <!-- Address (takes 2 columns) -->
+                <div class="md:col-span-2">
+                  <label class="block text-gray-200 text-sm font-medium mb-1">Address</label>
                   <input
-                    v-model="profile.location"
+                    v-model="profile.address"
                     type="text"
                     class="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-indigo-500 text-gray-300"
                   />
