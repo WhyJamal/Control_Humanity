@@ -1,10 +1,16 @@
 {
   "name": "frontend",
   "version": "1.0.0",
+  "main": "main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "electron": "electron .",
+    "electron:dev": "npm run build && electron .",
+    "electron:build": "npm run build && electron-builder",
+    "clean": "rimraf release",
+    "build-clean": "npm run clean && npm run electron:build"    
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
@@ -27,8 +33,40 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.0.0",
     "autoprefixer": "^10.4.21",
+    "electron": "^37.2.4",
+    "electron-builder": "^26.0.12",
     "postcss": "^8.5.4",
     "tailwindcss": "^3.4.17",
     "vite": "^2.0.0"
+  },
+  "build": {
+    "appId": "com.controlhumanity.app",
+    "productName": "ControlHumanity",
+    "files": [
+      "dist/**/*",
+      "main.js"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "win": {
+      "target": "nsis"
+    }
   }
 }
+// "build": {
+//   "appId": "com.controlhumanity.app",
+//   "productName": "ControlHumanity",
+//   "files": [
+//     "dist/**/*",
+//     "main.js"
+//   ],
+//   "directories": {
+//     "output": "release",
+//     "buildResources": "build"
+//   },
+//   "win": {
+//     "target": "nsis",
+//     "icon": "logo.ico"
+//   }
+// }

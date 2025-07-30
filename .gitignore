@@ -78,6 +78,8 @@ pnpm-lock.yaml
 # Production
 dist/
 build/
+release/
+frontend/main.js
 
 # Local env files
 .env.local
