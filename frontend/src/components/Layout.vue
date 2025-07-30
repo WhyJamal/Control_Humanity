@@ -318,7 +318,6 @@
         </nav>
       </div>
     </header>
-
     <div class="flex flex-1 pt-[50px] overflow-hidden">
       <aside
         v-if="showSidebar"
@@ -428,12 +427,35 @@
         :class="[
           'flex-1 overflow-auto transition-all duration-300 ease-in-out scrollbar-black',
           showSidebar ? 'lg:ml-56' : 'ml-0',
-          !isProfileView ? 'p-4' : ''
+          !isProfileView ? 'p-4' : '',
         ]"
       >
+        <!-- <div
+          :class="[
+            'ml-1 py-1 bg-white',
+            isProfileView ? 'mt-3' : '',
+          ]"
+        >
+          <Breadcrumb />
+        </div> -->
         <router-view />
       </main>
+      <div
+        class="fixed bottom-0 left-0 right-0 group z-40"
+        :class="showSidebar ? 'lg:ml-56' : 'ml-0'"
+      >
+        <div
+          class="h-1 w-full bg-transparent hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+        ></div>
 
+        <div
+          class="overflow-hidden max-h-0 group-hover:max-h-32 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-t border-gray-200 dark:border-gray-700"
+        >
+          <div class="p-4">
+            <Breadcrumb />
+          </div>
+        </div>
+      </div>
       <ProfileView
         v-if="showProfileView"
         :profile="user"
@@ -476,6 +498,7 @@
 <script>
 import { useI18n } from "vue-i18n";
 import api from "@/utils/axios";
+import Breadcrumb from "@/components/ui/Breadcrumb.vue";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
 import ProfileView from "@/components/auth/ProfileView.vue";
 import Modal from "@/components/ui/Modal.vue";
@@ -486,6 +509,7 @@ import { mapState } from "vuex";
 export default {
   name: "Layout",
   components: {
+    Breadcrumb,
     ProjectProgressChart,
     ProfileView,
     Modal,
@@ -518,7 +542,7 @@ export default {
       showProjectsDropdown: true,
       showTasksDropdown: false,
       showProfileView: false,
-      defaultAvatar: '/avatar.png',
+      defaultAvatar: "/avatar.png",
       otherLinks: {
         chat: "/chat",
         users: "/users",
@@ -531,14 +555,17 @@ export default {
     ...mapState("auth", ["user"]),
 
     isProfileView() {
-      return this.$route.name === 'ProfileView' || this.$route.name === 'ProfileSettings';
-    }
+      return (
+        this.$route.name === "ProfileView" ||
+        this.$route.name === "ProfileSettings"
+      );
+    },
   },
   methods: {
     setTheme(mode) {
       this.theme = mode;
       localStorage.setItem("theme", mode);
-      document.documentElement.classList.toggle('dark', mode === 'dark');
+      document.documentElement.classList.toggle("dark", mode === "dark");
     },
     toggleUserDropdown() {
       this.userDropdown = !this.userDropdown;
@@ -588,7 +615,12 @@ export default {
       this.showTasksDropdown = !this.showTasksDropdown;
     },
     getInitials(name) {
-      return name ? name.split(' ').map(n => n.charAt(0).toUpperCase()).join('') : '';
+      return name
+        ? name
+            .split(" ")
+            .map((n) => n.charAt(0).toUpperCase())
+            .join("")
+        : "";
     },
     cancelLogout() {
       this.showConfirmModal = false;
@@ -626,5 +658,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
