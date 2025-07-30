@@ -21,7 +21,7 @@
         <span
           v-if="idx < visitedRoutes.length - 1"
           class="mx-1 text-gray-400 select-none"
-        >/</span>
+        ></span>
       </li>
     </ol>
   </nav>
@@ -37,7 +37,6 @@ const visitedRoutes = ref([])
 const route  = useRoute()
 const router = useRouter()
 
-// Sahifa nomini formatlash
 const formatName = (path) => {
   const seg = path.split('/').filter(Boolean).pop() || 'Home'
   return seg
@@ -45,13 +44,11 @@ const formatName = (path) => {
     .replace(/\b\w/g, l => l.toUpperCase())
 }
 
-// LocalStorage’dan oldingi “visited” ro‘yxatini yuklaymiz
 onMounted(() => {
   const saved = localStorage.getItem(LOCAL_KEY)
   if (saved) visitedRoutes.value = JSON.parse(saved)
 })
 
-// Har safar route o‘zgarganida ro‘yxatni yangilaymiz
 watch(
   () => route.fullPath,
   (newPath) => {
@@ -66,9 +63,7 @@ watch(
   { immediate: true }
 )
 
-// “×” tugmasi bosilganda: o‘chirish va kerakli route’ga push qilish
 const removeCrumb = (idx) => {
-  // Yo‘naltiriladigan path
   let targetPath = '/dashboard'
   if (visitedRoutes.value.length > 1) {
     targetPath = idx > 0
@@ -76,11 +71,9 @@ const removeCrumb = (idx) => {
       : visitedRoutes.value[1].path
   }
 
-  // Elementni o‘chirib, localStorage yangilash
   visitedRoutes.value.splice(idx, 1)
   localStorage.setItem(LOCAL_KEY, JSON.stringify(visitedRoutes.value))
 
-  // Yo‘naltirish
   router.push(targetPath)
 }
 </script>
