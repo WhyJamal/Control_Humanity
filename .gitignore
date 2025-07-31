@@ -1,6 +1,3 @@
-#start app
-backend/start_app.bat
-
 # Python
 __pycache__/
 *.py[cod]
@@ -106,3 +103,9 @@ Desktop.ini
 
 # Optional: test coverage
 coverage/
+
+#control_humanity app
+app/
+
+#start app
+backend/start_app.bat
