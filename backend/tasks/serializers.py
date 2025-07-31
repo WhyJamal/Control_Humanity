@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task, Status, SimpleTask, TaskMarkedUser
+from .models import Task, Status, SimpleTask, TaskMarkedUser, TaskFile
 from accounts.serializers import UserSerializer
 from django.contrib.auth import get_user_model
 from projects.models import Project, Module
@@ -14,13 +14,20 @@ class StatusSerializer(serializers.ModelSerializer):
         model = Status
         fields = ('id', 'name', 'order', 'project', 'color', 'is_default', 'organization')
 
+class TaskFileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskFile
+        fields = ['id', 'file', 'uploaded_at']  
+        
 class TaskSerializer(serializers.ModelSerializer):
     organization = serializers.IntegerField(source='organization.id', read_only=True)    
     assigned_to = UserSerializer(read_only=True)
     status = StatusSerializer(read_only=True)
     project = serializers.PrimaryKeyRelatedField(read_only=True)
     created_by = UserSerializer(read_only=True)
-    
+    module = serializers.IntegerField(source='module.id', read_only=True, allow_null=True)
+    files = TaskFileSerializer(many=True, read_only=True)
+
     assigned_to_id = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.filter(role='employee'),
         source='assigned_to',
@@ -28,11 +35,11 @@ class TaskSerializer(serializers.ModelSerializer):
         required=False
     )
     marked_to_id = serializers.PrimaryKeyRelatedField(
-    queryset=User.objects.filter(role='employee'),
-    source='marked_to',
-    many=True,
-    write_only=True,
-    required=False
+        queryset=User.objects.filter(role='employee'),
+        source='marked_to',
+        many=True,
+        write_only=True,
+        required=False
     )
     marked_to = UserSerializer(many=True, read_only=True)
     status_id = serializers.PrimaryKeyRelatedField(
@@ -53,8 +60,11 @@ class TaskSerializer(serializers.ModelSerializer):
             required=False,
             write_only=True,
         )
-   
-    module = serializers.IntegerField(source='module.id', read_only=True, allow_null=True)
+    uploaded_files = serializers.ListField(
+        child=serializers.FileField(),
+        write_only=True,
+        required=False
+    )
     
     class Meta:
         model = Task
@@ -68,7 +78,8 @@ class TaskSerializer(serializers.ModelSerializer):
             'updated_at',   'due_date',
             'color',        'data_input',
             'module', 'module_id', 'organization',
-            'is_archived',  'done'
+            'is_archived',  'done',
+            'files', 'uploaded_files', 
         )
         read_only_fields = ('created_by',)
         extra_kwargs = {
@@ -82,20 +93,23 @@ class TaskSerializer(serializers.ModelSerializer):
         return user
 
     def create(self, validated_data):
+        uploaded_files = validated_data.pop('uploaded_files', [])
         marked_users = validated_data.pop('marked_to', [])
+
         with transaction.atomic():
             task = super().create(validated_data)
 
             for idx, user in enumerate(marked_users):
-                TaskMarkedUser.objects.create(
-                    task=task,
-                    user=user,
-                    order=idx
-                )
+                TaskMarkedUser.objects.create(task=task, user=user, order=idx)
+
+            for file in uploaded_files:
+                TaskFile.objects.create(task=task, file=file)
 
         return task
 
+
     def update(self, instance, validated_data):
+        uploaded_files = validated_data.pop('uploaded_files', [])
         marked_users = validated_data.pop('marked_to', None)
 
         with transaction.atomic():
@@ -104,23 +118,12 @@ class TaskSerializer(serializers.ModelSerializer):
             if marked_users is not None:
                 TaskMarkedUser.objects.filter(task=instance).delete()
                 for idx, user in enumerate(marked_users):
-                    TaskMarkedUser.objects.create(
-                        task=instance,
-                        user=user,
-                        order=idx
-                    )
-        return instance
+                    TaskMarkedUser.objects.create(task=instance, user=user, order=idx)
 
-    # def create(self, validated_data):
+            for file in uploaded_files:
+                TaskFile.objects.create(task=instance, file=file)
 
-    #     validated_data['created_by'] = self.context['request'].user
-    #     return super().create(validated_data)
-
-    # def update(self, instance, validated_data):
-
-    #     if 'assigned_to' in validated_data:
-    #         instance.assigned_to = validated_data.pop('assigned_to')
-    #     return super().update(instance, validated_data)
+        return instance 
 
 class SimpleTaskSerializer(serializers.ModelSerializer):
     status_detail = serializers.StringRelatedField(source='status', read_only=True)

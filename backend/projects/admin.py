@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Module
+from .models import Project, Module, ProjectFile
 from import_export.admin import ImportExportModelAdmin
 from tasks.models import Task
 
@@ -31,3 +31,5 @@ class ModuleAdmin(admin.ModelAdmin):
     list_display = ('name', 'project')
     search_fields = ('name',)
     list_filter = ('project',)
+
+admin.site.register(ProjectFile)

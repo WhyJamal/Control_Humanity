@@ -107,6 +107,8 @@ class User(AbstractUser):
         choices=LANG_CHOICES,
         default='ru',
     )
+    current_tasks = models.PositiveIntegerField(default=0, verbose_name="Текущее количество дел")
+    completed_tasks = models.PositiveIntegerField(default=0, verbose_name="Количество выполненных работ")
 
     class Meta:
         verbose_name = "Пользователь"

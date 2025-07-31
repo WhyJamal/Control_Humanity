@@ -1,5 +1,8 @@
 <template>
-  <div class="button-[200px] relative h-full overflow-y-auto scrollbar-black sm:rounded-lg"> <!-- h-[340px] -->
+  <div
+    class="button-[200px] relative h-full overflow-y-auto scrollbar-black sm:rounded-lg"
+  >
+    <!-- h-[340px] -->
     <!-- Add Task Modals -->
     <AddTaskModal
       :visible="showAddTaskModal"
@@ -20,6 +23,7 @@
           <th class="px-6 py-3">{{ $t("responsible") }}</th>
           <th class="px-6 py-3">Период</th>
           <th class="px-6 py-3">Статус</th>
+          <th class="px-6 py-3">Прикольные файлы</th>
           <th class="px-6 py-3">Выполнения</th>
           <th class="px-6 py-3"></th>
           <!-- <th class="px-6 py-3 flex space-x-2 justify-end"></th> -->
@@ -59,6 +63,39 @@
             <td class="px-6 py-4">{{ proj.manager?.username || "—" }}</td>
             <td class="px-6 py-4">{{ proj.period }}</td>
             <td class="px-6 py-4">{{ getProjectStatus(proj) }}</td>
+            <td class="px-6 py-4">
+              <!-- Кнопка-иконка -->
+              <button
+                @click="toggleFiles(proj.id)"
+                class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+              >
+                <FolderIcon class="w-4 h-4 text-purple-300" />
+              </button>
+
+              <!-- Выпадающий блок файлов -->
+              <div
+                v-if="filesOpen.includes(proj.id)"
+                class="mt-2 p-2 bg-gray-50 dark:bg-gray-800 rounded shadow-inner max-h-48 overflow-auto"
+              >
+                <ul class="space-y-1">
+                  <li
+                    v-for="file in proj.files"
+                    :key="file.id"
+                    class="flex items-center space-x-1"
+                  >
+                    <DocumentIcon class="w-4 h-4 text-purple-300" />
+                    <a
+                      :href="file.file"
+                      target="_blank"
+                      class="text-blue-400 hover:underline truncate"
+                      style="max-width: 120px"
+                    >
+                      {{ file.file.split("/").pop() }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
             <td class="px-6 py-4">{{ getProjectCompletion(proj) }}%</td>
             <td class="relative px-6 py-4 text-right">
               <svg
@@ -341,38 +378,88 @@
       </tbody>
     </table>
 
-      <div v-if="showConfirmModal" id="popup-modal" tabindex="-1" class="fixed inset-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-          <div class="relative p-4 w-full max-w-md max-h-full">
-              <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
-                  <button type="button" @click="cancelDelete" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal">
-                      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                      </svg>
-                      <span class="sr-only">Отменить</span>
-                  </button>
-                  <div class="p-4 md:p-5 text-center">
-                      <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                      </svg>
-                      <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Вы действительно хотите удалить
-                                                                                            {{
-                                                                                              inlineDeleteInfo.type === "project"
-                                                                                                ? "проект"
-                                                                                                : inlineDeleteInfo.type === "module"
-                                                                                                ? "модуль"
-                                                                                                : inlineDeleteInfo.type === "task"
-                                                                                                ? "задачу"
-                                                                                                : ""
-                                                                                            }}?</h3>
-                      <button type="button" @click="confirmDelete" data-modal-hide="popup-modal" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                          Удалить
-                      </button>
-                      <button @click="cancelDelete" data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Отменить</button>
-                  </div>
-              </div>
+    <div
+      v-if="showConfirmModal"
+      id="popup-modal"
+      tabindex="-1"
+      class="fixed inset-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
+          <button
+            type="button"
+            @click="cancelDelete"
+            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="popup-modal"
+          >
+            <svg
+              class="w-3 h-3"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+              />
+            </svg>
+            <span class="sr-only">Отменить</span>
+          </button>
+          <div class="p-4 md:p-5 text-center">
+            <svg
+              class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+            <h3
+              class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"
+            >
+              Вы действительно хотите удалить
+              {{
+                inlineDeleteInfo.type === "project"
+                  ? "проект"
+                  : inlineDeleteInfo.type === "module"
+                  ? "модуль"
+                  : inlineDeleteInfo.type === "task"
+                  ? "задачу"
+                  : ""
+              }}?
+            </h3>
+            <button
+              type="button"
+              @click="confirmDelete"
+              data-modal-hide="popup-modal"
+              class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+            >
+              Удалить
+            </button>
+            <button
+              @click="cancelDelete"
+              data-modal-hide="popup-modal"
+              type="button"
+              class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              Отменить
+            </button>
           </div>
+        </div>
       </div>
-      
+    </div>
+
     <!-- <div class="fixed bottom-0 w-[1270px] z-50">
       <ProjectProgressChart
         class=""
@@ -387,9 +474,10 @@
 import api from "@/utils/axios";
 import AddTaskModal from "@/components/ui/AddTaskModal.vue";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
+import { DocumentIcon, FolderIcon } from "@heroicons/vue/24/solid";
 
 export default {
-  components: { AddTaskModal, ProjectProgressChart },
+  components: { AddTaskModal, ProjectProgressChart, DocumentIcon, FolderIcon },
   data() {
     return {
       users: [],
@@ -411,6 +499,7 @@ export default {
       selectedProjectForModule: null,
       selectedTaskContext: { projectId: null, moduleId: null },
       selectedProjectForChart: null,
+      filesOpen: [],
     };
   },
   computed: {
@@ -443,8 +532,8 @@ export default {
       return [...fromModules, ...unlinked];
     },
     filterTasks(taskList) {
-      if (!taskList || !Array.isArray(taskList)) return []; // Xatolikdan saqlanish
-      return taskList.filter(task => !task.is_archived);
+      if (!taskList || !Array.isArray(taskList)) return [];
+      return taskList.filter((task) => !task.is_archived);
     },
     getProjectStatus(project) {
       const tasks = this.getProjectTasks(project);
@@ -498,6 +587,15 @@ export default {
     cancelDelete() {
       this.showConfirmModal = false;
       this.inlineDeleteInfo = { type: null, id: null, projectId: null };
+    },
+
+    toggleFiles(projectId) {
+      const idx = this.filesOpen.indexOf(projectId);
+      if (idx === -1) {
+        this.filesOpen.push(projectId);
+      } else {
+        this.filesOpen.splice(idx, 1);
+      }
     },
 
     confirmDelete() {

@@ -324,6 +324,25 @@
             </div>
           </div>
 
+          <div class="mt-4">
+            <label for="file-upload" class="block mb-1 font-medium text-gray-200">
+              Прикрепить файлы
+            </label>
+            <input
+              id="file-upload"
+              type="file"
+              multiple
+              @change="onFileChange"
+              class="w-full text-gray-200"
+              accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png"
+            />
+            <div class="mt-2 space-y-1 text-sm text-gray-300">
+              <div v-for="(f, idx) in newTask.uploaded_files" :key="idx">
+                {{ f.name }}
+              </div>
+            </div>
+          </div>
+
           <!-- Actions -->
           <div class="flex justify-end space-x-4 pt-4">
             <button
@@ -386,6 +405,7 @@ export default {
         due_date: "",
         status_id: 1,
         color: "#FFFFFF",
+        uploaded_files: [],
         datePickerConfig: {
           locale: Russian,
           dateFormat: "d.m.Y",
@@ -417,6 +437,10 @@ export default {
     },
   },
   methods: {
+    onFileChange(event) {
+      // FileList → Array
+      this.newTask.uploaded_files = Array.from(event.target.files);
+    },    
     selectLabel(label) {
       this.showLabels = false;
       this.newTask.label_id = label.id;
@@ -496,15 +520,30 @@ export default {
       this.participantSearch = "";
     },
     handleCreateTask() {
-      const payload = {
-        ...this.newTask,
-        due_date: this.newTask.due_date
-          ? new Date(this.newTask.due_date).toISOString()
-          : null,
-        project_id: this.projectId,
-        module_id: this.moduleId,
-      };
-      this.$emit("save", payload);
+      // FormData yaratamiz
+      const formData = new FormData();
+      formData.append("title", this.newTask.title);
+      formData.append("description", this.newTask.description);
+      formData.append("assigned_to_id", this.newTask.assigned_to_id);
+      formData.append("due_date", this.newTask.due_date || "");
+      formData.append("status_id", this.newTask.status_id);
+      formData.append("color", this.newTask.color);
+      formData.append("project_id", this.projectId);
+      if (this.moduleId !== null) formData.append("module_id", this.moduleId);
+
+      // marked_to_id (array)
+      this.newTask.marked_to_id.forEach(id => {
+        formData.append("marked_to_id", id);
+      });
+
+      // Fayllar
+      this.newTask.uploaded_files.forEach(file => {
+        formData.append("uploaded_files", file);
+      });
+
+      // Emit FormData obyekti
+      this.$emit("save", formData);
+
       this.close();
     },
   },

@@ -50,7 +50,7 @@ class UserAdmin(BaseUserAdmin):
                 'role', 'organization',
                 'profile_picture', 'bio',
                 'telegram_id', 'language',
-                'social_links',
+                'social_links', 'current_tasks', 'completed_tasks',
             )
         }),
 

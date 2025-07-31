@@ -97,5 +97,5 @@ class UserSerializer(serializers.ModelSerializer):
             'organization_name', 'role', 'profile_picture',
             'phone', 'telegram_id', 'location', 'address',          
             'bio', 'gender', 'date_of_birth', 'social_links',                  
-            'language', 'is_active',
+            'language', 'is_active', 'current_tasks', 'completed_tasks'
         )

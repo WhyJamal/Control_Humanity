@@ -120,20 +120,65 @@
         ></textarea>
       </div>
 
-      <!-- Изображение проекта -->
-      <div>
-        <label
-          class="block mb-2 font-semibold text-base text-gray-300"
-          for="image"
-          >Изображение проекта</label
-        >
-        <input
-          @change="handleImageChange"
-          id="image"
-          type="file"
-          accept="image/*"
-          class="w-full p-2 rounded-lg border border-neutral-600 bg-neutral-900 text-white file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-purple-600 file:text-white hover:file:bg-purple-700"
-        />
+      <div class="flex flex-wrap gap-6">
+        <!-- Изображение проекта -->
+        <div class="flex-1 min-w-[250px]">
+          <label
+            class="block mb-2 font-semibold text-base text-gray-300"
+            for="image"
+          >
+            Изображение проекта
+          </label>
+          <input
+            @change="handleImageChange"
+            id="image"
+            type="file"
+            accept="image/*"
+            class="w-full p-2 rounded-lg border border-neutral-600 bg-neutral-900 text-white
+                  file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0
+                  file:text-sm file:font-semibold file:bg-purple-600 file:text-white
+                  hover:file:bg-purple-700"
+          />
+        </div>
+
+        <!-- Документы -->
+        <div class="flex-1 min-w-[250px]">
+          <label class="block mb-2 font-semibold text-base text-gray-300">
+            Прикрепить документы
+          </label>
+
+          <!-- Скрываем настоящий input -->
+          <input
+            ref="docsInput"
+            type="file"
+            multiple
+            accept=".pdf,.docx,.xlsx"
+            class="hidden"
+            @change="handleDocsChange"
+          />
+
+          <!-- Кнопка с иконкой -->
+          <button
+            type="button"
+            @click="$refs.docsInput.click()"
+            class="w-full flex items-center justify-center gap-2 p-2 rounded-lg border border-neutral-600 bg-neutral-900 text-white hover:bg-neutral-800 transition"
+          >
+            <DocumentPlusIcon class="w-5 h-5 text-purple-400" />
+            <span class="font-medium">Выбрать файлы</span>
+          </button>
+
+          <!-- Список выбранных файлов -->
+          <div class="mt-2 space-y-1 text-sm text-gray-300 overflow-x scrollbar-black">
+            <div
+              v-for="(f, i) in form.uploaded_files"
+              :key="i"
+              class="flex items-center gap-2 p-2 bg-neutral-800 rounded"
+            >
+              <DocumentIcon class="w-4 h-4 text-purple-300" />
+              <span class="truncate">{{ f.name }}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Ошибка -->
@@ -185,7 +230,7 @@
 
 <script>
 import api from "@/utils/axios";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid";
+import { CheckIcon, ChevronUpDownIcon, DocumentPlusIcon, DocumentIcon } from "@heroicons/vue/24/solid";
 import { Transition } from "vue";
 
 export default {
@@ -193,6 +238,8 @@ export default {
   components: {
     ChevronUpDownIcon,
     CheckIcon,
+    DocumentPlusIcon,
+    DocumentIcon
   },
   data() {
     return {
@@ -202,6 +249,7 @@ export default {
         manager_id: "",
         end_date: "",
         image: null,
+        uploaded_files: [],
         datePickerConfig: {
           dateFormat: "d.m.Y",
           altInput: true,
@@ -214,7 +262,7 @@ export default {
       errorMessage: "",
     };
   },
-  methods: {
+  methods: {   
     async fetchManagers() {
       try {
         const response = await api.get("/auth/users/managers/");
@@ -226,6 +274,16 @@ export default {
     handleImageChange(event) {
       this.form.image = event.target.files[0];
     },
+    handleDocsChange(event) {
+      const newFiles = Array.from(event.target.files);
+      const names = this.form.uploaded_files.map(f => f.name);
+      newFiles.forEach(f => {
+        if (!names.includes(f.name)) {
+          this.form.uploaded_files.push(f);
+        }
+      });
+      event.target.value = null;
+    },     
     async handleSubmit() {
       this.errorMessage = "";
       if (!this.form.name) {
@@ -236,16 +294,17 @@ export default {
       const payload = new FormData();
       payload.append("name", this.form.name);
       payload.append("description", this.form.description);
-      // payload.append('manager', this.form.manager)
       payload.append("manager_id", this.form.manager_id);
       if (this.form.end_date) payload.append("end_date", this.form.end_date);
       if (this.form.image) payload.append("image", this.form.image);
 
+      this.form.uploaded_files.forEach(file => {
+        payload.append("uploaded_files", file);
+      });
+
       try {
         this.loading = true;
-        await api.post("/projects/", payload, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await api.post("/projects/", payload );
         this.$emit("saved");
       } catch (err) {
         console.error(err);

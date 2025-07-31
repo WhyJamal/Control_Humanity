@@ -1,8 +1,10 @@
+import os
 from django.db import models
 from django.conf import settings
 from projects.models import Project, Module
 from django.utils import timezone
 from accounts.models import Organization
+from django.core.exceptions import ValidationError
 
 class Status(models.Model):
     name = models.CharField(max_length=50)
@@ -104,4 +106,17 @@ class TaskMarkedUser(models.Model):
         unique_together = ('task', 'user')
         ordering = ['order']     
 
+def validate_task_file_extension(file):
+    valid_extensions = ['.pdf', '.docx', '.xlsx', '.jpg', '.jpeg', '.png']
+    ext = os.path.splitext(file.name)[1].lower()
+    if ext not in valid_extensions:
+        raise ValidationError(f"Недопустимый тип файла: {ext}. Фиксированный: {', '.join(valid_extensions)}")
+
+class TaskFile(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='files')
+    file = models.FileField(upload_to='task_files/', validators=[validate_task_file_extension])
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.file.name}"
 
