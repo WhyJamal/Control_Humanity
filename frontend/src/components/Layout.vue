@@ -1,17 +1,17 @@
 <template>
   <div
-    class="h-screen flex flex-col bg-gray-200 dark:bg-gradient-to-br dark:from-[#692a88] dark:to-[#3b1555]"
+    class="h-screen flex flex-col bg-gradient-to-r from-white via-greenSoft to-greenPastel dark:bg-gradient-to-br dark:from-[#692a88] dark:to-[#3b1555]"
   >
     <!-- Navbar -->
     <header
-      class="fixed inset-x-0 top-0 z-50 bg-gray-300 dark:bg-gradient-to-r dark:from-[#3c0061] dark:to-[#1c002e] bg-opacity-90 backdrop-blur-md dark:bg-opacity-90"
+      class="fixed inset-x-0 top-0 z-50 bg-[#147917] dark:bg-gradient-to-r dark:from-[#3c0061] dark:to-[#1c002e] bg-opacity-90 backdrop-blur-md dark:bg-opacity-90"
     >
       <div class="grid grid-cols-[auto_1fr_auto] items-center px-4 py-3">
         <!-- Left -->
         <div class="flex items-center gap-3">
           <button
             @click="toggleSidebar"
-            class="p-2 rounded bg-gray-400 hover:bg-gray-500 transition dark:bg-white/20 dark:hover:bg-white/30"
+            class="p-2 rounded bg-gray-100 hover:bg-[#52C755] hover:bg-gray-500 transition dark:bg-white/20 dark:hover:bg-white/30"
           >
             <svg
               class="w-5 h-5 text-gray-900 dark:text-white"
@@ -27,7 +27,7 @@
               />
             </svg>
           </button>
-          <h1 class="text-xl font-semibold text-gray-900 dark:text-white">
+          <h1 class="text-xl font-semibold text-white dark:text-white">
             {{ profile.organization_name }}
           </h1>
         </div>
@@ -37,12 +37,12 @@
           <input
             type="text"
             :placeholder="$t('searchPlaceholder')"
-            class="h-7 w-[700px] px-3 rounded-lg bg-gray-400 placeholder-gray-600 text-gray-900 text-sm focus:bg-gray-400 focus:outline-none transition dark:bg-gray-800 dark:placeholder-gray-400 dark:text-white"
+            class="h-7 w-[700px] px-3 rounded-lg bg-[#d8f8d8] placeholder-gray-800 text-black text-sm focus:bg-[#a0f0a0] focus:outline-none transition dark:bg-gray-800 dark:placeholder-gray-400 dark:text-white"
           />
           <button
             v-if="$store.state.auth.user?.role !== 'employee'"
             @click="showForm = true"
-            class="h-8 px-4 bg-gray-400 hover:bg-gray-500 text-gray-900 text-sm font-medium rounded-md shadow transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
+            class="h-8 px-4 bg-white hover:bg-[#52C755] text-gray-900 text-sm font-medium rounded-md shadow transition-colors duration-200 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-800"
           >
             {{ $t("createButton") }}
           </button>
@@ -193,7 +193,6 @@
                         @click.stop="toggleLanguage"
                         class="flex items-center w-full p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition"
                       >
-                        <!-- O‘q ikonkasi -->
                         <svg
                           :class="[
                             'w-3 h-3 mr-2 transition-transform',
@@ -214,7 +213,6 @@
                         Language
                       </button>
 
-                      <!-- Yon tomonga chiqadigan submenu -->
                       <div
                         v-if="isLanguageOpen"
                         @click.stop
@@ -225,9 +223,16 @@
                             <a
                               href="#"
                               @click.prevent="setLanguage(lang.code)"
-                              class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+                              class="flex items-center gap-2 px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                             >
-                              {{ lang.label }}
+                              <!-- Flag icon -->
+                              <img
+                                :src="`/flags/${lang.code}.svg`"
+                                :alt="lang.label"
+                                class="w-5 h-3 rounded-sm object-cover"
+                              />
+                              <!-- Language label -->
+                              <span>{{ lang.label }}</span>
                             </a>
                           </li>
                         </ul>
@@ -238,7 +243,6 @@
                         @click.stop="toggleView"
                         class="flex items-center w-full p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg transition"
                       >
-                        <!-- O‘q ikonkasi -->
                         <svg
                           :class="[
                             'w-3 h-3 mr-2 transition-transform',
@@ -270,12 +274,15 @@
                               href="#"
                               @click.prevent="setTheme('dark')"
                               :class="[
-                                'px-2 py-1 rounded transition',
+                                'flex items-center gap-2 px-1 py-1  rounded transition',
                                 theme === 'dark'
                                   ? 'bg-gray-200 dark:bg-gray-600 font-semibold'
                                   : 'hover:bg-gray-200 dark:hover:bg-gray-600',
                               ]"
                             >
+                              <MoonIcon
+                                class="w-3 h-3 text-gray-600 dark:text-white"
+                              />
                               Dark
                             </a>
 
@@ -283,12 +290,15 @@
                               href="#"
                               @click.prevent="setTheme('light')"
                               :class="[
-                                'ml-2 px-2 py-1 rounded transition',
+                                'flex items-center gap-2 px-1 py-1 rounded transition',
                                 theme === 'light'
                                   ? 'bg-gray-200 dark:bg-gray-600 font-semibold'
                                   : 'hover:bg-gray-200 dark:hover:bg-gray-600',
                               ]"
                             >
+                              <SunIcon
+                                class="w-3 h-3 text-yellow-400 dark:text-white"
+                              />
                               Light
                             </a>
                           </li>
@@ -308,7 +318,7 @@
               <div class="py-1">
                 <button
                   @click="showConfirmModal = true"
-                  class="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg dark:hover:text-white"
+                  class="block w-full text-left text-red-600 px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg dark:hover:text-white"
                 >
                   Log out
                 </button>
@@ -321,7 +331,7 @@
     <div class="flex flex-1 pt-[50px] overflow-hidden">
       <aside
         v-if="showSidebar"
-        class="fixed top-[50px] left-0 h-[calc(100vh-50px)] w-56 bg-gray-300 border-r border-gray-400 shadow-inner z-40 px-3 py-5 text-gray-900 dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200"
+        class="fixed top-[50px] left-0 h-[calc(100vh-50px)] w-56 bg-[#056608] border-r border-gray-400 shadow-inner z-40 px-3 py-5 text-gray-900 dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200"
       >
         <nav class="flex flex-col space-y-2">
           <div
@@ -330,11 +340,11 @@
           >
             <button
               @click="toggleProjects"
-              class="flex items-center w-full px-2 py-1 text-sm font-medium text-gray-900 hover:text-gray-800 rounded transition dark:text-gray-300 dark:hover:text-white"
+              class="flex items-center w-full px-2 py-1 text-sm font-medium text-white hover:text-[#52C755] rounded transition dark:text-gray-300 dark:hover:text-white"
             >
               {{ $t("projects") }}
               <svg
-                class="w-3 h-3 ml-auto text-gray-600 transition-transform duration-200 dark:text-gray-400"
+                class="w-3 h-3 ml-auto text-gray-100 transition-transform duration-200 dark:text-gray-400"
                 :class="{ 'rotate-180': showProjectsDropdown }"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -348,12 +358,12 @@
             </button>
             <ul
               v-show="showProjectsDropdown"
-              class="mt-1 space-y-1 bg-gray-200 rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
+              class="mt-1 space-y-1 bg-[#045507] rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
             >
               <li>
                 <router-link
                   to="/projects"
-                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-[#52C755] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
                 >
                   {{ $t("allProjects") }}
                 </router-link>
@@ -361,7 +371,7 @@
               <li>
                 <router-link
                   to="/archivedprojects"
-                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-[#52C755] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
                 >
                   {{ $t("archived") }}
                 </router-link>
@@ -370,15 +380,14 @@
           </div>
 
           <!-- Задачи -->
-
           <div class="relative">
             <button
               @click="toggleTasks"
-              class="flex items-center w-full px-2 py-1 text-sm font-medium text-gray-900 hover:text-gray-800 rounded transition dark:text-gray-300 dark:hover:text-white"
+              class="flex items-center w-full px-2 py-1 text-sm font-medium text-gray-100 hover:text-[#52C755] rounded transition dark:text-gray-300 dark:hover:text-white"
             >
               Задачи
               <svg
-                class="w-3 h-3 ml-auto text-gray-600 transition-transform duration-200 dark:text-gray-400"
+                class="w-3 h-3 ml-auto text-white transition-transform duration-200 dark:text-gray-400"
                 :class="{ 'rotate-180': showTasksDropdown }"
                 fill="none"
                 viewBox="0 0 10 6"
@@ -392,12 +401,12 @@
             </button>
             <ul
               v-show="showTasksDropdown"
-              class="mt-1 space-y-1 bg-gray-200 rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
+              class="mt-1 space-y-1 bg-[#045507] rounded-md shadow-lg overflow-hidden dark:bg-gray-800"
             >
               <li>
                 <router-link
                   to="/taskstable"
-                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-[#52C755] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
                 >
                   Все задачи
                 </router-link>
@@ -405,7 +414,7 @@
               <li>
                 <router-link
                   to="/archivedtasks"
-                  class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-300 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
+                  class="block px-4 py-2 text-sm text-gray-100 hover:bg-[#52C755] dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition"
                 >
                   Архивированные задачи
                 </router-link>
@@ -417,7 +426,7 @@
             v-for="(path, key) in otherLinks"
             :key="key"
             :to="path"
-            class="text-sm font-medium text-gray-900 hover:text-gray-800 px-2 py-1 rounded transition dark:text-gray-300 dark:hover:text-white"
+            class="text-sm font-medium text-white hover:text-[#52C755] px-2 py-1 rounded transition dark:text-gray-300 dark:hover:text-white"
           >
             {{ $t(key) }}
           </router-link>
@@ -467,29 +476,73 @@
       <ProjectForm @saved="onProjectSaved" @cancel="showForm = false" />
     </Modal>
   </div>
-
   <div
     v-if="showConfirmModal"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    id="popup-modal"
+    tabindex="-1"
+    class="fixed inset-0 z-50 flex items-center justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
-    <div
-      class="bg-neutral-900/90 backdrop-blur-md border border-neutral-700 rounded-lg shadow p-6 w-80 text-gray-200"
-    >
-      <p class="text-sm mb-4">Вы действительно хотите выйти из системы?</p>
-      <div class="flex justify-end space-x-2">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+      <div class="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
         <button
+          type="button"
           @click="cancelLogout"
-          class="px-3 py-1 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 text-xs"
+          class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          data-modal-hide="popup-modal"
         >
-          Нет
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span class="sr-only">Отменить</span>
         </button>
-
-        <router-link
-          to="/login"
-          class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
-        >
-          Да
-        </router-link>
+        <div class="p-4 md:p-5 text-center">
+          <svg
+            class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 20"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+            Вы действительно хотите выйти из системы?
+          </h3>
+          <div class="flex justify-center space-x-4">
+            <button
+              type="button"
+              @click="cancelLogout"
+              data-modal-hide="popup-modal"
+              class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+            >
+              Нет
+            </button>
+            <router-link
+              to="/login"
+              class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center"
+            >
+              Да
+            </router-link>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -505,6 +558,7 @@ import Modal from "@/components/ui/Modal.vue";
 import ProjectForm from "@/components/projects/ProjectForm.vue";
 import Dashboard from "@/components/ui/Dashboard.vue";
 import { mapState } from "vuex";
+import { SunIcon, MoonIcon } from "@heroicons/vue/24/outline";
 
 export default {
   name: "Layout",
@@ -515,6 +569,8 @@ export default {
     Modal,
     ProjectForm,
     Dashboard,
+    SunIcon,
+    MoonIcon,
   },
   setup() {
     const { locale } = useI18n();
@@ -557,7 +613,9 @@ export default {
     isProfileView() {
       return (
         this.$route.name === "ProfileView" ||
-        this.$route.name === "ProfileSettings"
+        this.$route.name === "ProfileSettings" ||
+        this.$route.name === "UserList" ||
+        this.$route.name === "Register" 
       );
     },
   },
@@ -636,8 +694,8 @@ export default {
   },
   async created() {
     try {
-      const id = this.$store.state.auth.user.id;
-      const response = await api.get(`/auth/users/${id}/`);
+      // const id = this.$store.state.auth.user.id;
+      const response = await api.get(`/auth/users/me/`); // ${id}/
       this.profile = response.data;
       if (this.profile.language) {
         this.locale = this.profile.language;

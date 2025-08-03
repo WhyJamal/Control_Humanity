@@ -32,7 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        qs = User.objects.filter(is_active=True)
+        qs = User.objects.all()
 
         if not user.is_superuser:
             qs = qs.filter(organization=user.organization)

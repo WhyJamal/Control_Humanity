@@ -15,7 +15,7 @@
     />
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead
-        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 sticky top-0 z-20"
+        class="text-xs text-gray-700 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400 sticky top-0 z-20"
       >
         <tr>
           <th class="px-6 py-3"></th>
@@ -33,7 +33,7 @@
         <template v-for="proj in projects" :key="proj.id">
           <!-- Project Row -->
           <tr
-            class="bg-white border-b dark:bg-gray-800 overflow-y-scroll dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+            class="bg-white border-b dark:bg-gray-800 overflow-y-scroll rounded-lg dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
           >
             <td class="px-6 py-4">
               <button @click="toggleExpand(proj.id)" class="focus:outline-none">
@@ -62,20 +62,30 @@
             </th>
             <td class="px-6 py-4">{{ proj.manager?.username || "—" }}</td>
             <td class="px-6 py-4">{{ proj.period }}</td>
-            <td class="px-6 py-4">{{ getProjectStatus(proj) }}</td>
             <td class="px-6 py-4">
+              <span
+                :class="[
+                  'text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm',
+                  getStatusClass(getProjectStatus(proj)),
+                ]"
+              >
+                {{ getProjectStatus(proj)}}
+              </span>
+            </td>
+            <td class="px-6 py-4 relative">
               <!-- Кнопка-иконка -->
               <button
-                @click="toggleFiles(proj.id)"
+                @click.stop="toggleFiles(proj.id)"
                 class="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition"
               >
-                <FolderIcon class="w-4 h-4 text-purple-300" />
+                <FolderIcon class="w-5 h-5 text-purple-300" />
               </button>
 
               <!-- Выпадающий блок файлов -->
               <div
                 v-if="filesOpen.includes(proj.id)"
-                class="mt-2 p-2 bg-gray-50 dark:bg-gray-800 rounded shadow-inner max-h-48 overflow-auto"
+                class="absolute z-10 mt-2 p-2 bg-gray-50 dark:bg-gray-900 rounded shadow-lg max-h-48 overflow-auto w-48"
+                style="top: 100%; left: 0"
               >
                 <ul class="space-y-1">
                   <li
@@ -98,54 +108,47 @@
             </td>
             <td class="px-6 py-4">{{ getProjectCompletion(proj) }}%</td>
             <td class="relative px-6 py-4 text-right">
-              <svg
+              <Cog8ToothIcon
                 @click.stop="toggleMenu(`proj-${proj.id}`)"
-                class="ml-auto w-4 h-4 text-gray-800 dark:text-white cursor-pointer"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M7.75 4H19M7.75 4a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 4h2.25m13.5 6H19m-2.25 0a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 10h11.25m-4.5 6H19M7.75 16a2.25 2.25 0 0 1-4.5 0m4.5 0a2.25 2.25 0 0 0-4.5 0M1 16h2.25"
-                />
-              </svg>
+                class="w-6 h-6 rounded hover:bg-gray-200 text-green-700 hover:text-green-900 dark:text-gray-100 dark:hover:bg-gray-700 transition"
+              />
               <ul
                 v-if="openMenuId === `proj-${proj.id}`"
-                class="absolute right-0 mt-2 w-40 bg-gray-800 text-white border border-gray-700 rounded-xl shadow-lg z-10"
+                class="absolute right-0 mt-2 w-[180px] bg-gray-100 text-black border border-gray-300 rounded-xl shadow-lg z-10 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
               >
                 <li
                   @click="goToProjectDetail(proj.id)"
-                  class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 cursor-pointer text-left dark:hover:bg-gray-900"
                 >
+                  <EyeIcon class="w-4 h-4 text-black dark:text-indigo-400" />
                   Просмотр
                 </li>
                 <li
                   @click="startAddModuleInline(proj.id)"
-                  class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 cursor-pointer text-left dark:hover:bg-gray-900"
                 >
+                  <PlusIcon class="w-4 h-4 text-black dark:text-blue-400" />
                   Добавить модуль
                 </li>
                 <li
                   @click="openAddTaskModal(proj.id, null)"
-                  class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 cursor-pointer text-left dark:hover:bg-gray-900"
                 >
+                  <PlusIcon class="w-4 h-4 text-black dark:text-green-400" />
                   Добавить задачу
                 </li>
                 <li
                   @click="editProject(proj.id)"
-                  class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 cursor-pointer text-left dark:hover:bg-gray-900"
                 >
+                  <PencilIcon class="w-4 h-4 text-black dark:text-blue-400" />
                   Изменить
                 </li>
                 <li
                   @click="prepareDelete('project', proj.id)"
-                  class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left text-red-400 text-sm"
+                  class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-300 cursor-pointer text-left dark:hover:bg-gray-900 text-red-400"
                 >
+                  <TrashIcon class="w-4 h-4" />
                   Удалить
                 </li>
               </ul>
@@ -155,11 +158,11 @@
           <!-- New row -->
           <tr v-if="addingModuleProjectId === proj.id">
             <td
-              class="px-6 py-4 bg-gray-700 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              class="px-6 py-4 bg-gray-300 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-700"
             ></td>
             <td
-              colspan="6"
-              class="px-6 py-4 bg-gray-700 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              colspan="7"
+              class="px-6 py-4 bg-gray-300 font-medium text-gray-900 whitespace-nowrap dark:text-white dark:bg-gray-700"
             >
               <div class="flex items-center space-x-2">
                 <input
@@ -171,13 +174,13 @@
                 <svg class="flex-1 h-1"></svg>
                 <button
                   @click="saveModuleInline(proj.id)"
-                  class="px-3 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded"
+                  class="px-3 py-1 bg-green-500 hover:bg-green-700 text-white rounded dark:bg-purple-600 dark:hover:bg-purple-700"
                 >
                   Сохранить
                 </button>
                 <button
                   @click="cancelAddModuleInline"
-                  class="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded"
+                  class="px-3 py-1 bg-red-400 hover:bg-red-600 text-white rounded dark:bg-red-500"
                 >
                   Отмена
                 </button>
@@ -223,33 +226,37 @@
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
                 <td class="px-6 py-4"></td>
+                <td class="px-6 py-4"></td>
                 <td class="relative px-6 py-4 text-right">
                   <button
                     @click.stop="toggleMenu(`mod-${mod.id}`)"
-                    class="focus:outline-none"
+                    class="focus:outline-none text-gray-300 rounded hover:bg-gray-300 dark:hover:bg-gray-700"
                   >
-                    •••
+                    <EllipsisHorizontalIcon class="w-6 h-6 text-gray-300" />
                   </button>
                   <ul
                     v-if="openMenuId === `mod-${mod.id}`"
-                    class="absolute right-0 mt-2 w-40 bg-gray-800 text-white rounded-xl border border-gray-700 rounded shadow-lg z-10"
+                    class="absolute right-0 mt-2 w-[170px] bg-gray-100 text-black border border-gray-300 rounded-xl shadow-lg z-10 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                   >
                     <li
                       @click="openAddTaskModal(proj.id, mod.id)"
-                      class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                      class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900"
                     >
+                      <PlusIcon class="w-4 h-4 text-black dark:text-green-400" />
                       Добавить задачу
                     </li>
                     <li
                       @click="editModule(mod.id)"
-                      class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                      class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900"
                     >
+                      <PencilIcon class="w-4 h-4 text-black dark:text-blue-400" />
                       Изменить
                     </li>
                     <li
                       @click="prepareDelete('module', mod.id, proj.id)"
-                      class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left text-red-400 text-sm"
+                      class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900 text-red-400"
                     >
+                      <TrashIcon class="w-4 h-4"/>
                       Удалить
                     </li>
                   </ul>
@@ -273,42 +280,45 @@
                   </td>
                   <td class="px-6 py-4">
                     <span
-                      :class="{
-                        'text-green-600': task.status.name === 'done',
-                        'text-yellow-600': task.status.name === 'in_progress',
-                        'text-red-600': task.status.name === 'todo',
-                      }"
+                      :class="[
+                        'text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm',
+                        getStatusClass(statusLabel(task.status.name)),
+                      ]"
                       >{{ statusLabel(task.status.name) }}</span
                     >
                   </td>
+                  <td class="px-6 py-4"></td>
                   <td class="px-6 py-4">{{ getTaskCompletion(task) }}%</td>
                   <td class="relative px-6 py-4 text-right">
                     <button
                       @click.stop="toggleMenu(`task-${task.id}`)"
-                      class="focus:outline-none"
+                      class="focus:outline-none p-1 rounded hover:bg-gray-300 dark:hover:bg-gray-700"
                     >
-                      •••
+                      <EllipsisHorizontalIcon class="w-5 h-5 text-gray-300" />
                     </button>
                     <ul
                       v-if="openMenuId === `task-${task.id}`"
-                      class="absolute right-0 mt-2 w-40 bg-gray-800 text-white rounded-xl border border-gray-700 rounded shadow-lg z-10"
+                      class="absolute right-0 mt-2 w-40 bg-gray-100 text-black border border-gray-300 rounded-xl shadow-lg z-10 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                     >
                       <li
                         @click="goToTaskForm(task.id)"
-                        class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                        class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900"
                       >
-                        Просмотреть
+                        <EyeIcon class="w-4 h-4 text-black dark:text-indigo-400" />
+                        <span>Просмотреть</span>
                       </li>
                       <li
                         @click="editTask(task.id)"
-                        class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                        class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900"
                       >
+                        <PencilIcon class="w-4 h-4 text-black dark:text-blue-400" />
                         Изменить
                       </li>
                       <li
                         @click="prepareDelete('task', task.id, task.projectId)"
-                        class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left text-red-400 text-sm"
+                        class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 rounded-xl cursor-pointer text-left dark:hover:bg-gray-900 text-red-400 text-sm"
                       >
+                        <TrashIcon class="w-4 h-4" />
                         Удалить
                       </li>
                     </ul>
@@ -331,43 +341,46 @@
               </td>
               <td class="px-6 py-4">
                 <span
-                  :class="{
-                    'text-green-600': task.status.name === 'done',
-                    'text-yellow-600': task.status.name === 'in_progress',
-                    'text-red-600': task.status.name === 'todo',
-                  }"
+                  :class="[
+                    'text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm',
+                    getStatusClass(statusLabel(task.status.name)),
+                  ]"
                 >
                   {{ statusLabel(task.status.name) }}
                 </span>
               </td>
+              <td class="px-6 py-4"></td>
               <td class="px-6 py-4">{{ getTaskCompletion(task) }}%</td>
               <td class="relative px-6 py-4 text-right">
                 <button
                   @click.stop="toggleMenu(`task-${task.id}`)"
-                  class="focus:outline-none"
+                  class="focus:outline-none p-1 rounded hover:bg-gray-300 dark:hover:bg-gray-700"
                 >
-                  •••
+                  <EllipsisHorizontalIcon class="w-5 h-5 text-gray-300" />
                 </button>
                 <ul
                   v-if="openMenuId === `task-${task.id}`"
-                  class="absolute right-0 mt-2 w-40 bg-gray-800 text-white rounded-xl border border-gray-700 shadow-lg z-10"
+                  class="absolute right-0 mt-2 w-40 bg-gray-100 text-black border border-gray-300 rounded-xl shadow-lg z-10 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
                 >
                   <li
                     @click="goToTaskForm(task.id)"
-                    class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-900 rounded-xl cursor-pointer text-left"
                   >
+                    <EyeIcon class="w-4 h-4 text-black dark:text-indigo-400" />
                     Просмотреть
                   </li>
                   <li
                     @click="editTask(task.id)"
-                    class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left"
+                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-900 rounded-xl cursor-pointer text-left"
                   >
+                    <PencilIcon class="w-4 h-4 text-black dark:text-blue-400" />
                     Изменить
                   </li>
                   <li
                     @click="prepareDelete('task', task.id, task.projectId)"
-                    class="px-4 py-2 hover:bg-gray-900 rounded-xl cursor-pointer text-left text-red-400 text-sm"
+                    class="flex items-center gap-2 px-4 py-2 hover:bg-gray-300 dark:hover:bg-gray-900 rounded-xl cursor-pointer text-left text-red-400"
                   >
+                    <TrashIcon class="w-4 h-4" />
                     Удалить
                   </li>
                 </ul>
@@ -474,10 +487,32 @@
 import api from "@/utils/axios";
 import AddTaskModal from "@/components/ui/AddTaskModal.vue";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
-import { DocumentIcon, FolderIcon } from "@heroicons/vue/24/solid";
+import {
+  DocumentIcon,
+  FolderIcon,
+  Cog8ToothIcon,
+} from "@heroicons/vue/24/solid";
+import {
+  EyeIcon,
+  PlusIcon,
+  PencilIcon,
+  TrashIcon,
+  EllipsisHorizontalIcon,
+} from "@heroicons/vue/24/outline";
 
 export default {
-  components: { AddTaskModal, ProjectProgressChart, DocumentIcon, FolderIcon },
+  components: {
+    AddTaskModal,
+    ProjectProgressChart,
+    DocumentIcon,
+    FolderIcon,
+    Cog8ToothIcon,
+    EyeIcon,
+    PlusIcon,
+    PencilIcon,
+    TrashIcon,
+    EllipsisHorizontalIcon,
+  },
   data() {
     return {
       users: [],
@@ -520,9 +555,21 @@ export default {
   },
   async created() {
     await this.reloadProjects();
-    await this.loadUsers();
+    // await this.loadUsers();
   },
   methods: {
+    getStatusClass(status) {
+      switch (status) {
+        case "Start":
+          return "bg-red-200 text-red-800 dark:bg-red-700 dark:text-red-200";
+        case "Finish":
+          return "bg-green-200 text-green-800 dark:bg-green-700 dark:text-green-200";
+        case "—":
+          return "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300";
+        default:
+          return "bg-yellow-200 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-200";
+      }
+    },
     getProjectTasks(project) {
       const fromModules =
         project.modules?.flatMap((m) =>
@@ -574,8 +621,9 @@ export default {
     },
 
     handleDocumentClick() {
-      if (this.openMenuId) {
+      if (this.openMenuId || this.filesOpen.length > 0) {
         this.openMenuId = null;
+        this.filesOpen = [];
       }
     },
 
@@ -590,12 +638,14 @@ export default {
     },
 
     toggleFiles(projectId) {
+      this.filesOpen = [];
       const idx = this.filesOpen.indexOf(projectId);
       if (idx === -1) {
         this.filesOpen.push(projectId);
       } else {
         this.filesOpen.splice(idx, 1);
       }
+      this.openMenuId = null;
     },
 
     confirmDelete() {
@@ -703,6 +753,7 @@ export default {
     },
     toggleMenu(id) {
       this.openMenuId = this.openMenuId === id ? null : id;
+      this.filesOpen = [];
     },
     goToTaskForm(taskId) {
       this.$router.push(`/taskform/${taskId}`);
@@ -781,6 +832,7 @@ export default {
     openAddTaskModal(projectId, moduleId) {
       this.selectedTaskContext = { projectId, moduleId };
       this.showAddTaskModal = true;
+      this.loadUsers();
     },
     closeAddTaskModal() {
       this.showAddTaskModal = false;

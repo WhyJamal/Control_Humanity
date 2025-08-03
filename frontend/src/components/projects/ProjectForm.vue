@@ -5,14 +5,14 @@
     <form
       @submit.prevent="handleSubmit"
       enctype="multipart/form-data"
-      class="bg-gradient-to-br from-[#2a2c31] to-[#1e1f22] border border-neutral-700 text-white p-8 rounded-2xl shadow-xl space-y-6"
+      class="bg-white dark:bg-gradient-to-br dark:from-[#2a2c31] dark:to-[#1e1f22] border dark:border-neutral-700 dark:text-white p-8 rounded-2xl shadow-xl space-y-6"
     >
       <!-- Grid контейнер для полей -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Название проекта -->
         <div>
           <label
-            class="block mb-2 font-semibold text-base text-gray-300"
+            class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300"
             for="name"
             >Название проекта *</label
           >
@@ -21,14 +21,14 @@
             id="name"
             type="text"
             placeholder="Введите название проекта"
-            class="w-full px-4 py-3 rounded-lg border border-neutral-600 bg-neutral-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-4 py-3 rounded-lg border-gary-400 bg-gray-200 text-black focus:ring-green-500 border dark:border-neutral-600 dark:bg-neutral-900 dark:text-white dark:placeholder-gray-500 focus:outline-none focus:ring-2 dark:focus:ring-purple-500"
             required
           />
         </div>
 
         <div>
           <label
-            class="block mb-2 font-semibold text-base text-gray-300"
+            class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300"
             for="end_date"
             >Дата окончания</label
           >
@@ -36,14 +36,14 @@
             v-model="form.end_date"
             id="end_date"
             :config="datePickerConfig"
-            class="w-full px-4 py-3 rounded-lg border border-neutral-600 bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+            class="w-full px-4 py-3 rounded-lg border-gary-400 bg-gray-200 text-black focus:ring-green-500 border dark:border-neutral-600 dark:bg-neutral-900 dark:text-white focus:outline-none focus:ring-2 dark:focus:ring-purple-500"
           />
         </div>
 
         <!-- Менеджер -->
         <div class="md:col-span-2">
           <label
-            class="block mb-2 font-semibold text-base text-gray-300"
+            class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300"
             for="manager"
             >Назначить менеджера</label
           >
@@ -51,7 +51,7 @@
             <Listbox v-model="form.manager_id">
               <div class="relative">
                 <ListboxButton
-                  class="w-full px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-600 text-white flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  class="w-full px-4 py-3 rounded-lg border-gary-400 bg-gray-200 text-black focus:ring-green-500 border dark:bg-neutral-900 dark:border-neutral-600 dark:text-white flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <span>
                     {{
@@ -71,20 +71,20 @@
                   leave-to="opacity-0 scale-95"
                 >
                   <ListboxOptions
-                    class="absolute mt-2 w-full bg-neutral-800 rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
+                    class="absolute mt-2 w-full bg-gray-400 dark:bg-neutral-800 rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
                   >
                     <ListboxOption
                       v-for="mgr in managers"
                       :key="mgr.id"
                       :value="mgr.id"
-                      class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-neutral-700 rounded-lg"
+                      class="cursor-pointer select-none relative py-2 pl-10 pr-4 text-black dark:text-white hover:bg-gray-300 dark:hover:bg-neutral-700 rounded-lg"
                       v-slot="{ selected }"
                     >
                       <span
                         :class="[
                           selected
-                            ? 'font-semibold text-white'
-                            : 'text-gray-300',
+                            ? 'font-semibold text-black dark:text-white'
+                            : 'text-black dark:text-gray-300',
                         ]"
                       >
                         {{ mgr.username }}
@@ -107,7 +107,7 @@
       <!-- Описание -->
       <div>
         <label
-          class="block mb-2 font-semibold text-base text-gray-300"
+          class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300"
           for="description"
           >Описание</label
         >
@@ -116,7 +116,7 @@
           id="description"
           rows="3"
           placeholder="Введите описание проекта"
-          class="w-full px-4 py-3 rounded-lg border border-neutral-600 bg-neutral-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          class="w-full px-4 py-3 rounded-lg border border-gray-400 bg-gray-200 text-black huver:bg-gray-400 focus:ring-green-300 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white dark:placeholder-gray-500 focus:outline-none focus:ring-2 dark:focus:ring-purple-500"
         ></textarea>
       </div>
 
@@ -124,7 +124,7 @@
         <!-- Изображение проекта -->
         <div class="flex-1 min-w-[250px]">
           <label
-            class="block mb-2 font-semibold text-base text-gray-300"
+            class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300"
             for="image"
           >
             Изображение проекта
@@ -134,16 +134,21 @@
             id="image"
             type="file"
             accept="image/*"
-            class="w-full p-2 rounded-lg border border-neutral-600 bg-neutral-900 text-white
+            class="w-full p-2 rounded-lg border 
+                  border-gray-300 bg-gray-200 text-gray-900
                   file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0
-                  file:text-sm file:font-semibold file:bg-purple-600 file:text-white
-                  hover:file:bg-purple-700"
+                  file:text-sm file:font-semibold file:bg-green-500 file:text-white
+                  hover:file:bg-green-600
+                  dark:border-neutral-600 dark:bg-neutral-900 dark:text-white
+                  file:mr-4 file:py-2 file:px-3 file:rounded-lg file:border-0
+                  file:text-sm file:font-semibold dark:file:bg-purple-600 dark:file:text-white
+                  dark:hover:file:bg-purple-700"
           />
         </div>
 
         <!-- Документы -->
         <div class="flex-1 min-w-[250px]">
-          <label class="block mb-2 font-semibold text-base text-gray-300">
+          <label class="block mb-2 font-semibold text-base text-gray-700 dark:text-gray-300">
             Прикрепить документы
           </label>
 
@@ -161,20 +166,20 @@
           <button
             type="button"
             @click="$refs.docsInput.click()"
-            class="w-full flex items-center justify-center gap-2 p-2 rounded-lg border border-neutral-600 bg-neutral-900 text-white hover:bg-neutral-800 transition"
+            class="w-full flex items-center justify-center gap-2 p-2 rounded-lg border border-gary-300 bg-gray-200 text-black hover:bg-gray-300 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white dark:hover:bg-neutral-800 transition"
           >
-            <DocumentPlusIcon class="w-5 h-5 text-purple-400" />
-            <span class="font-medium">Выбрать файлы</span>
+            <DocumentPlusIcon class="w-5 h-5 text-green-500 dark:text-purple-300" />
+            <span class="font-medium text-black dark:text-white">Выбрать файлы</span>
           </button>
 
           <!-- Список выбранных файлов -->
-          <div class="mt-2 space-y-1 text-sm text-gray-300 overflow-x scrollbar-black">
+          <div class="mt-2 space-y-1 text-sm text-black dark:text-gray-300 overflow-x scrollbar-black">
             <div
               v-for="(f, i) in form.uploaded_files"
               :key="i"
-              class="flex items-center gap-2 p-2 bg-neutral-800 rounded"
+              class="flex items-center gap-2 p-2 bg-gray-200 dark:bg-neutral-800 rounded"
             >
-              <DocumentIcon class="w-4 h-4 text-purple-300" />
+              <DocumentIcon class="w-4 h-4 text-green-500 dark:text-purple-300" />
               <span class="truncate">{{ f.name }}</span>
             </div>
           </div>
@@ -191,13 +196,14 @@
         <button
           type="button"
           @click="$emit('cancel')"
-          class="px-6 py-3 border border-gray-500 text-white rounded-lg hover:bg-neutral-800 transition duration-200"
+          
+          class="px-6 py-3 border font-medium border-gray-300 text-black rounded-lg hover:bg-green-200 dark:border-gray-500 dark:text-white dark:hover:bg-neutral-800 transition duration-200"
         >
           Отменить
         </button>
         <button
           type="submit"
-          class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium text-base rounded-lg transition duration-200 flex items-center justify-center"
+          class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white dark:bg-purple-600 dark:hover:bg-purple-700 font-medium text-base rounded-lg transition duration-200 flex items-center justify-center"
           :disabled="loading"
         >
           <svg

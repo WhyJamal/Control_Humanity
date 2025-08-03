@@ -1,6 +1,10 @@
 <template>
   <div
-    class="w-full min-h-screen bg-[#1e293b] rounded-lg shadow-md p-6 space-y-6 border border-gray-700 relative"
+    class="w-full min-h-screen 
+          bg-white text-gray-900      
+          dark:bg-[#1e293b] dark:text-gray-200  
+          rounded-lg shadow-md p-6 space-y-6 border border-gray-300  
+          dark:border-gray-700 relative"
   >
     <!-- <button
       @click="closeModal"
@@ -21,17 +25,17 @@
             <span class="text-xs bg-blue-600 px-2 py-0.5 rounded-lg text-white"
               >PRO</span
             >
-            <h3 class="text-xl font-bold mt-1">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-gray-200 mt-1">
               {{ profile.first_name }} {{ profile.last_name }}
             </h3>
-            <p class="text-gray-400">{{ profile.role }}</p>
+            <p class="text-gray-600 dark:text-gray-400">{{ profile.role }}</p>
           </div>
         </div>
         <hr class="my-6 border-gray-700" />
         <button
           v-if="user && user.id === profile.id"
           @click="editProfilePicture = true"
-          class="text-base font-semibold bg-blue-600 px-4 py-2 rounded-md"
+          class="ext-base text-white font-semibold bg-green-700 px-4 py-2 rounded-md hover:bg-green-600 dark:bg-indigo-900 dark:hover:bg-indigo-800"
         >
           Edit
         </button>
@@ -42,35 +46,35 @@
       >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <strong class="text-gray-300 block text-sm mb-1">Timezone</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Timezone</strong>
             <select
-              class="w-full bg-[#334155] border rounded-md p-2 text-white"
+              class="w-full bg-gray-200 text-gray-800 border rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
               <option>UTC-08:00 (PST)</option>
             </select>
           </div>
           <div>
-            <strong class="text-gray-300 block text-sm mb-1">Language</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Language</strong>
             <div
-              class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white"
+              class="w-full bg-gray-200 text-gray-800 border border-gray-300 rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
               {{ profile.language }}
             </div>
           </div>
           <div>
-            <strong class="text-gray-300 block text-sm mb-1"
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1"
               >Date of birth</strong
             >
             <input
               type="date"
               v-model="profile.date_of_birth"
-              class="w-full bg-[#334155] border border-gray-300 rounded-md p-2 text-white"
+              class="w-full bg-gray-200 text-gray-800 border border-gray-300 rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             />
           </div>
           <div>
-            <strong class="text-gray-300 block text-sm mb-1">Gender</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Gender</strong>
             <div
-              class="w-full bg-[#334155] border border-gray-100 rounded-md p-2 text-white"
+              class="w-full bg-gray-200 text-gray-800 border border-gray-100 rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
               {{ profile.gender }}
             </div>
@@ -79,7 +83,7 @@
         <hr class="border-gray-700" />
         <button
           v-if="user && user.id === profile.id"
-          class="text-base font-semibold bg-blue-600 px-4 py-2 rounded-md"
+          class="ext-base text-white font-semibold bg-green-700 px-4 py-2 rounded-md hover:bg-green-600 dark:bg-indigo-900 dark:hover:bg-indigo-800"
           @click="saveProfile"
         >
           Save
@@ -90,25 +94,25 @@
     <div
       class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg shadow-md p-6"
     >
-      <h2 class="text-gray-200 text-lg font-semibold mb-4">
+      <h2 class="text-gray-900 text-lg font-semibold mb-4 dark:text-gray-200">
         Personal information
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="space-y-4">
           <div>
-            <strong class="text-gray-300">Full name</strong>
-            <p class="text-gray-400">
+            <strong class="text-gray-800 dark:text-gray-300">Full name</strong>
+            <p class="text-gray-800 dark:text-gray-400">
               {{ profile.first_name }} {{ profile.last_name }}
             </p>
           </div>
           <div>
-            <strong class="text-gray-300">Biography</strong>
-            <p class="text-gray-400">
+            <strong class="text-gray-800 dark:text-gray-300">Biography</strong>
+            <p class="text-gray-800 dark:text-gray-400">
               I am {{ profile.first_name }}, {{ profile.bio }}
             </p>
           </div>
           <div>
-            <strong class="text-gray-300">Social</strong>
+            <strong class="text-gray-800 dark:text-gray-300">Social</strong>
             <div class="flex mt-2 space-x-3 text-gray-400 text-xl">
               <a
                 v-for="(handle, key) in profile.social_links"
@@ -132,8 +136,8 @@
             </div>
           </div>
           <div>
-            <strong class="text-gray-300">Location</strong>
-            <p class="text-gray-400">{{ profile.location }}</p>
+            <strong class="text-gray-800 dark:text-gray-300">Location</strong>
+            <p class="text-gray-800 dark:text-gray-400">{{ profile.location }}</p>
           </div>
           <!-- <div>
             <strong>Job Title</strong>
@@ -142,19 +146,19 @@
         </div>
         <div class="space-y-4">
           <div>
-            <strong class="text-gray-300">Email Address</strong>
-            <p class="text-gray-400">{{ profile.email }}</p>
+            <strong class="text-gray-800 dark:text-gray-300">Email Address</strong>
+            <p class="text-gray-800 dark:text-gray-400">{{ profile.email }}</p>
           </div>
           <div>
-            <strong class="text-gray-300">Home Address</strong>
-            <p class="text-gray-400">{{ profile.address }}</p>
+            <strong class="text-gray-800 dark:text-gray-300">Home Address</strong>
+            <p class="text-gray-800 dark:text-gray-400">{{ profile.address }}</p>
           </div>
           <div>
-            <strong class="text-gray-300">Phone Number</strong>
-            <p class="text-gray-400">{{ profile.phone }}</p>
+            <strong class="text-gray-800 dark:text-gray-300">Phone Number</strong>
+            <p class="text-gray-800 dark:text-gray-400">{{ profile.phone }}</p>
           </div>
           <div>
-            <strong class="text-gray-300">Software Skills</strong>
+            <strong class="text-gray-800 dark:text-gray-300">Software Skills</strong>
             <div class="flex space-x-2 text-lg">
               <!-- Skills -->
             </div>
@@ -168,7 +172,7 @@
       <hr class="my-4 border-gray-700" />
       <div class="flex space-x-4" v-if="user && user.id === profile.id">
         <router-link
-          class="text-base font-semibold bg-blue-700 px-4 py-2 rounded-md hover:bg-[#6874fc]"
+          class="text-base text-white font-semibold bg-green-700 px-4 py-2 rounded-md hover:bg-green-600 dark:bg-indigo-900 dark:hover:bg-indigo-800"
           :to="{ name: 'ProfileSettings', params: { userId: user.id } }"
         >
           Edit
@@ -190,11 +194,10 @@
 
     <!-- Edit rasm modal -->
     <UpdateProfilePictureModal
-      :edit-profile-picture.sync="editProfilePicture"
-      :profile="profile"
-      @saved="handleSaved"
-      @deleted="handleDeleted"
-      @close="editProfilePicture = false"
+      v-model:show="editProfilePicture"
+      :currentPic="profile.profile_picture"
+      @save="handleSaved"
+      @delete="handleDeleted"
     />
   </div>
 </template>

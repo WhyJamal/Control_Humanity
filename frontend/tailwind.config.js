@@ -23,6 +23,8 @@ module.exports = {
           800: '#5b21b6',
           900: '#4c1d95',
         },
+        greenSoft: '#e6f9ec',
+        greenPastel: '#b2f2c2', 
       },
       backgroundImage: {
         'night-sky': 'linear-gradient(to bottom right, #2e3a4e, #121e32)',

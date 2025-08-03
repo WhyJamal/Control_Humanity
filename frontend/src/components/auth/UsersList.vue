@@ -40,15 +40,15 @@
         <div
           v-show="dropdownOpen === user.id"
           @click.away="dropdownOpen = null"
-          class="z-10 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 absolute right-4 top-10"
+          class="z-10 w-[200px] text-base list-none bg-gray-200 divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 absolute right-4 top-10"
         >
           <ul class="py-2">
             <li>
             <button
               @click="deleteUser(user.id)"
-              class="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white text-left"
+              class="flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white text-left"
             >
-              <TrashIcon class="w-5 h-5" />
+              <TrashIcon class="w-5 h-5 text-red-700" />
               Пометить на удаление
             </button>
             </li>
@@ -96,6 +96,9 @@ import { TrashIcon } from '@heroicons/vue/24/outline'
 
 export default {
   name: 'UserList',
+  components: {
+    TrashIcon
+  },
   setup() {
     const users = ref([]);
     const loading = ref(false);

@@ -319,41 +319,81 @@
       </div>
 
       <!-- RIGHT PANEL (1/3) -->
-      <div
-        v-if="localTask"
-        class="w-1/3 bg-[#242629] border-l border-gray-700 p-6 flex flex-col"
-      >
-        <h4 class="text-gray-300 font-semibold mb-4">Комментарии и события</h4>
-        <textarea
-          rows="2"
-          class="w-full bg-[#1e1f22] border border-gray-600 rounded px-3 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none resize-none mb-3"
-          placeholder="Напишите комментарий..."
-        ></textarea>
-        <button
-          class="self-end bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded mb-4 text-sm font-medium text-black"
-        >
-          Отправить
-        </button>
+<div
+  v-if="localTask"
+  class="w-1/3 bg-[#242629] border-l border-gray-700 p-6 flex flex-col max-h-screen overflow-y-auto min-h-0"
+>
+  <h4 class="text-gray-300 font-semibold mb-4">Комментарии и события</h4>
 
-        <div class="overflow-y-auto flex-1 space-y-4">
-          <div class="flex items-start space-x-3">
-            <div
-              class="w-8 h-8 flex-shrink-0 flex-grow-0 rounded-full bg-white border border-white"
-            ></div>
-            <div>
-              <p class="text-gray-200 text-sm">
-                <span class="font-semibold text-white">
-                  {{ localTask.first_name + " " + localTask.last_name }}
-                </span>
-                добавил(а) эту карточку в список {{ localTask.title }}
-              </p>
-              <p class="text-gray-500 text-xs mt-1">
-                {{ formatDate(localTask.data_input) }}
-              </p>
-            </div>
-          </div>
-        </div>
+  <textarea
+    rows="2"
+    class="w-full bg-[#1e1f22] border border-gray-600 rounded px-3 py-2 text-sm text-gray-300 placeholder-gray-500 focus:outline-none resize-none mb-3"
+    placeholder="Напишите комментарий..."
+  ></textarea>
+
+  <button
+    class="self-end bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded mb-4 text-sm font-medium text-black"
+  >
+    Отправить
+  </button>
+
+  <!-- Scrollable comment/event section -->
+  <div class="overflow-y-auto flex-1 space-y-4 mb-4">
+    <div class="flex items-start space-x-3">
+      <div class="w-8 h-8 flex-shrink-0 rounded-full bg-white border border-white"></div>
+      <div>
+        <p class="text-gray-200 text-sm">
+          <span class="font-semibold text-white">
+            {{ localTask.first_name + " " + localTask.last_name }}
+          </span>
+          добавил(а) эту карточку в список {{ localTask.title }}
+        </p>
+        <p class="text-gray-500 text-xs mt-1">
+          {{ formatDate(localTask.data_input) }}
+        </p>
       </div>
+    </div>
+    <!-- boshqa eventlar ham shu yerga qo‘shiladi -->
+  </div>
+
+  <!-- Code block -->
+  <div class="w-full max-w-lg">
+    <div class="mb-2 flex justify-between items-center">
+      <p class="text-sm font-medium text-gray-900 dark:text-white">Code example:</p>
+    </div>
+
+    <div class="relative bg-gray-50 dark:bg-gray-700 p-4 rounded-lg h-64 overflow-scroll">
+      <pre>
+        <code ref="codeBlock" class="text-sm text-gray-500 dark:text-gray-400 whitespace-pre" v-html="code"></code>
+      </pre>
+
+      <div class="absolute top-2 end-2 bg-gray-50 dark:bg-gray-700">
+        <button
+          @click="copyCode"
+          class="text-gray-900 dark:text-gray-400 m-0.5 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700 rounded-lg py-2 px-2.5 inline-flex items-center justify-center bg-white border border-gray-200 h-8"
+        >
+          <span v-if="!copied">
+            <svg class="w-3 h-3 me-1.5" fill="currentColor" viewBox="0 0 18 20">
+              <path d="M16 1h-3.278A1.992 1.992 0 0 0 11 0H7a1.993 1.993 0 0 0-1.722 1H2a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2Zm-3 14H5a1 1 0 0 1 0-2h8a1 1 0 0 1 0 2Zm0-4H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Zm0-5H5a1 1 0 0 1 0-2h2V2h4v2h2a1 1 0 1 1 0 2Z"/>
+            </svg>
+            <span class="text-xs font-semibold">Copy code</span>
+          </span>
+          <span v-else>
+            <svg class="w-3 h-3 text-blue-700 dark:text-blue-500 me-1.5" fill="none" viewBox="0 0 16 12">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+            </svg>
+            <span class="text-xs font-semibold text-blue-700 dark:text-blue-500">Copied</span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      Configure Tailwind CSS before copying the code
+    </p>
+  </div>
+</div>
+
       <!-- Close Modal Button -->
       <button
         @click="closeModal"
@@ -445,6 +485,43 @@ import { useStore } from "vuex";
 import { ref, onMounted, nextTick, watch, computed, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "@/utils/axios";
+
+const codeBlock = ref(null)
+const copied = ref(false)
+
+const code = `'use client';
+
+import Link from 'next/link';
+import { Navbar } from 'flowbite-react';
+
+function Component() {
+  return (
+    <Navbar fluid rounded>
+      <Navbar.Brand as={Link} href="https://flowbite-react.com">
+        <img src="/favicon.svg" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite React</span>
+      </Navbar.Brand>
+      <Navbar.Toggle />
+      <Navbar.Collapse>
+        <Navbar.Link href="#" active>Home</Navbar.Link>
+        <Navbar.Link as={Link} href="#">About</Navbar.Link>
+        <Navbar.Link href="#">Services</Navbar.Link>
+        <Navbar.Link href="#">Pricing</Navbar.Link>
+        <Navbar.Link href="#">Contact</Navbar.Link>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+}`
+
+const copyCode = async () => {
+  try {
+    await navigator.clipboard.writeText(code)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 1500)
+  } catch (err) {
+    console.error('Copy failed', err)
+  }
+}
 
 const route = useRoute();
 const store = useStore();
