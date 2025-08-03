@@ -696,6 +696,7 @@ export default {
         this.userDropdown = false;
         this.profileSettings = false;
         this.isLanguageOpen = false;
+        this.isViewOpen = false;
       }
     },
   },
