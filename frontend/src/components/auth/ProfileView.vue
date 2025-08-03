@@ -13,10 +13,11 @@
         class="dark:bg-neutral-900/90 dark:border-neutral-700 dark:text-gray-200 rounded-lg shadow-md p-6"
       >
         <div class="flex items-center space-x-4">
-          <img
-            :src="profile.profile_picture || defaultAvatar"
-            class="w-20 h-20 rounded-xl"
-          />
+        <img
+          :src="profile.profile_picture ? profile.profile_picture + '?v=' + profilePictureVersion : defaultAvatar"
+          :key="profilePictureVersion" 
+          class="w-20 h-20 rounded-xl"
+        />  
           <div>
             <span class="text-xs bg-blue-600 px-2 py-0.5 rounded-lg text-white"
               >PRO</span
@@ -219,6 +220,7 @@ import api from "@/utils/axios";
 import { mapState } from "vuex";
 import UpdateProfilePictureModal from "@/components/ui/UpdateProfilePictureModal.vue";
 import ChangePasswordModal from "@/components/ui/ChangePasswordModal.vue";
+import eventBus from '@/utils/eventBus'
 
 export default {
   name: "ProfileView",
@@ -226,6 +228,7 @@ export default {
   data() {
     return {
       profile: {},
+      profilePictureVersion: Date.now(),
       error: "",
       success: "",
       defaultAvatar: "/avatar.png",
@@ -259,6 +262,8 @@ export default {
     },
   },
   async created() {
+    eventBus.on("profile-updated", this.updateProfile);
+
     try {
       const id = this.$route.params.userId;
       const response = await api.get(`/auth/users/${id}/`);
@@ -268,6 +273,10 @@ export default {
     }
   },
   methods: {
+    updateProfile(newData) {
+      this.profile = newData;
+      this.profilePictureVersion = Date.now();
+    },    
     async saveProfile() {
       this.error = "";
       this.success = "";
@@ -300,12 +309,18 @@ export default {
     },
     handleSaved(updatedProfile) {
       this.profile = updatedProfile;
+      this.profilePictureVersion = Date.now(); 
       this.editProfilePicture = false;
+      eventBus.emit("profile-updated", updatedProfile);
+
     },
     handleDeleted() {
       this.profile.avatar = null;
       this.editProfilePicture = false;
     },
+  },
+  beforeUnmount() {
+    eventBus.off("profile-updated", this.updateProfile);
   },
 };
 </script>

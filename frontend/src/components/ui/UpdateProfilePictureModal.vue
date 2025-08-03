@@ -117,6 +117,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import api from '@/utils/axios'
+import eventBus from '@/utils/eventBus'
 
 const props = defineProps({
   show: { type: Boolean, required: true },
@@ -164,6 +165,9 @@ async function saveProfile() {
     }
 
     const { data } = await api.patch('auth/users/me/', form)
+
+    eventBus.emit('profile-updated', data)
+
     emit('saved', data)
     emit('update:show', false)
   } catch (err) {

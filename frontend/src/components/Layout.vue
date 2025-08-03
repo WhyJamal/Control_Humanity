@@ -108,12 +108,13 @@
           <div
             class="w-8 h-8 rounded-full overflow-hidden bg-gray-400 flex items-center dark:bg-gray-700"
           >
-            <img
-              @click.stop="userDropdown = !userDropdown"
-              :src="profile.profile_picture || defaultAvatar"
-              alt="User Avatar"
-              class="w-full h-full object-cover"
-            />
+          <img
+            @click.stop="userDropdown = !userDropdown"
+            :src="profile.profile_picture ? profile.profile_picture + '?v=' + profilePictureVersion : defaultAvatar"
+            :key="profilePictureVersion" 
+            alt="User Avatar"
+            class="w-full h-full object-cover"
+          />
 
             <div
               v-if="userDropdown"
@@ -559,6 +560,7 @@ import ProjectForm from "@/components/projects/ProjectForm.vue";
 import Dashboard from "@/components/ui/Dashboard.vue";
 import { mapState } from "vuex";
 import { SunIcon, MoonIcon } from "@heroicons/vue/24/outline";
+import eventBus from "@/utils/eventBus";
 
 export default {
   name: "Layout",
@@ -587,6 +589,7 @@ export default {
     return {
       theme: localStorage.getItem("theme") || "dark",
       profile: {},
+      profilePictureVersion: Date.now(),
       showSidebar: true,
       isDropdownOpen: false,
       isLanguageOpen: false,
@@ -615,11 +618,15 @@ export default {
         this.$route.name === "ProfileView" ||
         this.$route.name === "ProfileSettings" ||
         this.$route.name === "UserList" ||
-        this.$route.name === "Register" 
+        this.$route.name === "Register"
       );
     },
   },
   methods: {
+    updateProfile(newData) {
+      this.profile = newData;
+      this.profilePictureVersion = Date.now();
+    },
     setTheme(mode) {
       this.theme = mode;
       localStorage.setItem("theme", mode);
@@ -693,6 +700,8 @@ export default {
     },
   },
   async created() {
+    eventBus.on("profile-updated", this.updateProfile);
+
     try {
       // const id = this.$store.state.auth.user.id;
       const response = await api.get(`/auth/users/me/`); // ${id}/
@@ -711,6 +720,7 @@ export default {
     document.addEventListener("click", this.handleClickOutside);
   },
   beforeUnmount() {
+    eventBus.off("profile-updated", this.updateProfile);
     document.removeEventListener("click", this.handleClickOutside);
   },
 };
