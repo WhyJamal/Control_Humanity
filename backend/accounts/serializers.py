@@ -87,7 +87,7 @@ class OrganizationRegisterSerializer(serializers.Serializer):
         }
 
 class UserSerializer(serializers.ModelSerializer):
-    profile_picture = serializers.ImageField(use_url=True)
+    profile_picture = serializers.ImageField(use_url=True, allow_null=True, required=False)
     organization_name = serializers.CharField(source='organization.short_name', read_only=True)
 
     class Meta:

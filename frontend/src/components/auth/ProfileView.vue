@@ -1,10 +1,6 @@
 <template>
   <div
-    class="w-full min-h-screen 
-          bg-white text-gray-900      
-          dark:bg-[#1e293b] dark:text-gray-200  
-          rounded-lg shadow-md p-6 space-y-6 border border-gray-300  
-          dark:border-gray-700 relative"
+    class="w-full min-h-screen bg-white text-gray-900 dark:bg-[#1e293b] dark:text-gray-200 rounded-lg shadow-md p-6 space-y-6 border border-gray-300 dark:border-gray-700 relative"
   >
     <!-- <button
       @click="closeModal"
@@ -46,7 +42,9 @@
       >
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Timezone</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1"
+              >Timezone</strong
+            >
             <select
               class="w-full bg-gray-200 text-gray-800 border rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
@@ -54,7 +52,9 @@
             </select>
           </div>
           <div>
-            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Language</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1"
+              >Language</strong
+            >
             <div
               class="w-full bg-gray-200 text-gray-800 border border-gray-300 rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
@@ -72,7 +72,9 @@
             />
           </div>
           <div>
-            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1">Gender</strong>
+            <strong class="text-gray-800 dark:text-gray-300 block text-sm mb-1"
+              >Gender</strong
+            >
             <div
               class="w-full bg-gray-200 text-gray-800 border border-gray-100 rounded-md p-2 dark:text-gray-300 dark:bg-[#334155] dark:border-black"
             >
@@ -127,17 +129,19 @@
                 rel="noopener noreferrer"
                 class="hover:text-white transition"
               >
-              <img
-                :src="`/icons/${key.replace(/_\d+$/, '')}.png`"
-                :alt="key"
-                class="w-6 h-6"
-              />
+                <img
+                  :src="`/icons/${key.replace(/_\d+$/, '')}.png`"
+                  :alt="key"
+                  class="w-6 h-6"
+                />
               </a>
             </div>
           </div>
           <div>
             <strong class="text-gray-800 dark:text-gray-300">Location</strong>
-            <p class="text-gray-800 dark:text-gray-400">{{ profile.location }}</p>
+            <p class="text-gray-800 dark:text-gray-400">
+              {{ profile.location }}
+            </p>
           </div>
           <!-- <div>
             <strong>Job Title</strong>
@@ -146,19 +150,29 @@
         </div>
         <div class="space-y-4">
           <div>
-            <strong class="text-gray-800 dark:text-gray-300">Email Address</strong>
+            <strong class="text-gray-800 dark:text-gray-300"
+              >Email Address</strong
+            >
             <p class="text-gray-800 dark:text-gray-400">{{ profile.email }}</p>
           </div>
           <div>
-            <strong class="text-gray-800 dark:text-gray-300">Home Address</strong>
-            <p class="text-gray-800 dark:text-gray-400">{{ profile.address }}</p>
+            <strong class="text-gray-800 dark:text-gray-300"
+              >Home Address</strong
+            >
+            <p class="text-gray-800 dark:text-gray-400">
+              {{ profile.address }}
+            </p>
           </div>
           <div>
-            <strong class="text-gray-800 dark:text-gray-300">Phone Number</strong>
+            <strong class="text-gray-800 dark:text-gray-300"
+              >Phone Number</strong
+            >
             <p class="text-gray-800 dark:text-gray-400">{{ profile.phone }}</p>
           </div>
           <div>
-            <strong class="text-gray-800 dark:text-gray-300">Software Skills</strong>
+            <strong class="text-gray-800 dark:text-gray-300"
+              >Software Skills</strong
+            >
             <div class="flex space-x-2 text-lg">
               <!-- Skills -->
             </div>
@@ -185,20 +199,18 @@
         </button>
       </div>
 
-      <!-- Modal -->
       <ChangePasswordModal
         v-if="showChangePassword"
         @close="showChangePassword = false"
       />
-    </div>
 
-    <!-- Edit rasm modal -->
-    <UpdateProfilePictureModal
-      v-model:show="editProfilePicture"
-      :currentPic="profile.profile_picture"
-      @save="handleSaved"
-      @delete="handleDeleted"
-    />
+      <UpdateProfilePictureModal
+        v-model:show="editProfilePicture"
+        :currentPic="profile.profile_picture"
+        @save="handleSaved"
+        @delete="handleDeleted"
+      />
+    </div>
   </div>
 </template>
 
@@ -216,7 +228,7 @@ export default {
       profile: {},
       error: "",
       success: "",
-      defaultAvatar: '/avatar.png',
+      defaultAvatar: "/avatar.png",
       editProfilePicture: false,
       showChangePassword: false,
     };
