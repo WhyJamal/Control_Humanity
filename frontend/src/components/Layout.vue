@@ -108,13 +108,17 @@
           <div
             class="w-8 h-8 rounded-full overflow-hidden bg-gray-400 flex items-center dark:bg-gray-700"
           >
-          <img
-            @click.stop="userDropdown = !userDropdown"
-            :src="profile.profile_picture ? profile.profile_picture + '?v=' + profilePictureVersion : defaultAvatar"
-            :key="profilePictureVersion" 
-            alt="User Avatar"
-            class="w-full h-full object-cover"
-          />
+            <img
+              @click.stop="userDropdown = !userDropdown"
+              :src="
+                profile.profile_picture
+                  ? profile.profile_picture + '?v=' + profilePictureVersion
+                  : defaultAvatar
+              "
+              :key="profilePictureVersion"
+              alt="User Avatar"
+              class="w-full h-full object-cover"
+            />
 
             <div
               v-if="userDropdown"
@@ -557,7 +561,7 @@ import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
 import ProfileView from "@/components/auth/ProfileView.vue";
 import Modal from "@/components/ui/Modal.vue";
 import ProjectForm from "@/components/projects/ProjectForm.vue";
-import Dashboard from "@/components/ui/Dashboard.vue";
+import Dashboard from "@/components/pages/Dashboard.vue";
 import { mapState } from "vuex";
 import { SunIcon, MoonIcon } from "@heroicons/vue/24/outline";
 import eventBus from "@/utils/eventBus";
@@ -588,7 +592,7 @@ export default {
   data() {
     return {
       theme: localStorage.getItem("theme") || "dark",
-      profile: {},
+      //profile: {},
       profilePictureVersion: Date.now(),
       showSidebar: true,
       isDropdownOpen: false,
@@ -613,6 +617,10 @@ export default {
   computed: {
     ...mapState("auth", ["user"]),
 
+    profile() {
+      return this.user || {};
+    },
+
     isProfileView() {
       return (
         this.$route.name === "ProfileView" ||
@@ -624,7 +632,8 @@ export default {
   },
   methods: {
     updateProfile(newData) {
-      this.profile = newData;
+      //this.profile = newData;
+      this.$store.commit("auth/setUser", newData);
       this.profilePictureVersion = Date.now();
     },
     setTheme(mode) {
@@ -703,18 +712,18 @@ export default {
   async created() {
     eventBus.on("profile-updated", this.updateProfile);
 
-    try {
-      // const id = this.$store.state.auth.user.id;
-      const response = await api.get(`/auth/users/me/`); // ${id}/
-      this.profile = response.data;
-      if (this.profile.language) {
-        this.locale = this.profile.language;
-        localStorage.setItem("lang", this.profile.language);
-      }
-    } catch (e) {
-      this.error = "Failed to load profile.";
-      console.error(e);
-    }
+    // try {
+    //   // const id = this.$store.state.auth.user.id;
+    //   const response = await api.get(`/auth/users/me/`); // ${id}/
+    //   this.profile = response.data;
+    //   if (this.profile.language) {
+    //     this.locale = this.profile.language;
+    //     localStorage.setItem("lang", this.profile.language);
+    //   }
+    // } catch (e) {
+    //   this.error = "Failed to load profile.";
+    //   console.error(e);
+    // }
   },
   mounted() {
     document.documentElement.classList.add(this.theme);

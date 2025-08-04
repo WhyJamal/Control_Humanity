@@ -5,7 +5,7 @@ const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', name: 'Login', component: () => import('../components/auth/Login.vue') },
   { path: '/organization', component: () => import('../components/auth/Organization.vue') },
-  { path: '/payments', component: () => import('@/components/ui/Payments.vue') },
+  { path: '/payments', component: () => import('@/components/pages/Payments.vue') },
   { 
     path: '/', 
     component: () => import('@/components/Layout.vue'),
@@ -13,7 +13,7 @@ const routes = [
     redirect: '/projects',
     children: [
       { path: 'register', name: 'Register', component: () => import('@/components/auth/Register.vue') },
-      { path: 'dashboard', component: () => import('@/components/ui/Dashboard.vue'), meta: { requiresAuth: true },},
+      { path: 'dashboard', component: () => import('@/components/pages/Dashboard.vue'), meta: { requiresAuth: true },},
       { path: 'projects', name: 'Projects', component: () => import('@/components/projects/ProjectsTable.vue'), meta: { requiresAuth: true }, },
       { path: 'archivedprojects', component: () => import('@/components/projects/ArchivedProjects.vue'), meta: { requiresAuth: true }, },
       { path: 'taskstable', component: () => import('@/components/tasks/TasksTable.vue'), meta: { requiresAuth: true }, },

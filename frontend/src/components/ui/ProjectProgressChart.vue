@@ -70,7 +70,6 @@ ChartJS.register(
   LineElement
 )
 
-// Dashboard kartalari konfiguratsiyasi
 const cards = reactive([
   {
     id: 'status',

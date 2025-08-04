@@ -1,18 +1,18 @@
 <template>
   <div
     v-if="visible"
-    class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center px-4 pt-10 z-50"
+    class="fixed inset-0 bg-white dark:bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center px-4 pt-10 z-50"
   >
     <div
-      class="bg-gradient-to-br from-[#692a88] to-[#3b1555] p-6 rounded-2xl shadow-xl w-fit"
+      class="bg-gradient-to-br from-[#14532d] to-[#064e3b] dark:bg-gradient-to-br dark:from-[#692a88] dark:to-[#3b1555] p-6 rounded-2xl shadow-xl w-fit"
     >
       <div
-        class="bg-[#1e1f22] w-[900px] rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto flex flex-col relative"
+        class="bg-white w-[900px] rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto flex flex-col relative dark:bg-[#1e1f22]"
       >
         <div class="w-full p-8 space-y-6">
           <!-- Header -->
           <div class="flex items-center justify-between gap-4">
-            <h2 class="text-3xl font-bold text-gray-200">
+            <h2 class="text-3xl font-bold text-black dark:text-gray-200">
               Создать новую задачу
             </h2>
             <div class="flex gap-2 items-center">
@@ -36,7 +36,7 @@
 
           <!-- Title -->
           <div>
-            <label for="title" class="block mb-1 font-medium text-gray-200"
+            <label for="title" class="block mb-1 font-medium text-gray-800 dark:text-gray-200"
               >Название задачи</label
             >
             <input
@@ -44,7 +44,7 @@
               v-model="newTask.title"
               type="text"
               placeholder="Введите название"
-              class="w-full p-3 bg-[#2a2c2e] border border-gray-600 text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+              class="w-full p-3 bg-gray-200 border border-gray-600 text-gray-800 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500 dark:bg-[#2a2c2e] dark:text-gray-200"
               required
             />
           </div>
@@ -54,13 +54,13 @@
             <!-- Участники -->
             <div class="relative">
               <div class="flex items-center gap-2 mb-1">
-                <span class="text-sm text-gray-400">Участники</span>
+                <span class="text-sm text-gray-900 dark:text-gray-400">Участники</span>
 
                 <div class="flex items-center gap-1">
                   <div
                     v-for="id in newTask.marked_to_id"
                     :key="id"
-                    class="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-xs"
+                    class="w-8 h-8 rounded-full bg-green-600 text-black dark:text-white flex items-center justify-center text-xs"
                     :title="getUserName(id)"
                   >
                     {{ initials(getUserName(id)) }}
@@ -73,7 +73,7 @@
                     showLabels = false;
                   "
                   ref="participantButton"
-                  class="w-8 h-8 rounded-full bg-white/10 border border-gray-600 flex items-center justify-center text-gray-200 hover:bg-white/20"
+                  class="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 border border-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-200 hover:bg-white/20"
                 >
                   <svg
                     class="w-5 h-5"
@@ -96,34 +96,34 @@
                 v-if="showParticipants"
                 ref="participantDropdown"
                 @click.stop
-                class="absolute left-0 top-full mt-2 bg-[#1e1f22] border border-gray-600 rounded shadow-lg w-64 z-50"
+                class="absolute left-0 top-full mt-2 bg-gray-300 border-gray-300 border dark:border-gray-600 rounded shadow-lg w-64 z-50 dark:bg-[#1e1f22]"
               >
                 <div class="p-2">
                   <input
                     v-model="participantSearch"
                     type="text"
                     placeholder="Поиск участников"
-                    class="w-full p-2 bg-[#2a2c2e] border border-gray-600 rounded text-sm text-gray-200"
+                    class="w-full p-2 bg-gray-200 border-gray-300 border dark:border-gray-600 rounded text-sm text-gray-800 dark:text-gray-200 dark:bg-[#2a2c2e]"
                   />
                 </div>
                 <div class="max-h-48 overflow-y-auto">
                   <label
                     v-for="u in filteredUsers"
                     :key="u.id"
-                    class="flex items-center px-3 py-2 hover:bg-gray-700 cursor-pointer"
+                    class="flex items-center px-3 py-2 text-gray-800 hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
                     @click="toggleParticipant(u.id)"
                   >
                     <div
-                      class="w-6 h-6 mr-3 rounded-full bg-green-600 text-white flex items-center justify-center text-xs"
+                      class="w-6 h-6 mr-3 rounded-full bg-green-600 text-black dark:text-white flex items-center justify-center text-xs"
                     >
                       {{ initials(u.username) }}
                     </div>
-                    <span class="flex-1 text-sm text-gray-200">{{
+                    <span class="flex-1 text-sm dark:text-white">{{
                       u.username
                     }}</span>
                     <span
                       v-if="newTask.marked_to_id.includes(u.id)"
-                      class="text-gray-400"
+                      class="dark:text-white"
                     >
                       <svg
                         class="w-4 h-4"
@@ -153,7 +153,7 @@
                     showLabels = !showLabels;
                     showParticipants = false;
                   "
-                  class="px-3 py-1 flex items-center gap-2 bg-white/10 border border-gray-600 rounded-md text-gray-200 hover:bg-white/20"
+                  class="px-3 py-1 flex items-center gap-2 bg-gray-200 dark:bg-white/10 border dark:border-gray-600 rounded-md dark:text-gray-200 dark:hover:bg-white/20"
                 >
                   <svg
                     class="w-5 h-5"
@@ -176,15 +176,15 @@
                   v-if="showLabels"
                   ref="labelDropdown"
                   @click.stop
-                  class="absolute right-10 mt-[260px] w-48 bg-[#1e1f22] border border-gray-600 rounded shadow-lg z-50"
+                  class="absolute right-10 mt-[260px] w-48 bg-gray-200 border border-gray-400 dark:border-gray-600 rounded shadow-lg z-50 dark:bg-[#1e1f22]"
                 >
                   <div
                     class="flex justify-between items-center px-4 py-2 border-b border-gray-700"
                   >
-                    <span class="text-gray-200 font-medium">Метки</span>
+                    <span class="text-gray-800 dark:text-gray-200 font-medium">Метки</span>
                     <button
                       @click="showLabels = false"
-                      class="text-gray-400 hover:text-gray-200"
+                      class="text-gray-400 hover:text-gray-400 dark:hover:text-gray-200"
                     >
                       <svg
                         class="w-5 h-5"
@@ -206,7 +206,7 @@
                     <label
                       v-for="label in filteredLabels"
                       :key="label.id"
-                      class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer"
+                      class="flex items-center px-4 py-2 hover:bg-gray-400 dark:hover:bg-gray-700 cursor-pointer"
                       @click="selectLabel(label)"
                     >
                       <div
@@ -222,7 +222,7 @@
                 </div>
                 <div
                   v-if="selectedLabel"
-                  class="w-8 h-8 rounded-full border border-gray-900"
+                  class="w-8 h-8 rounded-full border border-gray-400 dark:border-gray-900"
                   :style="{ backgroundColor: selectedLabel.color }"
                 ></div>
               </div>
@@ -233,7 +233,7 @@
           <div>
             <label
               for="description"
-              class="block mb-1 font-medium text-gray-200"
+              class="block mb-1 font-medium text-gray-800 dark:text-gray-200"
               >Описание</label
             >
             <textarea
@@ -241,7 +241,7 @@
               v-model="newTask.description"
               rows="3"
               placeholder="Опишите задачу"
-              class="w-full p-3 bg-[#2a2c2e] border border-gray-600 text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 resize-none"
+              class="w-full p-3 bg-gray-200 border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-500 resize-none dark:bg-[#2a2c2e]"
             ></textarea>
           </div>
 
@@ -250,7 +250,7 @@
             <div class="w-[500px] md:col-span-2">
               <!-- md:col-span-2 -->
               <label
-                class="block mb-2 font-semibold text-base text-gray-300"
+                class="block mb-2 font-semibold text-base text-gray-800 dark:text-gray-300"
                 for="users"
                 >Назначить сотрудника</label
               >
@@ -258,7 +258,7 @@
                 <Listbox v-model="newTask.assigned_to_id">
                   <div class="relative">
                     <ListboxButton
-                      class="w-full px-4 py-3 rounded-lg bg-neutral-900 border border-neutral-600 text-white flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      class="w-full px-4 py-3 rounded-lg bg-gray-300 border border-gray-400 dark:border-neutral-600 text-gray-800 dark:text-white flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-purple-500 dark:bg-neutral-900"
                     >
                       <span>
                         {{
@@ -276,33 +276,33 @@
                       leave-from="opacity-100 scale-100"
                       leave-to="opacity-0 scale-95"
                     >
-                      <ListboxOptions
-                        class="absolute bottom-full mb-2 w-full bg-neutral-800 rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
+                    <ListboxOptions
+                      class="absolute bottom-full mb-2 w-full bg-white dark:bg-neutral-800 rounded-lg shadow-lg z-50 ring-1 ring-black/20 focus:outline-none"
+                    >
+                      <ListboxOption
+                        v-for="u in users"
+                        :key="u.id"
+                        :value="u.id"
+                        class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-lg"
+                        v-slot="{ selected }"
                       >
-                        <ListboxOption
-                          v-for="u in users"
-                          :key="u.id"
-                          :value="u.id"
-                          class="cursor-pointer select-none relative py-2 pl-10 pr-4 hover:bg-neutral-700 rounded-lg"
-                          v-slot="{ selected }"
+                        <span
+                          :class="[
+                            selected
+                              ? 'font-semibold text-gray-900 dark:text-white'
+                              : 'text-gray-700 dark:text-gray-300',
+                          ]"
                         >
-                          <span
-                            :class="[
-                              selected
-                                ? 'font-semibold text-white'
-                                : 'text-gray-300',
-                            ]"
-                          >
-                            {{ u.username }}
-                          </span>
-                          <span
-                            v-if="selected"
-                            class="absolute inset-y-0 left-0 flex items-center pl-3 text-white"
-                          >
-                            <CheckIcon class="w-5 h-5" />
-                          </span>
-                        </ListboxOption>
-                      </ListboxOptions>
+                          {{ u.username }}
+                        </span>
+                        <span
+                          v-if="selected"
+                          class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-900 dark:text-white"
+                        >
+                          <CheckIcon class="w-5 h-5" />
+                        </span>
+                      </ListboxOption>
+                    </ListboxOptions>
                     </Transition>
                   </div>
                 </Listbox>
@@ -310,7 +310,7 @@
             </div>
             <div class="w-[250px]">
               <label
-                class="block mb-2 font-semibold text-base text-gray-300"
+                class="block mb-2 font-semibold text-base text-gray-800 dark:text-gray-300"
                 for="due_date"
                 >Срок окончания</label
               >
@@ -319,13 +319,13 @@
                 id="due_date"
                 :config="datePickerConfig"
                 placeholder="Выберите дату"
-                class="w-full px-4 py-3 rounded-lg border border-neutral-600 bg-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                class="w-full px-4 py-3 rounded-lg border border-gray-400 bg-gray-300 text-black focus:ring-gray-300 focus:outline-none focus:ring-2 dark:focus:ring-purple-500 dark:border-neutral-600 dark:bg-neutral-900 dark:text-white"
               />
             </div>
           </div>
 
           <div class="mt-4">
-            <label for="file-upload" class="block mb-1 font-medium text-gray-200">
+            <label for="file-upload" class="block mb-1 font-medium text-gray-800 dark:text-gray-200">
               Прикрепить файлы
             </label>
             <input
@@ -333,10 +333,10 @@
               type="file"
               multiple
               @change="onFileChange"
-              class="w-full text-gray-200"
+              class="w-full text-gray-800 dark:text-gray-200"
               accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png"
             />
-            <div class="mt-2 space-y-1 text-sm text-gray-300">
+            <div class="mt-2 space-y-1 text-sm text-gray-800 dark:text-gray-300">
               <div v-for="(f, idx) in newTask.uploaded_files" :key="idx">
                 {{ f.name }}
               </div>
@@ -348,14 +348,14 @@
             <button
               @click="close"
               type="button"
-              class="px-6 py-2 text-sm font-medium text-gray-300 hover:text-gray-200"
+              class="px-6 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-950 dark:hover:text-gray-200"
             >
               Отменить
             </button>
             <button
               type="button"
               @click="handleCreateTask"
-              class="px-6 py-2 bg-blue-600 text-black font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="px-6 py-2 bg-green-600 dark:bg-blue-600 text-black font-semibold rounded-md hover:bg-green-700 dark:hover:bg-indigo-700 focus:outline-none focus:ring-2 dark:focus:ring-indigo-500"
             >
               Создать
             </button>

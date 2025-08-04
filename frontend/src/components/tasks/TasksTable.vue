@@ -59,7 +59,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import TaskFormModal from "@/components/ui/AddTaskModal.vue";
+import TaskFormModal from "@/components/tasks/AddTaskModal.vue";
 import api from "@/utils/axios";
 import { useRouter } from 'vue-router';
 

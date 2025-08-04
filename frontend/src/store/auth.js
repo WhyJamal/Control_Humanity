@@ -62,6 +62,9 @@ const actions = {
     const profile = await api.get('/auth/users/me/')
     commit('setUser', profile.data)
 
+    if (profile.data.language) {
+      localStorage.setItem('lang', profile.data.language)
+    }
     // localStorage.setItem('userRole', profile.data.role)
     // localStorage.setItem('userId', profile.data.id)
 

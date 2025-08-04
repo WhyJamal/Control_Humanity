@@ -485,7 +485,7 @@
 
 <script>
 import api from "@/utils/axios";
-import AddTaskModal from "@/components/ui/AddTaskModal.vue";
+import AddTaskModal from "@/components/tasks/AddTaskModal.vue";
 import ProjectProgressChart from "@/components/ui/ProjectProgressChart.vue";
 import {
   DocumentIcon,

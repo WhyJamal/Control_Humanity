@@ -445,7 +445,7 @@ export default {
       this.newTask = {
         title: "",
         description: "",
-        status: statusId, // status_id emas
+        status: statusId, 
         color: "#f0f0f0",
         due_date: null,
       };
